@@ -15,6 +15,7 @@ struct TrafficFlow: Codable, Identifiable, Equatable {
     var client: String? = nil
     var mapLocal: Bool? = nil
     var contentType: String? = nil
+    var tlsPassthrough: Bool? = nil
 
     var path: String {
         guard let components = URLComponents(string: url) else { return url }

@@ -113,11 +113,13 @@ struct TrafficTable: NSViewRepresentable {
             item.target = self
             // Snapshot the clicked row: capture updates may reorder rows while the menu is open.
             item.representedObject = rows[table.clickedRow]
+            item.isEnabled = rows[table.clickedRow].tlsPassthrough != true
             menu.addItem(item)
             let flow = rows[table.clickedRow]
             let breakpoint = NSMenuItem(title: "Breakpoint…", action: #selector(addBreakpoint(_:)), keyEquivalent: "")
             breakpoint.target = self
             breakpoint.representedObject = flow
+            breakpoint.isEnabled = flow.tlsPassthrough != true
             menu.addItem(breakpoint)
             let targets = selection.contains(flow.id) ? selection : [flow.id]
             let pin = NSMenuItem(title: targets.isSubset(of: parent.pinnedIDs) ? "Unpin Selected" : "Pin Selected",
@@ -229,7 +231,10 @@ struct TrafficTable: NSViewRepresentable {
                 value = flow.method
                 accessibilityValue = "Method \(flow.method)"
             case "status":
-                if flow.state == "paused-request" {
+                if flow.tlsPassthrough == true {
+                    value = "Encrypted"
+                    accessibilityValue = "HTTPS decryption is off for this captured connection"
+                } else if flow.state == "paused-request" {
                     value = "Ⅱ REQ"
                     accessibilityValue = "Paused request breakpoint"
                 } else if flow.state == "paused-response" {

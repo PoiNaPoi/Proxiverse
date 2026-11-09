@@ -79,7 +79,8 @@ final class EngineRuntime {
     private var lockDescriptor: Int32 = -1
     let paths = RuntimePaths()
 
-    func start(proxyPort: Int, apiPort: Int, lan: Bool, skipUpstreamVerification: Bool = false) async throws {
+    func start(proxyPort: Int, apiPort: Int, lan: Bool, skipUpstreamVerification: Bool = false,
+               httpsDecryptionHosts: [String] = []) async throws {
         guard process == nil else { throw AppFailure("Engine is already running") }
         guard (1024...65535).contains(proxyPort), (1024...65535).contains(apiPort), proxyPort != apiPort else {
             throw AppFailure("Use different proxy/control ports between 1024 and 65535")
@@ -119,6 +120,7 @@ final class EngineRuntime {
         }
         environment["PROXIVERSE_RULES_FILE"] = paths.root.appendingPathComponent("rules.json").path
         environment["PROXIVERSE_TOKEN"] = token
+        environment["PROXIVERSE_HTTPS_HOSTS"] = String(decoding: try JSONEncoder().encode(httpsDecryptionHosts), as: UTF8.self)
         environment["PROXIVERSE_API_PORT"] = String(apiPort)
         environment["PROXIVERSE_CAPTURE_DIR"] = directory.path
         environment["PROXIVERSE_PARENT_PID"] = String(ProcessInfo.processInfo.processIdentifier)

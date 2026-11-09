@@ -23,7 +23,7 @@ open dist/Proxiverse.app
 1. เปิดแอปแล้วเริ่ม capture อัตโนมัติหนึ่งครั้ง พร้อมเปิด `Allow test devices on local network` (listener `0.0.0.0:9090`, control เฉพาะ `127.0.0.1:9091`) หากพอร์ตถูกใช้อยู่จะแสดงข้อผิดพลาด ให้เปลี่ยนพอร์ตใน Capture Settings แล้วกด Start Capture
 2. ติ๊ก **Capture Mac Traffic** ที่ด้านล่าง sidebar เพื่อจับ HTTP/HTTPS ของแอปที่ใช้ system proxy ของ Mac เปิด–ปิดระหว่าง capture ได้ทันทีโดยไม่ล้าง log; เอาติ๊กออกเพื่อคืนค่า proxy เดิม หากหยุด capture อยู่ ค่าจะมีผลตอนกด Start Capture ครั้งถัดไป เลือก network service ที่ใช้งานได้ใน **Capture Settings** ขณะหยุด capture การเปลี่ยน proxy ต้องอนุมัติสิทธิ์ administrator ผ่าน macOS
 3. HTTPS: สถานะ CA ใน sidebar ตรวจ trust บน Mac เครื่องนี้อัตโนมัติประมาณทุก 2 วินาที เมื่ออนุญาต trust ใน Keychain แล้วจะแสดง `HTTPS trusted on this Mac` (ไม่รวม trust ของโทรศัพท์หรือแอปที่มี trust store ของตัวเอง) กด **Install Certificate** บน toolbar หรือ **Capture Settings → Install on Phone / Emulator…** เพื่อเปิดตัวช่วยติดตั้ง CA (รายละเอียดด้านล่าง)
-4. เลือก request ในตารางเพื่ออ่าน Request ฝั่งซ้าย และ Response ฝั่งขวา แต่ละฝั่งสลับ Headers/JSON (หรือ Body เมื่อไม่ใช่ JSON) ได้แยกกัน JSON จัดรูปแบบและแยกสีอัตโนมัติ กดลูกศรข้างบรรทัด `{` หรือ `[` เพื่อย่อ/ขยาย object หรือ array แต่ละฝั่งแยกกันได้ และคงสถานะเมื่อสลับแท็บ กด Copy JSON เพื่อคัดลอกข้อความครบทั้งก้อนแม้มีส่วนที่ย่ออยู่; ค้นหา traffic ได้จาก URL, method, status และ error
+4. กด **HTTPS** บน toolbar เพื่อเลือกโดเมนที่จะถอดรหัส (รายละเอียดด้านล่าง) แล้วเลือก request ในตารางเพื่ออ่าน Request ฝั่งซ้าย และ Response ฝั่งขวา แต่ละฝั่งสลับ Headers/JSON (หรือ Body เมื่อไม่ใช่ JSON) ได้แยกกัน JSON จัดรูปแบบและแยกสีอัตโนมัติ กดลูกศรข้างบรรทัด `{` หรือ `[` เพื่อย่อ/ขยาย object หรือ array แต่ละฝั่งแยกกันได้ และคงสถานะเมื่อสลับแท็บ กด Copy JSON เพื่อคัดลอกข้อความครบทั้งก้อนแม้มีส่วนที่ย่ออยู่; ค้นหา traffic ได้จาก URL, method, status และ error
 5. กด **Stop** เมื่อจบการจับ traffic หากแอปตั้ง Mac proxy ไว้ จะพยายามคืนค่าให้ และมี recovery record สำหรับเปิดแอปกลับหลัง crash
 
 การเปลี่ยน Mac proxy ขอสิทธิ์ผ่าน Authorization Services และ SystemConfiguration ของ macOS โดยตรง แทนกล่องอนุญาตรัน AppleScript เดิม รูปแบบการยืนยันตัวตน (Touch ID หรือรหัสผ่าน) ขึ้นอยู่กับ macOS, บัญชี และความพร้อมของ Touch ID; ยังต้องตรวจ Touch ID บนเครื่องจริง การ build/test ผ่านไม่ได้ยืนยันว่าระบบแสดง Touch ID แล้ว หลัง build ใหม่ให้ปิดและเปิด Proxiverse ใหม่เพื่อโหลดโค้ดนี้
@@ -94,7 +94,17 @@ ID ในตารางเป็นเลขลำดับ request ต่อ c
 
 Control API ใช้ schema version 1 จาก `/health` และ message มี `captureState` (`complete`, `truncated`, `streamed`, `encoded`, `binary`) เพื่อแยกข้อมูลจริงออกจาก preview ที่ถูกละไว้ ข้อมูลเก่าที่ไม่มีฟิลด์เหล่านี้ยัง decode ได้; การไม่มี `captureState` ไม่ใช่หลักฐานว่า body ครบ
 
-ทดสอบ HTTPS แบบเฉพาะคำสั่ง โดยไม่แก้ system proxy/Keychain:
+## เลือกโดเมนที่จะถอดรหัส HTTPS
+
+- ค่าเริ่มต้นยังไม่ถอดรหัส HTTPS ทุกโดเมน รวมถึงเมื่อเปิด settings รุ่นเก่า ทราฟฟิก HTTP ยังจับตามปกติ
+- กด **HTTPS** บน toolbar หรือ **Capture Settings → HTTPS Decryption…** เพื่อจัดการเฉพาะโดเมนที่เคยกด Enable จากหน้าหลัก โดเมนที่พบใน traffic จะไม่ถูกเพิ่มเอง เอาติ๊กออกเพื่อปิดแต่เก็บรายการไว้ หรือกดถังขยะเพื่อลบและปิดการถอดรหัสสำหรับ connection ใหม่ ค่าเปิด–ปิดและการลบจำไว้เมื่อเปิดแอปใหม่
+- รายการที่ส่งผ่าน TLS จะแสดง method `CONNECT` และ status **Encrypted** เมื่อเลือกจะแสดงแผง **Encrypted connection** พร้อมโดเมน สถานะ และปุ่ม **Enable Decryption**; หลังเปิดจะแนะนำให้เชื่อมต่อ client ใหม่ หรือคลิกขวาที่โดเมนใน sidebar เพื่อเปิด–ปิดได้
+- จับคู่ hostname ตรงตัวทุกพอร์ต เช่น `api.example.com` ไม่รวม `sub.api.example.com` ไม่รองรับ wildcard, URL หรือ path
+- ค่ามีผลกับ TLS connection ใหม่โดยไม่ต้องหยุด capture ให้ปิด connection/เปิดแอป client ใหม่แล้วส่ง request อีกครั้ง connection และข้อมูลเก่าจะไม่เปลี่ยนย้อนหลัง
+- โดเมนที่ไม่เปิดจะส่งข้อมูลเข้ารหัสเดิมโดยไม่อ่าน headers/path/body รายการที่เห็นเป็นข้อมูล connection เท่านั้น ไม่ใช่ HTTP response ที่อ่านได้; Map Local และ breakpoint ใช้ได้กับ HTTPS ที่เปิดถอดรหัสแล้ว
+- โดเมนที่เปิดยังต้อง trust CA ของ Proxiverse แยกจากการเลือกโดเมน การเลือกนี้ไม่เปลี่ยนการตั้งค่า upstream certificate verification
+
+ทดสอบ HTTPS แบบเฉพาะคำสั่ง โดยไม่แก้ system proxy/Keychain (เปิด `example.com` ในหน้า HTTPS ก่อน หากต้องการดู headers/body):
 
 ```sh
 curl --noproxy '' --proxy http://127.0.0.1:9090 \
@@ -164,6 +174,7 @@ curl --noproxy '' --proxy http://127.0.0.1:9090 \
 ./scripts/swift.sh test
 /usr/bin/python3 scripts/smoke-engine.py --count 100
 /usr/bin/python3 scripts/smoke-rules.py
+/usr/bin/python3 scripts/smoke-https-decryption.py
 /usr/bin/python3 scripts/smoke-engine.py --count 10000 --output .cache/engine-https-burst.json
 /usr/bin/python3 scripts/smoke-engine.py --count 300 --rate 10 \
   --app dist/Proxiverse.app --output .cache/native-paced-baseline.json

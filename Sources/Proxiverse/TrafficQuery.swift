@@ -29,7 +29,7 @@ struct TrafficQuery: Equatable {
             } else {
                 statusRange = nil
             }
-            if field == .state, !["pending", "complete", "error", "paused-request", "paused-response"].contains(value.lowercased()) {
+            if field == .state, !["pending", "complete", "error", "paused-request", "paused-response", "tls-passthrough"].contains(value.lowercased()) {
                 throw AppFailure("Unknown state: \(value)")
             }
         }

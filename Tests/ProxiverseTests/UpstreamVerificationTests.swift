@@ -52,7 +52,8 @@ final class UpstreamVerificationTests: XCTestCase {
         let runtime = EngineRuntime()
         for skip in [false, true, false] {
             do {
-                try await runtime.start(proxyPort: ports[0], apiPort: ports[1], lan: false, skipUpstreamVerification: skip)
+                try await runtime.start(proxyPort: ports[0], apiPort: ports[1], lan: false, skipUpstreamVerification: skip,
+                                        httpsDecryptionHosts: ["localhost"])
                 let body = root.appendingPathComponent("response")
                 let status = try SystemProxy.command("/usr/bin/curl", ["--noproxy", "", "--proxy", "http://127.0.0.1:\(ports[0])",
                     "--cacert", runtime.paths.certificate.path, "--max-time", "10", "-sS", "-o", body.path, "-w", "%{http_code}",

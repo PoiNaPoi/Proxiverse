@@ -123,6 +123,39 @@ final class CaptureModel: ObservableObject {
         get { settings.messagesStacked }
         set { settings.messagesStacked = newValue }
     }
+    @Published var showHTTPSDecryption = false
+    var httpsDecryptionHosts: [String: Bool] { settings.httpsDecryptionHosts ?? [:] }
+    var availableHTTPSHosts: [String] { httpsDecryptionHosts.keys.sorted() }
+
+    func isHTTPSDecryptionEnabled(_ host: String) -> Bool {
+        guard let normalized = try? HTTPSDecryption.normalizedHost(host) else { return false }
+        return httpsDecryptionHosts[normalized] == true
+    }
+
+    func setHTTPSDecryption(_ host: String, enabled: Bool) async {
+        await updateHTTPSDecryption(host, enabled: enabled)
+    }
+
+    func removeHTTPSDecryption(_ host: String) async {
+        await updateHTTPSDecryption(host, enabled: nil)
+    }
+
+    private func updateHTTPSDecryption(_ host: String, enabled: Bool?) async {
+        guard !busy else { return }
+        busy = true
+        defer { busy = false }
+        do {
+            let host = try HTTPSDecryption.normalizedHost(host)
+            var updated = httpsDecryptionHosts
+            guard enabled != false || updated[host] != nil else { return }
+            updated[host] = enabled
+            if let api = engine.api {
+                let enabledHosts = updated.filter { $0.value }.map(\.key).sorted()
+                _ = try await api.request("/https-decryption", method: "POST", body: JSONEncoder().encode(enabledHosts))
+            }
+            settings.httpsDecryptionHosts = updated
+        } catch { self.error = error.localizedDescription }
+    }
     @Published var services: [String] = []
     var service: String {
         get { settings.service }
@@ -376,7 +409,8 @@ final class CaptureModel: ObservableObject {
             selectedIDs = []
             pinnedIDs = []
             try await engine.start(proxyPort: proxyPort, apiPort: apiPort, lan: allowLAN,
-                                   skipUpstreamVerification: skipUpstreamVerification)
+                                   skipUpstreamVerification: skipUpstreamVerification,
+                                   httpsDecryptionHosts: httpsDecryptionHosts.filter { $0.value }.map(\.key).sorted())
             enginePID = engine.process?.processIdentifier ?? 0
             if setMacProxy {
                 status = "Setting Mac proxy…"

@@ -8,6 +8,7 @@ import asyncio
 from collections import deque
 import json
 import fnmatch
+import ipaddress
 import os
 from pathlib import Path
 import re
@@ -26,6 +27,7 @@ MAX_PREVIEW_DISK_BYTES = 128 * 1024 * 1024
 class Bridge:
     def __init__(self):
         self.token = os.environ["PROXIVERSE_TOKEN"]
+        self.https_hosts = self.validate_https_hosts(json.loads(os.environ.get("PROXIVERSE_HTTPS_HOSTS", "[]")))
         self.directory = Path(os.environ["PROXIVERSE_CAPTURE_DIR"])
         self.directory.mkdir(mode=0o700, parents=True, exist_ok=True)
         self.rules_file = Path(os.environ.get("PROXIVERSE_RULES_FILE", str(self.directory.parent / "rules.json")))
@@ -82,12 +84,13 @@ class Bridge:
             "number": flow.metadata.get("proxiverse_number"),
             "client": client,
             "mapLocal": flow.metadata.get("proxiverse_map_local", False),
+            "tlsPassthrough": flow.metadata.get("proxiverse_tls_passthrough", False),
             "method": flow.request.method,
             "url": flow.request.pretty_url,
             "host": flow.request.pretty_host,
             "status": response.status_code if response else None,
             "contentType": response.headers.get("content-type") if response else None,
-            "state": "error" if flow.error else ("paused-" + flow.metadata["proxiverse_phase"] if "proxiverse_phase" in flow.metadata else ("complete" if response else "pending")),
+            "state": "tls-passthrough" if flow.metadata.get("proxiverse_tls_passthrough") else ("error" if flow.error else ("paused-" + flow.metadata["proxiverse_phase"] if "proxiverse_phase" in flow.metadata else ("complete" if response else "pending"))),
             "started": flow.request.timestamp_start,
             "duration": max(0, (response.timestamp_end if response and response.timestamp_end else time.time()) - flow.request.timestamp_start),
             "size": len(response.raw_content) if response and response.raw_content is not None else None,
@@ -150,7 +153,39 @@ class Bridge:
             self.preview_bytes -= self.preview_sizes.pop(oldest)
             (self.directory / (oldest + ".json")).unlink(missing_ok=True)
 
-    async def requestheaders(self, flow):
+    @staticmethod
+    def validate_https_hosts(hosts):
+        if not isinstance(hosts, list) or len(hosts) > 1000:
+            raise ValueError("Maximum 1000 HTTPS hosts")
+        result = set()
+        for host in hosts:
+            if not isinstance(host, str) or not host or len(host) > 253:
+                raise ValueError("Invalid HTTPS host")
+            host = host.lower().removesuffix(".")
+            try:
+                ipaddress.ip_address(host)
+            except ValueError:
+                if not all(re.fullmatch(r"[a-z0-9](?:[a-z0-9-]{0,61}[a-z0-9])?", label) for label in host.split(".")):
+                    raise ValueError("Use exact HTTPS hostnames without ports, paths, or wildcards")
+            result.add(host)
+        return result
+
+    def tls_clienthello(self, data):
+        address = data.context.server.address
+        host = (data.client_hello.sni or (address[0] if address else "")).lower().rstrip(".")
+        if host in self.https_hosts:
+            return
+        data.ignore_connection = True
+        # A connection summary only: encrypted headers, paths, and bodies are never captured.
+        flow = http.HTTPFlow(data.context.client, data.context.server)
+        authority = "[" + host + "]" if ":" in host else host
+        port = address[1] if address else 443
+        flow.request = http.Request.make("CONNECT", f"https://{authority}:{port}/")
+        flow.request.headers.clear()
+        flow.metadata["proxiverse_tls_passthrough"] = True
+        self.retain(flow)
+
+    def retain(self, flow):
         self.total += 1
         flow.metadata["proxiverse_number"] = self.total
         self.flow_ids.append(flow.id)
@@ -163,6 +198,8 @@ class Bridge:
         self.persist(flow)
         self.emit(flow)
 
+    async def requestheaders(self, flow):
+        self.retain(flow)
         flow.metadata["proxiverse_break_request"] = self.matches_breakpoint(flow, "request")
         if flow.metadata["proxiverse_break_request"] and self.will_stream(flow.request):
             flow.metadata["proxiverse_break_request"] = False
@@ -440,6 +477,9 @@ class Bridge:
                     temp.write_text(json.dumps(rules), encoding="utf-8")
                     temp.replace(self.rules_file)
                     self.rules = rules
+                    result = {"saved": True}
+                elif method == "POST" and path.path == "/https-decryption":
+                    self.https_hosts = self.validate_https_hosts(payload)
                     result = {"saved": True}
                 elif method == "GET" and path.path == "/paused":
                     result = [self.summary(flow) for flow in self.paused.values()]

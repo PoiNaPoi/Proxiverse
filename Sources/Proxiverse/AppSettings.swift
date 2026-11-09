@@ -10,6 +10,8 @@ struct AppSettings: Codable, Equatable {
     var pinnedHosts: Set<String> = []
     var inspectorOnRight = false
     var messagesStacked = false
+    // Missing in settings saved before selective HTTPS decryption: start with no enabled hosts.
+    var httpsDecryptionHosts: [String: Bool]? = nil
 }
 
 struct AppSettingsStore {

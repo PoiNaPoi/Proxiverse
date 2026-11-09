@@ -34,8 +34,8 @@ cat > "$app/Contents/Info.plist" <<'PLIST'
 <key>CFBundleDisplayName</key><string>Proxiverse</string>
 <key>CFBundleIconFile</key><string>Proxiverse.icns</string>
 <key>CFBundlePackageType</key><string>APPL</string>
-<key>CFBundleShortVersionString</key><string>0.0.1</string>
-<key>CFBundleVersion</key><string>1</string>
+<key>CFBundleShortVersionString</key><string>0.0.2</string>
+<key>CFBundleVersion</key><string>2</string>
 <key>LSMinimumSystemVersion</key><string>14.0</string>
 <key>NSHighResolutionCapable</key><true/>
 <key>NSHumanReadableCopyright</key><string>Proxiverse · mitmproxy engine licensed under MIT</string>

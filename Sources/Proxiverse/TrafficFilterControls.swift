@@ -123,7 +123,7 @@ struct TrafficFilterControls: View {
             if field == .state {
                 Picker("State", selection: $value) {
                     Text("Choose…").tag("")
-                    ForEach(["pending", "complete", "error", "paused-request", "paused-response"], id: \.self) {
+                    ForEach(["pending", "complete", "error", "paused-request", "paused-response", "tls-passthrough"], id: \.self) {
                         Text($0).tag($0)
                     }
                 }

@@ -98,6 +98,7 @@ def main():
     api_port = free_port()
     token = secrets.token_hex(32)
     env = dict(os.environ, PROXIVERSE_TOKEN=token, PROXIVERSE_API_PORT=str(api_port), PROXIVERSE_PROXY_PORT=str(proxy_port),
+               PROXIVERSE_HTTPS_HOSTS=json.dumps(["localhost", "127.0.0.1"]),
                PROXIVERSE_CAPTURE_DIR=str(directory / "captures"), PROXIVERSE_PARENT_PID=str(os.getpid()),
                PROXIVERSE_UPSTREAM_CA=str(directory / "server.crt"))
     log = open(directory / "engine.log", "w")
@@ -120,6 +121,12 @@ def main():
             app_data = directory / "app-data"
             app_data.mkdir(mode=0o700)
             shutil.copyfile(directory / "server.crt", app_data / "upstream-ca.pem")
+            (app_data / "settings.json").write_text(json.dumps({
+                "proxyPort": proxy_port, "apiPort": api_port, "allowLAN": False, "setMacProxy": False,
+                "service": "", "skipUpstreamVerification": False, "pinnedHosts": [],
+                "inspectorOnRight": False, "messagesStacked": False,
+                "httpsDecryptionHosts": {"localhost": True, "127.0.0.1": True},
+            }))
             env["PROXIVERSE_DATA_DIR"] = str(app_data)
             process = subprocess.Popen([str(args.app.resolve() / "Contents/MacOS/Proxiverse"), "--benchmark",
                                         "--benchmark-output", str(directory / "ui-metrics.json"),

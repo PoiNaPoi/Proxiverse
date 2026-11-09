@@ -10,7 +10,10 @@ struct ContentView: View {
         model.hosts.filter { model.pinnedHosts.contains($0) } + model.hosts.filter { !model.pinnedHosts.contains($0) }
     }
 
-    private func domainPinMenu(_ host: String) -> some View {
+    @ViewBuilder private func domainPinMenu(_ host: String) -> some View {
+        Button(model.isHTTPSDecryptionEnabled(host) ? "Disable HTTPS Decryption" : "Enable HTTPS Decryption") {
+            Task { await model.setHTTPSDecryption(host, enabled: !model.isHTTPSDecryptionEnabled(host)) }
+        }.disabled(model.busy)
         Button(model.pinnedHosts.contains(host) ? "Unpin" : "Pin",
                systemImage: model.pinnedHosts.contains(host) ? "pin.slash" : "pin") {
             if model.pinnedHosts.contains(host) { model.pinnedHosts.remove(host) }
@@ -49,6 +52,8 @@ struct ContentView: View {
                 ToolbarLabel(model.paused.isEmpty ? "Breakpoints" : "Breakpoints (\(model.paused.count))", systemImage: "pause.circle")
             }
             Spacer(minLength: 12)
+            Button { model.showHTTPSDecryption = true } label: { ToolbarLabel("HTTPS", systemImage: "lock.open") }
+                .help("Choose domains to decrypt")
             Button { model.showSetup = true } label: { ToolbarLabel("Settings", systemImage: "slider.horizontal.3") }
                 .help("Capture Settings")
             Button { openWindow(id: "install-certificate") } label: { ToolbarLabel("Certificate", systemImage: "checkmark.seal") }
@@ -212,9 +217,18 @@ struct ContentView: View {
                             }
                         }
                 } second: {
-                    InspectorView(detail: model.detail, loading: model.loadingDetail, messagesStacked: model.messagesStacked,
-                                  onRendered: { model.markSelectionRendered(flowID: $0) })
-                        .frame(maxWidth: .infinity, maxHeight: .infinity)
+                    VStack(spacing: 0) {
+                        if let flow = model.detail?.flow.summary, flow.tlsPassthrough == true {
+                            EncryptedTrafficView(host: flow.host,
+                                                 decryptionEnabled: model.isHTTPSDecryptionEnabled(flow.host),
+                                                 busy: model.busy,
+                                                 onEnable: { Task { await model.setHTTPSDecryption(flow.host, enabled: true) } },
+                                                 onSettings: { model.showHTTPSDecryption = true })
+                        } else {
+                            InspectorView(detail: model.detail, loading: model.loadingDetail, messagesStacked: model.messagesStacked,
+                                          onRendered: { model.markSelectionRendered(flowID: $0) })
+                        }
+                    }.frame(maxWidth: .infinity, maxHeight: .infinity)
                 }
                 Divider()
                 HStack(spacing: 12) {
@@ -225,7 +239,7 @@ struct ContentView: View {
                     Button { model.showMetrics = true } label: {
                         Text("RAM \(model.memory) · CPU \(model.cpu)").monospacedDigit()
                     }.buttonStyle(.plain).help("UI + engine process tree; CPU is a decaying average sampled by ps")
-                    Text("v.0.0.1-beta")
+                    Text("v.0.0.2-beta")
                 }.font(.caption).foregroundStyle(.secondary).padding(.horizontal, 12).padding(.vertical, 8)
             }
         }
@@ -237,6 +251,7 @@ struct ContentView: View {
             }
         }
         .sheet(isPresented: $model.showSetup) { SetupView(model: model) }
+        .sheet(isPresented: $model.showHTTPSDecryption) { HTTPSDecryptionView(model: model) }
         .onChange(of: model.showCertificateInstaller) { _, show in
             if show { openWindow(id: "install-certificate"); model.showCertificateInstaller = false }
         }
@@ -609,10 +624,12 @@ struct SetupView: View {
     @ObservedObject var model: CaptureModel
     @Environment(\.dismiss) private var dismiss
     @Environment(\.openWindow) private var openWindow
+    @State private var showHTTPSDecryption = false
 
     var body: some View {
         VStack(alignment: .leading, spacing: 16) {
             Text("Capture Settings").font(.title2.bold())
+            Button("HTTPS Decryption…") { showHTTPSDecryption = true }
             Form {
                 TextField("Proxy port", value: $model.proxyPort, format: .number.grouping(.never))
                 TextField("Control port (localhost only)", value: $model.apiPort, format: .number.grouping(.never))
@@ -660,6 +677,7 @@ struct SetupView: View {
                 .font(.caption).foregroundStyle(.secondary)
             HStack { Spacer(); Button("Done") { dismiss() }.keyboardShortcut(.defaultAction) }
         }.padding(24).frame(width: 600)
+        .sheet(isPresented: $showHTTPSDecryption) { HTTPSDecryptionView(model: model) }
     }
 }
 
