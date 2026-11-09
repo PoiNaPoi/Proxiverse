@@ -1,0 +1,10 @@
+{
+  "name": "mitmproxy",
+  "version": "12.2.3",
+  "git_commit": "6c09d56e4c29a92f5ad01b03199977584b8ea14f",
+  "source_url": "https://codeload.github.com/mitmproxy/mitmproxy/tar.gz/6c09d56e4c29a92f5ad01b03199977584b8ea14f",
+  "source_sha256": "e08a9b63dfe24e75cf9e3e63c91309813e20ac6cee10cbb51c04dfc772969f24",
+  "archive": "mitmproxy-6c09d56e4c29a92f5ad01b03199977584b8ea14f.tar.gz",
+  "upstream_binary_sha256": "0a09ee3b82569e8985aff8186e4792618b8e5d0c766098db093d09a87d4b013a",
+  "modifications": "None to supplied upstream archives; this does not establish the original binary build inputs."
+}

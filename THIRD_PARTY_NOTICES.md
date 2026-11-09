@@ -79,6 +79,15 @@ pyasn1 0.6.2, pyOpenSSL 26.2.0, pyparsing 3.3.1, pyperclip 1.11.0,
 pylsqpack 0.3.23, ruamel.yaml 0.19.1, sortedcontainers 2.4.0,
 Tornado 6.5.4, urwid 3.0.3, wcwidth 0.5.3, wsproto 1.3.2, zstandard 0.25.0.
 
+The ldap3 2.9.1 and urwid 3.0.3 source archives are supplied beside their licenses,
+with SHA-256 values and source URLs in `SOURCE_MANIFEST.json`. The upstream
+mitmproxy 12.2.3 source snapshot, including `uv.lock` and packaging scripts, is
+supplied in `mitmproxy-12.2.3/`; `SOURCE.json` records its exact Git commit and
+archive checksum. See `docs/ENGINE_SOURCE.md` in the repository or `ENGINE_SOURCE.md`
+in the packaged app's Legal directory for verification, rebuilding, modification,
+and local engine replacement instructions. These archives preserve upstream source;
+they do not independently establish all original binary build inputs.
+
 The certifi source archive is also supplied beside its license. Its
 `certifi/cacert.pem` was byte-compared with the engine's bundled CA data and
 matches. This supplies the corresponding covered CA data rather than pointing

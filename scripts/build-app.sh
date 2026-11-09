@@ -24,7 +24,7 @@ rm -rf "$app/Contents/Resources/Engine/mitmproxy.app"
 cp -R vendor/mitmproxy.app "$app/Contents/Resources/Engine/"
 cp vendor/mitmproxy-LICENSE.txt "$app/Contents/Resources/"
 mkdir -p "$app/Contents/Resources/Legal"
-cp LICENSE THIRD_PARTY_NOTICES.md docs/PRIVACY.md docs/AUTHORIZED_USE.md "$app/Contents/Resources/Legal/"
+cp LICENSE THIRD_PARTY_NOTICES.md docs/PRIVACY.md docs/AUTHORIZED_USE.md docs/ENGINE_SOURCE.md "$app/Contents/Resources/Legal/"
 cp -R vendor/third-party "$app/Contents/Resources/Legal/"
 cp Sources/Proxiverse/Resources/Proxiverse.icns "$app/Contents/Resources/"
 cat > "$app/Contents/Info.plist" <<'PLIST'

@@ -42,6 +42,12 @@ Prepared 2026-11-09. This is a release review record, not legal clearance.
 
 ## Distribution checks
 
+- LGPL source/rebuild preparation: supplied checksum-verified ldap3 2.9.1 and
+  urwid 3.0.3 sources plus the upstream mitmproxy 12.2.3 Git source snapshot.
+  `docs/ENGINE_SOURCE.md` describes the tested local engine rebuild and replacement.
+  Modified-library probes, upstream self-test, selective HTTPS smoke, and
+  separate-app signature checks passed on 2026-11-09. This closes the source
+  packaging/rebuild preparation step, not the full transitive license audit.
 - Local validation passed: release build, 10 focused settings/HTTPS/upstream
   verification tests, selective HTTPS smoke test, and `git diff --check`.
 - `dist/Proxiverse-v0.0.3-macOS-arm64.zip` was checked for ZIP integrity, matching

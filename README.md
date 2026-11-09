@@ -198,6 +198,8 @@ UI poll metadata เป็นชุดทุก 250ms โดย decode นอก
 
 Engine pin ไว้ที่ mitmproxy **12.2.3 macOS arm64**, ดาวน์โหลดจาก official distribution และตรวจ SHA-256 กับ code signature ใน build script ต้นฉบับ vendor ถูกเก็บครบทั้ง app รวม dependency notices ภายใน พร้อม [MIT license](vendor/mitmproxy-LICENSE.txt) ห้ามลบ notices เมื่อนำไปแจก
 
+source ของ mitmproxy, ldap3 และ urwid พร้อม checksum อยู่ใน `vendor/third-party/` อ่าน [วิธีตรวจ source, build และเปลี่ยน engine ในสำเนาแอป](docs/ENGINE_SOURCE.md) สำหรับการแก้ไลบรารีและสร้าง engine ใช้เอง ขั้นตอนนี้แยกจาก engine ที่แอปเดิมใช้อยู่ และไม่ใช่การยืนยัน dependency ฝั่ง native/Rust ครบทั้งหมด
+
 ## งานช่วงถัดไปหลังประเมิน baseline
 
 1. ตกลง RAM/CPU/UI latency budget จากเครื่องทีม และทดสอบ macOS 14 / RAM 8 GB

@@ -132,7 +132,7 @@
       "COPYING.txt",
       "LICENSE.txt"
     ],
-    "source_archive_included": false
+    "source_archive_included": true
   },
   {
     "name": "pyasn1",
@@ -225,7 +225,7 @@
     "notice_files": [
       "COPYING"
     ],
-    "source_archive_included": false
+    "source_archive_included": true
   },
   {
     "name": "wcwidth",
