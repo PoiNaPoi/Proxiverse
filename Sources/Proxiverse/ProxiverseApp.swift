@@ -16,6 +16,14 @@ struct ProxiverseApp: App {
         .commands {
             CommandGroup(replacing: .newItem) {}
             CommandGroup(after: .appInfo) {
+                Button("Privacy & Authorized Use…") {
+                    if let url = Bundle.main.resourceURL?.appendingPathComponent("Legal/PRIVACY.md"),
+                       FileManager.default.fileExists(atPath: url.path) { NSWorkspace.shared.open(url) }
+                }
+                Button("Licenses & Notices…") {
+                    if let url = Bundle.main.resourceURL?.appendingPathComponent("Legal"),
+                       FileManager.default.fileExists(atPath: url.path) { NSWorkspace.shared.open(url) }
+                }
                 Button("Performance Baseline…") { model.showMetrics = true }
                 Button("Capture Settings…") { model.showSetup = true }.keyboardShortcut(",")
                 Button("Install Certificate…") { model.showCertificateInstaller = true }

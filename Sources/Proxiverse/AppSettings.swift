@@ -3,10 +3,10 @@ import Foundation
 struct AppSettings: Codable, Equatable {
     var proxyPort = 9090
     var apiPort = 9091
-    var allowLAN = true
+    var allowLAN = false
     var setMacProxy = false
     var service = ""
-    var skipUpstreamVerification = true
+    var skipUpstreamVerification = false
     var pinnedHosts: Set<String> = []
     var inspectorOnRight = false
     var messagesStacked = false

@@ -9,6 +9,8 @@ struct HTTPSDecryptionView: View {
             Text("HTTPS Decryption").font(.title2.bold())
             Text("Decrypt only checked domains. Unchecked domains pass through encrypted. HTTP traffic is captured as usual.")
                 .foregroundStyle(.secondary)
+            Text("Inspect only systems and data you are authorized to test. Captures may contain passwords, tokens, and personal data.")
+                .font(.caption).foregroundStyle(.secondary)
             List(model.availableHTTPSHosts, id: \.self) { domain in
                 HStack {
                     Toggle(domain, isOn: Binding(

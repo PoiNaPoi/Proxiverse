@@ -14,26 +14,26 @@ final class AppSettingsTests: XCTestCase {
         let model = CaptureModel(settingsStore: store)
         model.proxyPort = 8181
         model.apiPort = 8182
-        model.allowLAN = false
+        model.allowLAN = true
         model.setMacProxy = true
-        model.skipUpstreamVerification = false
+        model.skipUpstreamVerification = true
         model.inspectorOnRight = true
         model.messagesStacked = true
         model.pinnedHosts.insert("api.test")
         let saved = try XCTUnwrap(store.load())
         XCTAssertEqual(saved.proxyPort, 8181)
         XCTAssertEqual(saved.apiPort, 8182)
-        XCTAssertFalse(saved.allowLAN)
+        XCTAssertTrue(saved.allowLAN)
         XCTAssertTrue(saved.setMacProxy)
-        XCTAssertFalse(saved.skipUpstreamVerification)
+        XCTAssertTrue(saved.skipUpstreamVerification)
         XCTAssertEqual(saved.pinnedHosts, ["api.test"])
 
         let reopened = CaptureModel(settingsStore: store)
         XCTAssertEqual(reopened.proxyPort, 8181)
         XCTAssertEqual(reopened.apiPort, 8182)
-        XCTAssertFalse(reopened.allowLAN)
+        XCTAssertTrue(reopened.allowLAN)
         XCTAssertTrue(reopened.setMacProxy)
-        XCTAssertFalse(reopened.skipUpstreamVerification)
+        XCTAssertTrue(reopened.skipUpstreamVerification)
         XCTAssertTrue(reopened.inspectorOnRight)
         XCTAssertTrue(reopened.messagesStacked)
         XCTAssertEqual(reopened.pinnedHosts, ["api.test"])
@@ -48,6 +48,10 @@ final class AppSettingsTests: XCTestCase {
         let store = temporaryStore()
         XCTAssertNil(try store.load())
         let model = CaptureModel(settingsStore: store)
+        XCTAssertFalse(model.allowLAN)
+        XCTAssertFalse(model.skipUpstreamVerification)
+        XCTAssertFalse(try XCTUnwrap(store.load()).allowLAN)
+        XCTAssertFalse(try XCTUnwrap(store.load()).skipUpstreamVerification)
         XCTAssertEqual(model.inspectorOnRight, UserDefaults.standard.bool(forKey: "workspace.inspectorOnRight"))
         XCTAssertEqual(model.messagesStacked, UserDefaults.standard.bool(forKey: "workspace.messagesStacked"))
         XCTAssertNotNil(try store.load())

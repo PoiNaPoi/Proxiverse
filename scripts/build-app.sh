@@ -23,6 +23,9 @@ cp -R "$bin_path/Proxiverse_Proxiverse.bundle" "$app/Contents/Resources/"
 rm -rf "$app/Contents/Resources/Engine/mitmproxy.app"
 cp -R vendor/mitmproxy.app "$app/Contents/Resources/Engine/"
 cp vendor/mitmproxy-LICENSE.txt "$app/Contents/Resources/"
+mkdir -p "$app/Contents/Resources/Legal"
+cp LICENSE THIRD_PARTY_NOTICES.md docs/PRIVACY.md docs/AUTHORIZED_USE.md "$app/Contents/Resources/Legal/"
+cp -R vendor/third-party "$app/Contents/Resources/Legal/"
 cp Sources/Proxiverse/Resources/Proxiverse.icns "$app/Contents/Resources/"
 cat > "$app/Contents/Info.plist" <<'PLIST'
 <?xml version="1.0" encoding="UTF-8"?>
@@ -34,8 +37,8 @@ cat > "$app/Contents/Info.plist" <<'PLIST'
 <key>CFBundleDisplayName</key><string>Proxiverse</string>
 <key>CFBundleIconFile</key><string>Proxiverse.icns</string>
 <key>CFBundlePackageType</key><string>APPL</string>
-<key>CFBundleShortVersionString</key><string>0.0.2</string>
-<key>CFBundleVersion</key><string>2</string>
+<key>CFBundleShortVersionString</key><string>0.0.3</string>
+<key>CFBundleVersion</key><string>3</string>
 <key>LSMinimumSystemVersion</key><string>14.0</string>
 <key>NSHighResolutionCapable</key><true/>
 <key>NSHumanReadableCopyright</key><string>Proxiverse · mitmproxy engine licensed under MIT</string>

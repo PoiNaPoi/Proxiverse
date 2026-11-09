@@ -28,6 +28,8 @@ struct DeviceCertificateView: View {
                 Text("Install Certificate").font(.title2.bold())
                 Text("Install this Mac’s public CA on a test device to inspect HTTPS traffic.")
                     .foregroundStyle(.secondary)
+                Text("Install only on devices you are authorized to configure. Trusting this CA allows Proxiverse to decrypt selected HTTPS domains while traffic uses its proxy. Remove the CA after testing.")
+                    .font(.caption).foregroundStyle(.secondary)
                 if !certificateExists {
                     Text("Start capture once to generate the CA certificate.").foregroundStyle(.orange)
                     Button("Start Capture") { Task { await model.start() } }.disabled(model.running || model.busy)

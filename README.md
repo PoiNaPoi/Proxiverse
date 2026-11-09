@@ -6,6 +6,8 @@
 
 **สถานะ: ต้นแบบใช้งาน capture, Map Local และ breakpoint ได้** รองรับ import/export Map Local แล้ว แต่ยังไม่มี import/export session และกฎชนิดอื่น และยังต้องประเมิน RAM/CPU/ความลื่นบนเครื่องทีม
 
+โค้ดและเอกสารที่เป็นของ Proxiverse ใช้ [MIT License](LICENSE); engine และ dependency ใช้ license ของแต่ละโครงการตาม [Third-party notices](THIRD_PARTY_NOTICES.md) ใช้เฉพาะระบบและข้อมูลที่ได้รับอนุญาตให้ทดสอบ อ่าน [ขอบเขตการใช้งาน](docs/AUTHORIZED_USE.md) และ [การเก็บข้อมูลและการลบ](docs/PRIVACY.md) ก่อน capture ข้อมูลจริง ตรวจรายการที่ยังต้องยืนยันก่อนเปิด public ใน [Public release review](docs/PUBLIC_RELEASE_REVIEW.md)
+
 ## เปิดใช้งาน
 
 เปิด `dist/Proxiverse.app` ที่ build ไว้แล้ว หรือ build ใหม่บน Apple Silicon ที่มี Xcode:
@@ -20,7 +22,7 @@ open dist/Proxiverse.app
 
 เป้าหมาย deployment คือ macOS 14+ / Apple Silicon; ทดสอบจริงในรอบนี้บน macOS 27.0.1 / RAM 16 GB ยังไม่ได้ทดสอบ macOS 14 หรือ Intel
 
-1. เปิดแอปแล้วเริ่ม capture อัตโนมัติหนึ่งครั้ง พร้อมเปิด `Allow test devices on local network` (listener `0.0.0.0:9090`, control เฉพาะ `127.0.0.1:9091`) หากพอร์ตถูกใช้อยู่จะแสดงข้อผิดพลาด ให้เปลี่ยนพอร์ตใน Capture Settings แล้วกด Start Capture
+1. เปิดแอปแล้วเริ่ม capture อัตโนมัติหนึ่งครั้ง ค่าเริ่มต้นสำหรับผู้ใช้ใหม่ใช้ localhost เท่านั้น (listener `127.0.0.1:9090`, control เฉพาะ `127.0.0.1:9091`) หากต้องการจับจากมือถือ ให้ Stop แล้วเปิด `Allow test devices on local network` ใน Capture Settings ก่อน Start Capture เพื่อใช้ listener `0.0.0.0` ค่าที่ผู้ใช้เดิมบันทึกไว้จะยังคงเดิม หากพอร์ตถูกใช้อยู่จะแสดงข้อผิดพลาด ให้เปลี่ยนพอร์ตใน Capture Settings แล้วกด Start Capture
 2. ติ๊ก **Capture Mac Traffic** ที่ด้านล่าง sidebar เพื่อจับ HTTP/HTTPS ของแอปที่ใช้ system proxy ของ Mac เปิด–ปิดระหว่าง capture ได้ทันทีโดยไม่ล้าง log; เอาติ๊กออกเพื่อคืนค่า proxy เดิม หากหยุด capture อยู่ ค่าจะมีผลตอนกด Start Capture ครั้งถัดไป เลือก network service ที่ใช้งานได้ใน **Capture Settings** ขณะหยุด capture การเปลี่ยน proxy ต้องอนุมัติสิทธิ์ administrator ผ่าน macOS
 3. HTTPS: สถานะ CA ใน sidebar ตรวจ trust บน Mac เครื่องนี้อัตโนมัติประมาณทุก 2 วินาที เมื่ออนุญาต trust ใน Keychain แล้วจะแสดง `HTTPS trusted on this Mac` (ไม่รวม trust ของโทรศัพท์หรือแอปที่มี trust store ของตัวเอง) กด **Install Certificate** บน toolbar หรือ **Capture Settings → Install on Phone / Emulator…** เพื่อเปิดตัวช่วยติดตั้ง CA (รายละเอียดด้านล่าง)
 4. กด **HTTPS** บน toolbar เพื่อเลือกโดเมนที่จะถอดรหัส (รายละเอียดด้านล่าง) แล้วเลือก request ในตารางเพื่ออ่าน Request ฝั่งซ้าย และ Response ฝั่งขวา แต่ละฝั่งสลับ Headers/JSON (หรือ Body เมื่อไม่ใช่ JSON) ได้แยกกัน JSON จัดรูปแบบและแยกสีอัตโนมัติ กดลูกศรข้างบรรทัด `{` หรือ `[` เพื่อย่อ/ขยาย object หรือ array แต่ละฝั่งแยกกันได้ และคงสถานะเมื่อสลับแท็บ กด Copy JSON เพื่อคัดลอกข้อความครบทั้งก้อนแม้มีส่วนที่ย่ออยู่; ค้นหา traffic ได้จาก URL, method, status และ error
@@ -123,7 +125,7 @@ curl --noproxy '' --proxy http://127.0.0.1:9090 \
 - Android/app debug build: กำหนด Network Security Config ให้เชื่อถือ CA สำหรับ debug ตามนโยบายของแอป
 - Certificate pinning ต้องจัดการใน debug build ของทีม แอปนี้ไม่ได้ bypass pinning ของแอปภายนอก
 
-หากต้องการข้ามการตรวจ certificate ของเซิร์ฟเวอร์สำหรับ debug: **Stop Capture** → **Capture Settings** → เปิด **Skip server certificate verification (debug only)** → **Start Capture** ตัวเลือกนี้ข้ามการตรวจ certificate และ hostname ของปลายทางทุก HTTPS host ในรอบ capture นั้น จึงไม่ต้องเลือก custom CA ค่าเริ่มต้นเปิดทุกครั้งที่เปิดแอป สามารถปิดสวิตช์ก่อนเริ่ม capture เพื่อกลับไปตรวจ certificate ได้ โดยสถานะ capture จะแจ้งเมื่อกำลังข้ามการตรวจ
+หากต้องการข้ามการตรวจ certificate ของเซิร์ฟเวอร์สำหรับ debug: **Stop Capture** → **Capture Settings** → เปิด **Skip server certificate verification (debug only)** → **Start Capture** ตัวเลือกนี้ข้ามการตรวจ certificate และ hostname ของปลายทาง HTTPS ที่ถอดรหัสในรอบ capture นั้น จึงไม่ต้องเลือก custom CA ค่าเริ่มต้นสำหรับผู้ใช้ใหม่ปิดตัวเลือกนี้และตรวจ certificate ตามปกติ ส่วนค่าที่บันทึกไว้เดิมยังคงเดิม สามารถปิดสวิตช์ก่อนเริ่ม capture เพื่อกลับไปตรวจ certificate ได้ โดยสถานะ capture จะแจ้งเมื่อกำลังข้ามการตรวจ
 
 สำหรับเซิร์ฟเวอร์ที่ใช้ CA ภายในองค์กรและขึ้น `self-signed certificate in certificate chain`: กด **Stop Capture** → **Capture Settings** → **Choose CA File…** แล้วเลือกไฟล์ PEM CA/bundle ที่ได้จากทีม IT → **Start Capture** อีกครั้ง แอปเก็บสำเนา CA ไว้ใน data directory และรวมกับชุด CA มาตรฐานของ engine โดยยังตรวจ certificate และ hostname ตามปกติ ใช้ **Replace CA File…** เพื่อเปลี่ยน bundle หรือ **Remove Custom CA** เพื่อกลับไปใช้ชุดมาตรฐาน การเลือกไฟล์นี้ไม่ติดตั้ง CA ลง Keychain หรืออุปกรณ์ และเป็นคนละส่วนกับ **Show Public CA Certificate** ที่ใช้ให้ client เชื่อถือ proxy
 
