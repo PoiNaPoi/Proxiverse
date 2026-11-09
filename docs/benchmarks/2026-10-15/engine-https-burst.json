@@ -1,0 +1,23 @@
+{
+  "count": 10000,
+  "payloadBytes": 10224,
+  "elapsedSeconds": 110.987600292,
+  "requestsPerSecond": 90.10015509562109,
+  "configuredRate": 0,
+  "os": "27.0.1",
+  "scope": "engine only; verified HTTPS local fixture",
+  "notes": "RSS is process-tree sum. macOS ps %cpu is a decaying average over up to one minute, not interval CPU. Not a frame/scroll benchmark. Run overlapped the native paced test.",
+  "health": {
+    "ready": true,
+    "total": 10003,
+    "retained": 10000,
+    "uptime": 113.17315769195557,
+    "previewBytes": 109302588
+  },
+  "previewDiskMB": 104.23907089233398,
+  "peakRSSMB": 359.203125,
+  "lastSample": {
+    "rssMB": 359.203125,
+    "sampledCPUPercent": 0.0
+  }
+}

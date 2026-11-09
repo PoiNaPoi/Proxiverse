@@ -1,0 +1,29 @@
+import Foundation
+
+struct AppSettings: Codable, Equatable {
+    var proxyPort = 9090
+    var apiPort = 9091
+    var allowLAN = true
+    var setMacProxy = false
+    var service = ""
+    var skipUpstreamVerification = true
+    var pinnedHosts: Set<String> = []
+    var inspectorOnRight = false
+    var messagesStacked = false
+}
+
+struct AppSettingsStore {
+    let root: URL
+    var file: URL { root.appendingPathComponent("settings.json") }
+
+    func load() throws -> AppSettings? {
+        guard FileManager.default.fileExists(atPath: file.path) else { return nil }
+        return try JSONDecoder().decode(AppSettings.self, from: Data(contentsOf: file))
+    }
+
+    func save(_ settings: AppSettings) throws {
+        try FileManager.default.createDirectory(at: root, withIntermediateDirectories: true,
+                                                attributes: [.posixPermissions: 0o700])
+        try JSONEncoder().encode(settings).write(to: file, options: .atomic)
+    }
+}

@@ -1,0 +1,119 @@
+{
+  "count": 10000,
+  "payloadBytes": 10224,
+  "elapsedSeconds": 53.653190333,
+  "requestsPerSecond": 186.38220649945933,
+  "configuredRate": 0,
+  "os": "27.0.1",
+  "scope": "native UI + engine; HTTP fixture",
+  "notes": "RSS is process-tree sum. CPU is the ps decaying average, not interval CPU. Not a frame/scroll benchmark.",
+  "ui": {
+    "benchmarkComplete": true,
+    "benchmarkTimeouts": 0,
+    "date": "2026-10-27T09:40:40Z",
+    "detailReadyToRender": {
+      "count": 25,
+      "lastMilliseconds": 168.33901405334473,
+      "p50Milliseconds": 172.55795001983643,
+      "p95Milliseconds": 185.7919692993164
+    },
+    "engine": {
+      "rssMB": 187.015625,
+      "sampledCPUPercent": 2.4
+    },
+    "filterEndToEnd": {
+      "count": 52,
+      "lastMilliseconds": 79.06806468963623,
+      "p50Milliseconds": 52.68299579620361,
+      "p95Milliseconds": 92.19002723693848
+    },
+    "filterModelOnly": {
+      "count": 57,
+      "lastMilliseconds": 0.45502185821533203,
+      "p50Milliseconds": 16.61205291748047,
+      "p95Milliseconds": 23.702025413513184
+    },
+    "lastBatchApplyMilliseconds": 0.07295608520507812,
+    "lastDetailLoadMilliseconds": 12.701988220214844,
+    "lastFilterMilliseconds": 0.45502185821533203,
+    "notes": "RSS includes UI and engine descendants; CPU is the ps decaying average, not interval CPU. selectionRender = selection change to text layout complete in all visible inspector panes; filterEndToEnd = user filter to NSTableView reloadData finished (excludes cell drawing); neither is a frame/scroll measurement.",
+    "os": "Version 27.0.1 (Build 26A434)",
+    "physicalMemoryBytes": 17179869184,
+    "processTreeMemory": "374 MB",
+    "sampledCPU": "66.0%",
+    "selectionRender": {
+      "count": 25,
+      "lastMilliseconds": 208.74392986297607,
+      "p50Milliseconds": 214.9209976196289,
+      "p95Milliseconds": 229.83896732330322
+    },
+    "selectionToDetailReady": {
+      "count": 25,
+      "lastMilliseconds": 40.40491580963135,
+      "p50Milliseconds": 42.890071868896484,
+      "p95Milliseconds": 77.50999927520752
+    },
+    "storage": {
+      "previewDiskBytes": 110785482,
+      "retainedPreviewFiles": 10000
+    },
+    "totalFlows": 10004,
+    "ui": {
+      "rssMB": 187.265625,
+      "sampledCPUPercent": 63.6
+    },
+    "version": 1,
+    "visibleRows": 10000
+  },
+  "resources": {
+    "ui": {
+      "rssMB": 187.265625,
+      "sampledCPUPercent": 63.6
+    },
+    "engine": {
+      "rssMB": 187.015625,
+      "sampledCPUPercent": 2.4
+    },
+    "storage": {
+      "previewDiskBytes": 110785482,
+      "retainedPreviewFiles": 10000
+    }
+  },
+  "latency": {
+    "selectionRender": {
+      "count": 25,
+      "lastMilliseconds": 208.74392986297607,
+      "p50Milliseconds": 214.9209976196289,
+      "p95Milliseconds": 229.83896732330322
+    },
+    "selectionToDetailReady": {
+      "count": 25,
+      "lastMilliseconds": 40.40491580963135,
+      "p50Milliseconds": 42.890071868896484,
+      "p95Milliseconds": 77.50999927520752
+    },
+    "detailReadyToRender": {
+      "count": 25,
+      "lastMilliseconds": 168.33901405334473,
+      "p50Milliseconds": 172.55795001983643,
+      "p95Milliseconds": 185.7919692993164
+    },
+    "filterEndToEnd": {
+      "count": 52,
+      "lastMilliseconds": 79.06806468963623,
+      "p50Milliseconds": 52.68299579620361,
+      "p95Milliseconds": 92.19002723693848
+    },
+    "filterModelOnly": {
+      "count": 57,
+      "lastMilliseconds": 0.45502185821533203,
+      "p50Milliseconds": 16.61205291748047,
+      "p95Milliseconds": 23.702025413513184
+    }
+  },
+  "peakRSSMB": 372.671875,
+  "lastSample": {
+    "rssMB": 372.671875,
+    "sampledCPUPercent": 66.0
+  }
+}

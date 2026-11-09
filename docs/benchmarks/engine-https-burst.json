@@ -1,0 +1,24 @@
+{
+  "count": 10000,
+  "payloadBytes": 10224,
+  "elapsedSeconds": 113.59532595799999,
+  "requestsPerSecond": 88.0317910588798,
+  "configuredRate": 0,
+  "os": "27.0.1",
+  "scope": "engine only; verified HTTPS local fixture",
+  "notes": "RSS is process-tree sum. CPU is the ps decaying average, not interval CPU. Not a frame/scroll benchmark.",
+  "health": {
+    "ready": true,
+    "apiVersion": 1,
+    "total": 10004,
+    "retained": 10000,
+    "uptime": 115.83446192741394,
+    "previewBytes": 110251327
+  },
+  "previewDiskMB": 105.14385890960693,
+  "peakRSSMB": 329.375,
+  "lastSample": {
+    "rssMB": 329.375,
+    "sampledCPUPercent": 0.1
+  }
+}

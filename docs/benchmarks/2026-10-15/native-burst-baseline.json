@@ -1,0 +1,29 @@
+{
+  "count": 10000,
+  "payloadBytes": 10224,
+  "elapsedSeconds": 67.69092775,
+  "requestsPerSecond": 147.73028428466176,
+  "configuredRate": 0,
+  "os": "27.0.1",
+  "scope": "native UI + engine; HTTP fixture",
+  "notes": "RSS is process-tree sum. macOS ps %cpu is a decaying average over up to one minute, not interval CPU. Not a frame/scroll benchmark. Test machine: Apple Silicon, 16 GB RAM, macOS 27.0.1.",
+  "ui": {
+    "date": "2026-10-15T07:56:37Z",
+    "lastBatchApplyMilliseconds": 0.047087669372558594,
+    "lastDetailLoadMilliseconds": 0,
+    "lastFilterMilliseconds": 0.5419254302978516,
+    "notes": "RSS includes UI and engine descendants; CPU is the ps decaying average. UI timings do not measure frame latency.",
+    "os": "Version 27.0.1 (Build 26A434)",
+    "physicalMemoryBytes": 17179869184,
+    "processTreeMemory": "332 MB",
+    "totalFlows": 10003,
+    "version": 1,
+    "visibleRows": 10000,
+    "sampledCPU": "31.9%"
+  },
+  "peakRSSMB": 330.859375,
+  "lastSample": {
+    "rssMB": 330.859375,
+    "sampledCPUPercent": 46.0
+  }
+}
