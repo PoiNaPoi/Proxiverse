@@ -1,12 +1,14 @@
 name: CodeQL
 
 on:
-  push:
-    branches: [main]
-  pull_request:
-    branches: [main]
-  schedule:
-    - cron: '23 2 * * 1'
+  # Automatic runs are temporarily paused to conserve Actions usage.
+  # Uncomment these triggers to resume automatic runs.
+  # push:
+  #   branches: [main]
+  # pull_request:
+  #   branches: [main]
+  # schedule:
+  #   - cron: '23 2 * * 1'
   workflow_dispatch:
 
 permissions:
