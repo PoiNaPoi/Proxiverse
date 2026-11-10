@@ -1,13 +1,11 @@
 name: CI
 
 on:
-  # Automatic runs are temporarily paused to conserve Actions usage.
-  # Uncomment these triggers to resume automatic runs.
-  # push:
-  #   branches: [main]
-  #   tags: ['v*']
-  # pull_request:
-  #   branches: [main]
+  push:
+    branches: [main]
+    tags: ['v*']
+  pull_request:
+    branches: [main]
   workflow_dispatch:
 
 permissions:
