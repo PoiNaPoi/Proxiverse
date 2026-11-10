@@ -37,7 +37,7 @@ struct SyntaxTextEditor: NSViewRepresentable {
         view.editorContainer = container
         let scroll = container.scrollView
         scroll.hasVerticalScroller = true
-        scroll.hasHorizontalScroller = false
+        scroll.hasHorizontalScroller = true
         scroll.borderType = .noBorder
         view.isRichText = false
         view.isEditable = true
@@ -52,12 +52,12 @@ struct SyntaxTextEditor: NSViewRepresentable {
         view.textColor = .labelColor
         view.backgroundColor = .textBackgroundColor
         view.textContainerInset = NSSize(width: 8, height: 8)
-        view.maxSize.height = .greatestFiniteMagnitude
+        view.maxSize = NSSize(width: CGFloat.greatestFiniteMagnitude, height: CGFloat.greatestFiniteMagnitude)
         view.isVerticallyResizable = true
-        view.isHorizontallyResizable = false
-        view.autoresizingMask = [.width]
-        view.textContainer?.widthTracksTextView = true
-        view.textContainer?.containerSize = NSSize(width: 0, height: CGFloat.greatestFiniteMagnitude)
+        view.isHorizontallyResizable = true
+        view.autoresizingMask = []
+        view.textContainer?.widthTracksTextView = false
+        view.textContainer?.containerSize = NSSize(width: CGFloat.greatestFiniteMagnitude, height: CGFloat.greatestFiniteMagnitude)
         view.delegate = context.coordinator
         view.setAccessibilityLabel(accessibilityName)
         scroll.documentView = view
@@ -134,6 +134,7 @@ struct SyntaxTextEditor: NSViewRepresentable {
             if changed, !view.hasMarkedText() {
                 view.prepareForEditing()
                 view.string = parent.text
+                view.sizeToFit()
                 view.undoManager?.removeAllActions()
             }
             if changed || lastSyntax != parent.syntax {

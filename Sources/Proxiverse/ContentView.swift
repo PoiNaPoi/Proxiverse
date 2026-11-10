@@ -499,7 +499,7 @@ private struct MessagePane: View {
                     Spacer()
                 } else {
                     PreviewText(content: section == 0 ? presentation.headers : presentation.body,
-                                scrollsHorizontally: title == "Response" && section == 1,
+                                scrollsHorizontally: true,
                                 accessibilityLabel: "\(title) \(section == 0 ? "headers" : "body")",
                                 folds: section == 1 ? presentation.folds : [],
                                 collapsed: Binding(

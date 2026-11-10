@@ -80,13 +80,13 @@ final class InspectorLayoutTests: XCTestCase {
         }
     }
 
-    func testLongResponseLinesScrollHorizontallyWithoutWrapping() async throws {
+    func testLongRequestAndResponseLinesScrollHorizontallyWithoutWrapping() async throws {
         let summary = TrafficFlow(id: "long-response", method: "GET", url: "https://example.test/",
                                   host: "example.test", status: 200, state: "complete",
                                   started: 1, duration: 0.1, size: 2000, error: nil)
         let body = "{\"message\":\"" + String(repeating: "ข้อความยาว ", count: 80)
             + "\",\"url\":\"https://example.test/" + String(repeating: "path/", count: 80) + "\"}"
-        let message = FlowMessage(headers: [], body: body, truncated: false,
+        let message = FlowMessage(headers: [["X-Long-Value", String(repeating: "header-value ", count: 80)]], body: body, truncated: false,
                                   streamed: false, httpVersion: "HTTP/2.0")
         let detail = InspectorDetail(flow: FlowDetail(summary: summary, request: message, response: message))
         let host = NSHostingController(rootView: InspectorView(detail: detail, loading: false))
@@ -95,25 +95,34 @@ final class InspectorLayoutTests: XCTestCase {
         for stacked in [false, true] {
             host.rootView = InspectorView(detail: detail, loading: false, messagesStacked: stacked)
             await layout(host)
-            let response = try XCTUnwrap(descendants(of: host.view).compactMap { $0 as? NSTextView }
-                .first { $0.accessibilityLabel() == "Response body" })
-            let manager = try XCTUnwrap(response.layoutManager)
-            let textContainer = try XCTUnwrap(response.textContainer)
-            manager.ensureLayout(for: textContainer)
-            let text = response.string as NSString
-            for token in ["ข้อความยาว", "https://example.test/"] {
-                let line = text.lineRange(for: text.range(of: token))
-                let first = manager.glyphIndexForCharacter(at: line.location)
-                let last = manager.glyphIndexForCharacter(at: NSMaxRange(line) - 2)
-                XCTAssertEqual(manager.lineFragmentRect(forGlyphAt: first, effectiveRange: nil).minY,
-                               manager.lineFragmentRect(forGlyphAt: last, effectiveRange: nil).minY)
+            for section in [1, 0] {
+                for picker in descendants(of: host.view).compactMap({ $0 as? NSSegmentedControl }) {
+                    picker.selectedSegment = section
+                    picker.sendAction(picker.action, to: picker.target)
+                }
+                await layout(host)
+                for title in ["Request", "Response"] {
+                    let preview = try XCTUnwrap(descendants(of: host.view).compactMap { $0 as? NSTextView }
+                        .first { $0.accessibilityLabel() == "\(title) \(section == 0 ? "headers" : "body")" })
+                    let manager = try XCTUnwrap(preview.layoutManager)
+                    let textContainer = try XCTUnwrap(preview.textContainer)
+                    manager.ensureLayout(for: textContainer)
+                    let text = preview.string as NSString
+                    for token in section == 0 ? ["header-value"] : ["ข้อความยาว", "https://example.test/"] {
+                        let line = text.lineRange(for: text.range(of: token))
+                        let first = manager.glyphIndexForCharacter(at: line.location)
+                        let last = manager.glyphIndexForCharacter(at: NSMaxRange(line) - 2)
+                        XCTAssertEqual(manager.lineFragmentRect(forGlyphAt: first, effectiveRange: nil).minY,
+                                       manager.lineFragmentRect(forGlyphAt: last, effectiveRange: nil).minY)
+                    }
+                    let scroll = try XCTUnwrap(preview.enclosingScrollView)
+                    XCTAssertGreaterThan(preview.frame.width, scroll.contentSize.width)
+                    scroll.contentView.scroll(to: NSPoint(x: 200, y: 0))
+                    scroll.reflectScrolledClipView(scroll.contentView)
+                    XCTAssertGreaterThan(scroll.contentView.bounds.minX, 0)
+                    XCTAssertEqual(preview.string, section == 0 ? detail.request.headers.string : detail.request.copyText)
+                }
             }
-            let scroll = try XCTUnwrap(response.enclosingScrollView)
-            XCTAssertGreaterThan(response.frame.width, scroll.contentSize.width)
-            scroll.contentView.scroll(to: NSPoint(x: 200, y: 0))
-            scroll.reflectScrolledClipView(scroll.contentView)
-            XCTAssertGreaterThan(scroll.contentView.bounds.minX, 0)
-            XCTAssertEqual(response.string, detail.response?.copyText)
         }
     }
 

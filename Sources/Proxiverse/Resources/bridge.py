@@ -17,6 +17,7 @@ import time
 from urllib.parse import parse_qs, urlsplit
 
 from mitmproxy import ctx, http
+from mitmproxy.proxy.layers.http import HttpStream, HttpResponseHeadersHook
 
 PREVIEW_BYTES = 256 * 1024
 MAX_FLOWS = 10_000
@@ -47,6 +48,20 @@ class Bridge:
         self.parent_pid = int(os.environ.get("PROXIVERSE_PARENT_PID", "0"))
 
     def load(self, loader):
+        # mitmproxy 12.2.3 has no addon hook before a buffered response switches
+        # to streaming. Pause there so oversized chunked JSON cannot bypass a
+        # breakpoint when stream_large_bodies is reached.
+        self.original_response_stream = HttpStream.start_response_stream
+
+        def start_response_stream(stream):
+            if stream.flow.metadata.get("proxiverse_buffer_response"):
+                yield HttpResponseHeadersHook(stream.flow)
+                if (yield from stream.check_killed(True)):
+                    return
+            yield from self.original_response_stream(stream)
+
+        self.response_stream_hook = start_response_stream
+        HttpStream.start_response_stream = start_response_stream
         custom_ca = os.environ.get("PROXIVERSE_UPSTREAM_CA")
         if custom_ca:
             # A custom CA file replaces mitmproxy's defaults; retain the public roots.
@@ -69,6 +84,8 @@ class Bridge:
                 return
 
     def done(self):
+        if HttpStream.start_response_stream is self.response_stream_hook:
+            HttpStream.start_response_stream = self.original_response_stream
         if self.server:
             self.server.close()
         if self.watchdog:
@@ -238,12 +255,26 @@ class Bridge:
                 break
 
     async def responseheaders(self, flow):
+        if flow.metadata.pop("proxiverse_buffer_response", False):
+            flow.metadata["proxiverse_break_response"] = False
+            await self.pause(flow, "response", headers_only=True)
+            return
         flow.metadata["proxiverse_break_response"] = self.matches_breakpoint(flow, "response")
         if flow.metadata["proxiverse_break_response"] and self.will_stream(flow.response):
+            headers = flow.response.headers
+            if (not flow.response.stream and
+                    headers.get("transfer-encoding", "").lower() == "chunked" and
+                    "json" in headers.get("content-type", "").lower() and
+                    headers.get("content-encoding", "identity").lower() in ("", "identity")):
+                # Finite chunked JSON is not necessarily a streaming response.
+                # Let the engine buffer it, retaining its existing 1 MiB bound.
+                flow.metadata["proxiverse_buffer_response"] = True
+                return
             flow.metadata["proxiverse_break_response"] = False
             await self.pause(flow, "response", headers_only=True)
 
     async def response(self, flow):
+        flow.metadata.pop("proxiverse_buffer_response", None)
         # Synthetic Map Local responses may skip responseheaders.
         if flow.metadata.get("proxiverse_break_response", self.matches_breakpoint(flow, "response")):
             await self.pause(flow, "response")

@@ -1,6 +1,6 @@
 # Privacy and local data
 
-Applies to Proxiverse 0.0.3. This document describes the application code and bundled
+Applies to Proxiverse 0.0.4. This document describes the application code and bundled
 capture workflow, not a certification that every dependency has been independently
 audited. Use the app only for [authorized testing](AUTHORIZED_USE.md).
 

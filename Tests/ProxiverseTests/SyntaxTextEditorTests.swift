@@ -5,6 +5,49 @@ import XCTest
 
 @MainActor
 final class SyntaxTextEditorTests: XCTestCase {
+    func testLongHeadersAndBodyScrollHorizontallyWithoutWrappingAfterEditing() async throws {
+        for syntax in [SyntaxTextEditor.Syntax.headers, .json] {
+            let value = String(repeating: "ข้อความยาว https://example.test/path/ ", count: 40)
+            var text = syntax == .headers ? "X-Long: \(value)\nX-Next: value" : "{\n  \"value\": \"\(value)\"\n}"
+            let original = text
+            let host = NSHostingController(rootView: SyntaxTextEditor(
+                text: Binding(get: { text }, set: { text = $0 }), syntax: syntax))
+            let window = NSWindow(contentRect: NSRect(x: 0, y: 0, width: 500, height: 300),
+                                  styleMask: [.titled, .resizable], backing: .buffered, defer: false)
+            window.contentViewController = host
+            window.setContentSize(NSSize(width: 500, height: 300))
+            defer { window.contentViewController = nil }
+            host.view.layoutSubtreeIfNeeded()
+            try await Task.sleep(for: .milliseconds(350))
+            let editor = try XCTUnwrap(textViews(in: host.view).first)
+            let scroll = try XCTUnwrap(editor.enclosingScrollView)
+            let manager = try XCTUnwrap(editor.layoutManager)
+            let container = try XCTUnwrap(editor.textContainer)
+            window.makeFirstResponder(editor)
+            for edited in [false, true] {
+                if edited {
+                    editor.insertText(value, replacementRange: NSRange(location: (editor.string as NSString).range(of: value).location, length: 0))
+                    try await Task.sleep(for: .milliseconds(350))
+                    window.setContentSize(NSSize(width: 350, height: 300))
+                }
+                host.view.layoutSubtreeIfNeeded()
+                manager.ensureLayout(for: container)
+                let source = editor.string as NSString
+                let line = source.lineRange(for: source.range(of: "ข้อความยาว"))
+                let first = manager.glyphIndexForCharacter(at: line.location)
+                let last = manager.glyphIndexForCharacter(at: NSMaxRange(line) - 2)
+                XCTAssertEqual(manager.lineFragmentRect(forGlyphAt: first, effectiveRange: nil).minY,
+                               manager.lineFragmentRect(forGlyphAt: last, effectiveRange: nil).minY)
+                XCTAssertGreaterThan(editor.frame.width, scroll.contentSize.width)
+                scroll.contentView.scroll(to: NSPoint(x: 200, y: 0))
+                scroll.reflectScrolledClipView(scroll.contentView)
+                XCTAssertGreaterThan(scroll.contentView.bounds.minX, 0)
+                XCTAssertEqual(editor.string, text)
+                if !edited { XCTAssertEqual(text, original) }
+            }
+        }
+    }
+
     func testHeadersScrollInsideTheResponseEditor() async throws {
         try await checkResponseEditorScrolling(syntax: .headers)
     }

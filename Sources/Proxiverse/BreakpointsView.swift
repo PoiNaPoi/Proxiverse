@@ -170,8 +170,8 @@ private struct BreakpointEditor: View {
                             HStack(alignment: .top, spacing: 8) {
                                 TextField("Name", text: $header.name).frame(width: 190)
                                     .accessibilityLabel("Header name")
-                                TextField("Value", text: $header.value, axis: .vertical)
-                                    .lineLimit(1...3).accessibilityLabel("Header value")
+                                TextField("Value", text: $header.value)
+                                    .accessibilityLabel("Header value")
                                 Button {
                                     draft.headers.removeAll { $0.id == header.id }
                                 } label: { Image(systemName: "minus.circle") }

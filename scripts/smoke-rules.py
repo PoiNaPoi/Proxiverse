@@ -24,24 +24,35 @@ def port():
 
 
 class Origin(BaseHTTPRequestHandler):
+    protocol_version = "HTTP/1.1"
     seen = []
 
     def do_POST(self):
         body = self.rfile.read(int(self.headers.get("content-length", 0)))
         self.seen.append((self.path, body, self.headers.get("x-edit")))
-        if self.path == "/large":
+        if self.path in ("/large", "/chunked-large"):
             data = b"x" * 1_200_000
+        elif self.path == "/chunked-preview-limit":
+            data = b"x" * 300_000
         elif self.path == "/gzip":
             data = gzip.compress(b'{"original":true}')
         else:
             data = json.dumps({"path": self.path, "received": body.decode()}).encode()
         self.send_response(200)
         self.send_header("Content-Type", "application/json")
-        self.send_header("Content-Length", str(len(data)))
+        if self.path.startswith("/chunked"):
+            self.send_header("Transfer-Encoding", "chunked")
+        else:
+            self.send_header("Content-Length", str(len(data)))
         if self.path == "/gzip":
             self.send_header("Content-Encoding", "gzip")
         self.end_headers()
-        self.wfile.write(data)
+        if self.path.startswith("/chunked"):
+            for chunk in (data[:10], data[10:]):
+                self.wfile.write(f"{len(chunk):x}\r\n".encode() + chunk + b"\r\n")
+            self.wfile.write(b"0\r\n\r\n")
+        else:
+            self.wfile.write(data)
 
     def log_message(self, *args):
         pass
@@ -79,10 +90,12 @@ def main():
             assert response.status == expected, (response.status, result)
             return result
 
-        def send(path, body='{"original":true}', timeout=15):
+        def send(path, body='{"original":true}', timeout=15, headers_received=None):
             connection = http.client.HTTPConnection("127.0.0.1", proxy, timeout=timeout)
             connection.request("POST", url + path, body, {"Content-Type": "application/json"})
             response = connection.getresponse()
+            if headers_received is not None:
+                headers_received.set()
             result = response.status, response.read(), response.getheader("x-mock"), response.getheader("content-encoding")
             connection.close()
             return result
@@ -185,6 +198,46 @@ def main():
                 print("PASS request and response: pause, URL/headers/body/status edits, framing, stale resume")
 
                 api("/rules", [breakpoint(request=False)])
+                headers_received = threading.Event()
+                future = pool.submit(send, "/chunked", headers_received=headers_received)
+                edit = waiting("response")
+                try:
+                    assert edit["body"] is not None, "Chunked JSON response body must be editable"
+                    assert json.loads(edit["body"])["path"] == "/chunked"
+                    assert not headers_received.is_set(), "Chunked response headers forwarded before Continue"
+                    edit["body"] = '{"chunked":"edited"}'
+                finally:
+                    api("/resume", edit)
+                assert future.result()[1] == b'{"chunked":"edited"}'
+                print("PASS chunked JSON response body editable and changed bytes reach client")
+
+                # Larger chunked bodies must still pause before any headers or
+                # bytes reach the client, including the dynamic streaming switch.
+                for path, size in (("/chunked-preview-limit", 300_000), ("/chunked-large", 1_200_000)):
+                    headers_received = threading.Event()
+                    future = pool.submit(send, path, headers_received=headers_received)
+                    edit = waiting("response")
+                    assert edit["body"] is None
+                    assert not headers_received.is_set(), "Oversized chunked response bypassed breakpoint"
+                    api("/resume", dict(edit, body="invalid replacement"), expected=400)
+                    edit["headers"] += "\nX-Mock: chunked"
+                    api("/resume", edit)
+                    result = future.result()
+                    assert result[1] == b"x" * size and result[2] == "chunked"
+
+                headers_received = threading.Event()
+                future = pool.submit(send, "/chunked-large", headers_received=headers_received)
+                edit = waiting("response")
+                assert not headers_received.is_set()
+                api("/resume", dict(edit, cancel=True))
+                try:
+                    future.result()
+                    raise AssertionError("Cancelled oversized chunked response reached client")
+                except (http.client.RemoteDisconnected, ConnectionResetError):
+                    pass
+                assert not headers_received.is_set()
+                print("PASS oversized chunked JSON: bounded buffering, pause before headers, preserve bytes, cancel")
+
                 for path in ("/gzip", "/large"):
                     future = pool.submit(send, path)
                     edit = waiting("response")
