@@ -81,7 +81,9 @@ final class WorkspaceTests: XCTestCase {
         let model = CaptureModel(settingsStore: AppSettingsStore(root: root))
         XCTAssertFalse(model.running)
         XCTAssertEqual(model.captureStatusText, "Listener stopped")
-        XCTAssertTrue(model.allowLAN)
+        XCTAssertFalse(model.allowLAN)
+        XCTAssertEqual(model.lanStatusText, "Localhost only")
+        model.allowLAN = true
         XCTAssertEqual(model.lanStatusText, "LAN access enabled")
         model.allowLAN = false
         XCTAssertEqual(model.lanStatusText, "Localhost only")

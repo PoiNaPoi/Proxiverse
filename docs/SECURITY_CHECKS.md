@@ -46,9 +46,8 @@ CI เก็บ stdout/stderr เป็น artifacts อายุ 7 วัน �
 Repository ต้องอนุญาตให้ workflow ใช้สิทธิ์ดังกล่าว
 ปุ่ม Run workflow ใช้ตรวจ CI เท่านั้น ไม่สร้าง Draft แม้เลือก tag
 
-สถานะ test ที่ตรวจพบระหว่างเตรียม workflow: `WorkspaceTests.testSetupStatusesReflectActualFileAndEngineState`
-ยังมี 2 assertions ที่คาดว่า LAN เปิดโดย default ขณะที่แอปใช้ localhost-only
-ต้องแก้สาเหตุและให้ tests ผ่านก่อน workflow จะสร้าง Draft ได้ โดยไม่ได้ข้าม test นี้
+`WorkspaceTests.testSetupStatusesReflectActualFileAndEngineState` ตรวจค่าเริ่มต้น localhost-only
+และสถานะเมื่อเปิด/ปิด LAN โดย workflow ต้องรอ tests ผ่านก่อนสร้าง Draft
 
 คำสั่งตรวจแพ็กเกจในเครื่อง:
 
@@ -66,12 +65,11 @@ test ที่ต้องติดตั้ง CA บน Android emulator ย�
 
 ## การตรวจอัตโนมัติ
 
-ไฟล์ `.github/workflows/codeql.yml` ตั้งให้ CodeQL ตรวจเมื่อเปิด, เปิดใหม่ หรือ push commit
-เพิ่มใน Pull Request ที่เข้า `main` และสั่งเองผ่าน **Actions → CodeQL → Run workflow** ได้
-ไม่รันอัตโนมัติเมื่อ push เข้า `main` หรือรันตามรอบรายสัปดาห์
+ไฟล์ `.github/workflows/codeql.yml` ตั้งให้ CodeQL ตรวจเมื่อ push เข้า `main`,
+เปิดหรืออัปเดต Pull Request ที่เข้า `main`, ทุกวันจันทร์เวลา 09:23 น. ประเทศไทย
+และสั่งเองผ่าน **Actions → CodeQL → Run workflow** ได้
+การรันตามรอบและปุ่มสั่งเองต้องมี workflow อยู่บน default branch ก่อน
 เมื่อ push commit ใหม่ใน PR เดิม run ที่กำลังทำงานอยู่จะถูกยกเลิกเพื่อใช้ผลจาก commit ล่าสุด
-ปุ่มสั่งเองต้องมี workflow อยู่บน default branch ก่อน
-หากต้องการอัปเดตผลวิเคราะห์ของ `main` ให้สั่งเองโดยเลือก branch `main`
 
 - Swift: build ด้วย `./scripts/swift.sh build` บน macOS 15 แล้ววิเคราะห์โค้ดที่ build
 - Python: วิเคราะห์ `Sources` และ `scripts` บน Linux โดยไม่รันสคริปต์

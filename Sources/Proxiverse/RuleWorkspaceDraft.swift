@@ -7,6 +7,11 @@ struct RuleWorkspaceDraft {
     private var dirtyBodyIDs: Set<String> = []
     private(set) var fileNames: [String: String] = [:]
 
+    init(rules: [DebugRule] = [], selectedID: String? = nil) {
+        self.rules = rules
+        self.selectedID = selectedID
+    }
+
     var pendingBodies: [String: String] {
         textBodies.filter { dirtyBodyIDs.contains($0.key) }
     }
