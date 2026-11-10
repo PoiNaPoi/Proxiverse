@@ -101,6 +101,36 @@ independently established. Its text includes the bootloader distribution excepti
 
 ## Audit boundary
 
+### Additional review on 2026-11-10
+
+`vendor/third-party/ADDITIONAL_NOTICE_SOURCES.json` adds checksum-verified source
+and wheel notice provenance for blinker 1.9.0, colorama 0.4.6, Jinja2 3.1.6,
+packaging 26.0, requests 2.32.5, setuptools 80.10.2 (including its vendored
+notices), typing_extensions 4.14.0, urllib3 2.6.3, wheel 0.46.3,
+mitmproxy_rs 0.12.9, mitmproxy_macos 0.12.9, and argon2_cffi_bindings 25.1.0
+(including the libargon2 license). All 240 overlapping frozen Python modules
+matched these candidate wheels by normalized code comparison. This does not
+establish every original native build input. The macOS redirector TAR matches
+its wheel byte-for-byte; all 14 file-backed arm64 sections of the Rust extension
+match its wheel, while the complete signed files differ.
+
+The mitmproxy_rs source archive and its Cargo.lock are also supplied.
+`RUST_NOTICE_SOURCES.json` records a conservative lockfile superset of 485
+registry packages plus the pinned boringtun Git dependency. Collected notices
+cover 477 registry packages and boringtun. Eight registry packages still lack
+collected license texts; exact target/feature/build dependency attribution is
+also unresolved. Some entries concern other operating systems or development
+tools, and their presence in this manifest does not establish that their code
+is distributed in the macOS binary. These notices supplement, rather than
+replace, the audit boundary below.
+
+See `docs/DEPENDENCY_AUDIT.md` for the open items, evidence, reproduction commands,
+and obligation review. `ENGINE_INVENTORY.json` records frozen modules, native
+file hashes/dynamic links, and embedded TAR members. `NOTICE_HASHES.json` and
+`scripts/verify-third-party-notices.py` check snapshot integrity. All supplemental
+notices/manifests remain outside the signed vendor engine and are copied into
+the app's Legal directory.
+
 This is a verified subset, **not an exhaustive SBOM or completed license audit**.
 The vendor app also contains compiled Python modules and native libraries whose
 complete dependency versions and notices are not exposed by the directory list.

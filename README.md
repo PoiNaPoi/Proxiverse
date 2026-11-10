@@ -151,7 +151,13 @@ public issues. Check the [usage guide](docs/USAGE.md) and
 
 ## License and acknowledgments
 
+Proxiverse is an independent project and is not affiliated with, endorsed by, or
+sponsored by Proxyman. Import features mention Proxyman to describe supported
+file compatibility; they do not imply a partnership or endorsement.
+
 Proxiverse-owned code and documentation are licensed under the [MIT License](LICENSE).
+See [Code and artwork provenance](docs/PROVENANCE.md) for the owner's declaration
+and the evidence and limits of the provenance review.
 The app bundles [mitmproxy](https://github.com/mitmproxy/mitmproxy) and its dependencies,
 which retain their respective licenses.
 

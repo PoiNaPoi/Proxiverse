@@ -21,11 +21,20 @@ Prepared 2026-11-09. This is a release review record, not legal clearance.
 - [x] The same owner declaration covers project images, including the PNG/JPEG
   artwork and generated icon. Retain provenance/permission records outside the
   public repository if they contain confidential information.
+- [x] On 2026-11-10 the owner additionally confirmed no decompilation/disassembly
+  of Proxyman or extraction of its code/artwork/resources for this project, and
+  confirmed distribution rights including employer/client/third-party concerns.
+  `PROVENANCE.md` records the declaration and its verification limits; asset
+  hashes are in `provenance-assets.json`. README clarifies independent affiliation.
 - [ ] Review the name/logo for trademark conflicts in intended markets. No
   trademark registry search or legal clearance has been performed.
 - [ ] Complete the engine's transitive dependency and native-library license
   audit. THIRD_PARTY_NOTICES.md records the verified subset and gaps; preserving
   vendor files alone is not a complete compliance opinion.
+  Additional review on 2026-11-10 supplied 12 distributions' notices, a frozen
+  module/native inventory, and Rust lockfile notices. `DEPENDENCY_AUDIT.md`
+  records evidence and unresolved original-build/static-dependency gaps; this
+  item remains open rather than claiming a completed legal audit.
 - [x] Pattern-scanned reachable local Git history (2 commits, 102 blobs) for
   private-key markers and common AWS/GitHub/Google API key formats. The only
   matches were deliberately invalid private-key markers in two unit test files;

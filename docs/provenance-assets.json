@@ -1,0 +1,30 @@
+{
+  "recorded_date": "2026-11-10",
+  "evidence": "Owner declaration and current repository files; hashes identify reviewed files, not ownership.",
+  "files": [
+    {
+      "file": "images/Proxiverse-icon.png",
+      "sha256": "a0774ee16b6566910409556be933b736a8fa3f5adc29f9c3e2995052602e93cb"
+    },
+    {
+      "file": "images/Proxiverse.jpeg",
+      "sha256": "be6a58a64008bcb684f045092344d6124dd57d054f4077cb600a15edb2926c20"
+    },
+    {
+      "file": "Sources/Proxiverse/Resources/Proxiverse.icns",
+      "sha256": "60334d9e4ae9f20a21d678960c594d9ede41f6bce64aa66112495c6f41e89c9a"
+    },
+    {
+      "file": "Sources/Proxiverse/Resources/install-certificate.dex",
+      "sha256": "4fffe630f6208534fafdbabaea7492e09a2ba5b2edfc87dfecd619b9c1b51dbd"
+    },
+    {
+      "file": "scripts/android/InstallCertificate.java",
+      "sha256": "48d37319a25bfde16977ffcd4a3c9d8fa7bb8208a3ad837e6e0861565bd3b4c0"
+    },
+    {
+      "file": "scripts/build-certificate-helper.sh",
+      "sha256": "3995d7562982753c5e4aec5de84d26b5e31f4195ddfdc2cc4093823a441e77e5"
+    }
+  ]
+}

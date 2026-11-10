@@ -1,0 +1,854 @@
+[
+  {
+    "name": "blinker",
+    "candidate_version": "1.9.0",
+    "version_evidence": "Every overlapping frozen Python module matched the candidate wheel by normalized code comparison; native build provenance remains separate.",
+    "license_expression": null,
+    "artifacts": [
+      {
+        "url": "https://files.pythonhosted.org/packages/21/28/9b3f50ce0e048515135495f198351908d99540d69bfdc8c1d15b73dc55ce/blinker-1.9.0.tar.gz",
+        "sha256": "b4ce2265a7abece45e7cc896e98dbebe6cead56bcf805a3d23136d145f5445bf",
+        "notice_files": [
+          {
+            "file": "blinker-1.9.0/source/LICENSE.txt",
+            "sha256": "9eb73a1f38597a4aa17025d2ae1be3839624c795e985d4f0e9769ce29faca467"
+          }
+        ],
+        "archive_included": false
+      },
+      {
+        "url": "https://files.pythonhosted.org/packages/10/cb/f2ad4230dc2eb1a74edf38f1a38b9b52277f75bef262d8908e60d957e13c/blinker-1.9.0-py3-none-any.whl",
+        "sha256": "ba0efaa9080b619ff2f3459d1d500c57bddea4a6b424b60a91141db6fd2f08bc",
+        "notice_files": [
+          {
+            "file": "blinker-1.9.0/wheel/blinker-1.9.0.dist-info/LICENSE.txt",
+            "sha256": "9eb73a1f38597a4aa17025d2ae1be3839624c795e985d4f0e9769ce29faca467"
+          }
+        ],
+        "archive_included": false
+      }
+    ],
+    "frozen_module_comparison": {
+      "matched": [
+        "blinker",
+        "blinker._utilities",
+        "blinker.base"
+      ],
+      "different": [],
+      "method": "Python 3.14 code instructions/constants/names/flags/exception table, excluding filename and line tables; compile optimization levels 0-2. Not a complete build provenance proof."
+    },
+    "binary_comparison": []
+  },
+  {
+    "name": "colorama",
+    "candidate_version": "0.4.6",
+    "version_evidence": "Every overlapping frozen Python module matched the candidate wheel by normalized code comparison; native build provenance remains separate.",
+    "license_expression": null,
+    "artifacts": [
+      {
+        "url": "https://files.pythonhosted.org/packages/d8/53/6f443c9a4a8358a93a6792e2acffb9d9d5cb0a5cfd8802644b7b1c9a02e4/colorama-0.4.6.tar.gz",
+        "sha256": "08695f5cb7ed6e0531a20572697297273c47b8cae5a63ffc6d6ed5c201be6e44",
+        "notice_files": [
+          {
+            "file": "colorama-0.4.6/source/LICENSE.txt",
+            "sha256": "cac35c02686e5d04a5a7140bfb3b36e73aed496656e891102e428886d7930318"
+          }
+        ],
+        "archive_included": false
+      },
+      {
+        "url": "https://files.pythonhosted.org/packages/d1/d6/3965ed04c63042e047cb6a3e6ed1a63a35087b6a609aa3a15ed8ac56c221/colorama-0.4.6-py2.py3-none-any.whl",
+        "sha256": "4f1d9991f5acc0ca119f9d443620b77f9d6b33703e51011c16baf57afb285fc6",
+        "notice_files": [
+          {
+            "file": "colorama-0.4.6/wheel/colorama-0.4.6.dist-info/licenses/LICENSE.txt",
+            "sha256": "cac35c02686e5d04a5a7140bfb3b36e73aed496656e891102e428886d7930318"
+          }
+        ],
+        "archive_included": false
+      }
+    ],
+    "frozen_module_comparison": {
+      "matched": [
+        "colorama",
+        "colorama.ansi",
+        "colorama.ansitowin32",
+        "colorama.initialise",
+        "colorama.win32",
+        "colorama.winterm"
+      ],
+      "different": [],
+      "method": "Python 3.14 code instructions/constants/names/flags/exception table, excluding filename and line tables; compile optimization levels 0-2. Not a complete build provenance proof."
+    },
+    "binary_comparison": []
+  },
+  {
+    "name": "Jinja2",
+    "candidate_version": "3.1.6",
+    "version_evidence": "Every overlapping frozen Python module matched the candidate wheel by normalized code comparison; native build provenance remains separate.",
+    "license_expression": null,
+    "artifacts": [
+      {
+        "url": "https://files.pythonhosted.org/packages/df/bf/f7da0350254c0ed7c72f3e33cef02e048281fec7ecec5f032d4aac52226b/jinja2-3.1.6.tar.gz",
+        "sha256": "0137fb05990d35f1275a587e9aee6d56da821fc83491a0fb838183be43f66d6d",
+        "notice_files": [
+          {
+            "file": "Jinja2-3.1.6/source/LICENSE.txt",
+            "sha256": "3b49dcee4105eb37bac10faf1be260408fe85d252b8e9df2e0979fc1e094437b"
+          },
+          {
+            "file": "Jinja2-3.1.6/source/docs/license.rst",
+            "sha256": "1e07e9c25f2618a040560b70e63f42259eab24e558d0f3532e6163d751cb4eea"
+          }
+        ],
+        "archive_included": false
+      },
+      {
+        "url": "https://files.pythonhosted.org/packages/62/a1/3d680cbfd5f4b8f15abc1d571870c5fc3e594bb582bc3b64ea099db13e56/jinja2-3.1.6-py3-none-any.whl",
+        "sha256": "85ece4451f492d0c13c5dd7c13a64681a86afae63a5f347908daf103ce6d2f67",
+        "notice_files": [
+          {
+            "file": "Jinja2-3.1.6/wheel/jinja2-3.1.6.dist-info/licenses/LICENSE.txt",
+            "sha256": "3b49dcee4105eb37bac10faf1be260408fe85d252b8e9df2e0979fc1e094437b"
+          }
+        ],
+        "archive_included": false
+      }
+    ],
+    "frozen_module_comparison": {
+      "matched": [
+        "jinja2",
+        "jinja2._identifier",
+        "jinja2.async_utils",
+        "jinja2.bccache",
+        "jinja2.compiler",
+        "jinja2.constants",
+        "jinja2.debug",
+        "jinja2.defaults",
+        "jinja2.environment",
+        "jinja2.exceptions",
+        "jinja2.ext",
+        "jinja2.filters",
+        "jinja2.idtracking",
+        "jinja2.lexer",
+        "jinja2.loaders",
+        "jinja2.nodes",
+        "jinja2.optimizer",
+        "jinja2.parser",
+        "jinja2.runtime",
+        "jinja2.sandbox",
+        "jinja2.tests",
+        "jinja2.utils",
+        "jinja2.visitor"
+      ],
+      "different": [],
+      "method": "Python 3.14 code instructions/constants/names/flags/exception table, excluding filename and line tables; compile optimization levels 0-2. Not a complete build provenance proof."
+    },
+    "binary_comparison": []
+  },
+  {
+    "name": "packaging",
+    "candidate_version": "26.0",
+    "version_evidence": "Every overlapping frozen Python module matched the candidate wheel by normalized code comparison; native build provenance remains separate.",
+    "license_expression": "Apache-2.0 OR BSD-2-Clause",
+    "artifacts": [
+      {
+        "url": "https://files.pythonhosted.org/packages/65/ee/299d360cdc32edc7d2cf530f3accf79c4fca01e96ffc950d8a52213bd8e4/packaging-26.0.tar.gz",
+        "sha256": "00243ae351a257117b6a241061796684b084ed1c516a08c48a3f7e147a9d80b4",
+        "notice_files": [
+          {
+            "file": "packaging-26.0/source/LICENSE",
+            "sha256": "cad1ef5bd340d73e074ba614d26f7deaca5c7940c3d8c34852e65c4909686c48"
+          },
+          {
+            "file": "packaging-26.0/source/LICENSE.APACHE",
+            "sha256": "0d542e0c8804e39aa7f37eb00da5a762149dc682d7829451287e11b938e94594"
+          },
+          {
+            "file": "packaging-26.0/source/LICENSE.BSD",
+            "sha256": "b70e7e9b742f1cc6f948b34c16aa39ffece94196364bc88ff0d2180f0028fac5"
+          }
+        ],
+        "archive_included": false
+      },
+      {
+        "url": "https://files.pythonhosted.org/packages/b7/b9/c538f279a4e237a006a2c98387d081e9eb060d203d8ed34467cc0f0b9b53/packaging-26.0-py3-none-any.whl",
+        "sha256": "b36f1fef9334a5588b4166f8bcd26a14e521f2b55e6b9de3aaa80d3ff7a37529",
+        "notice_files": [
+          {
+            "file": "packaging-26.0/wheel/packaging-26.0.dist-info/licenses/LICENSE",
+            "sha256": "cad1ef5bd340d73e074ba614d26f7deaca5c7940c3d8c34852e65c4909686c48"
+          },
+          {
+            "file": "packaging-26.0/wheel/packaging-26.0.dist-info/licenses/LICENSE.APACHE",
+            "sha256": "0d542e0c8804e39aa7f37eb00da5a762149dc682d7829451287e11b938e94594"
+          },
+          {
+            "file": "packaging-26.0/wheel/packaging-26.0.dist-info/licenses/LICENSE.BSD",
+            "sha256": "b70e7e9b742f1cc6f948b34c16aa39ffece94196364bc88ff0d2180f0028fac5"
+          }
+        ],
+        "archive_included": false
+      }
+    ],
+    "frozen_module_comparison": {
+      "matched": [
+        "packaging",
+        "packaging._elffile",
+        "packaging._manylinux",
+        "packaging._musllinux",
+        "packaging._parser",
+        "packaging._structures",
+        "packaging._tokenizer",
+        "packaging.markers",
+        "packaging.requirements",
+        "packaging.specifiers",
+        "packaging.tags",
+        "packaging.utils",
+        "packaging.version",
+        "packaging.licenses",
+        "packaging.licenses._spdx"
+      ],
+      "different": [],
+      "method": "Python 3.14 code instructions/constants/names/flags/exception table, excluding filename and line tables; compile optimization levels 0-2. Not a complete build provenance proof."
+    },
+    "binary_comparison": []
+  },
+  {
+    "name": "requests",
+    "candidate_version": "2.32.5",
+    "version_evidence": "Every overlapping frozen Python module matched the candidate wheel by normalized code comparison; native build provenance remains separate.",
+    "license_expression": null,
+    "artifacts": [
+      {
+        "url": "https://files.pythonhosted.org/packages/c9/74/b3ff8e6c8446842c3f5c837e9c3dfcfe2018ea6ecef224c710c85ef728f4/requests-2.32.5.tar.gz",
+        "sha256": "dbba0bac56e100853db0ea71b82b4dfd5fe2bf6d3754a8893c3af500cec7d7cf",
+        "notice_files": [
+          {
+            "file": "requests-2.32.5/source/LICENSE",
+            "sha256": "09e8a9bcec8067104652c168685ab0931e7868f9c8284b66f5ae6edae5f1130b"
+          },
+          {
+            "file": "requests-2.32.5/source/NOTICE",
+            "sha256": "f5110972dedad2b4e9d314518daf3b7d72d6e02e499acd802181de6f74571dcc"
+          }
+        ],
+        "archive_included": false
+      },
+      {
+        "url": "https://files.pythonhosted.org/packages/1e/db/4254e3eabe8020b458f1a747140d32277ec7a271daf1d235b70dc0b4e6e3/requests-2.32.5-py3-none-any.whl",
+        "sha256": "2462f94637a34fd532264295e186976db0f5d453d1cdd31473c85a6a161affb6",
+        "notice_files": [
+          {
+            "file": "requests-2.32.5/wheel/requests-2.32.5.dist-info/licenses/LICENSE",
+            "sha256": "09e8a9bcec8067104652c168685ab0931e7868f9c8284b66f5ae6edae5f1130b"
+          }
+        ],
+        "archive_included": false
+      }
+    ],
+    "frozen_module_comparison": {
+      "matched": [
+        "requests",
+        "requests.__version__",
+        "requests._internal_utils",
+        "requests.adapters",
+        "requests.api",
+        "requests.auth",
+        "requests.certs",
+        "requests.compat",
+        "requests.cookies",
+        "requests.exceptions",
+        "requests.hooks",
+        "requests.models",
+        "requests.packages",
+        "requests.sessions",
+        "requests.status_codes",
+        "requests.structures",
+        "requests.utils"
+      ],
+      "different": [],
+      "method": "Python 3.14 code instructions/constants/names/flags/exception table, excluding filename and line tables; compile optimization levels 0-2. Not a complete build provenance proof."
+    },
+    "binary_comparison": []
+  },
+  {
+    "name": "setuptools",
+    "candidate_version": "80.10.2",
+    "version_evidence": "Every overlapping frozen Python module matched the candidate wheel by normalized code comparison; native build provenance remains separate.",
+    "license_expression": "MIT",
+    "artifacts": [
+      {
+        "url": "https://files.pythonhosted.org/packages/76/95/faf61eb8363f26aa7e1d762267a8d602a1b26d4f3a1e758e92cb3cb8b054/setuptools-80.10.2.tar.gz",
+        "sha256": "8b0e9d10c784bf7d262c4e5ec5d4ec94127ce206e8738f29a437945fbc219b70",
+        "notice_files": [
+          {
+            "file": "setuptools-80.10.2/source/LICENSE",
+            "sha256": "86da0f01aeae46348a3c3d465195dc1ceccde79f79e87769a64b8da04b2a4741"
+          },
+          {
+            "file": "setuptools-80.10.2/source/setuptools/_vendor/autocommand-2.2.2.dist-info/LICENSE",
+            "sha256": "ade78d04982d69972d444a8e14a94f87a2334dd3855cc80348ea8e240aa0df2d"
+          },
+          {
+            "file": "setuptools-80.10.2/source/setuptools/_vendor/backports.tarfile-1.2.0.dist-info/LICENSE",
+            "sha256": "86da0f01aeae46348a3c3d465195dc1ceccde79f79e87769a64b8da04b2a4741"
+          },
+          {
+            "file": "setuptools-80.10.2/source/setuptools/_vendor/importlib_metadata-8.7.1.dist-info/licenses/LICENSE",
+            "sha256": "458502e12d97bbf64438606a20044aa85eb05fb0a8a807bb35dbec253fd1fc04"
+          },
+          {
+            "file": "setuptools-80.10.2/source/setuptools/_vendor/jaraco.text-4.0.0.dist-info/LICENSE",
+            "sha256": "86da0f01aeae46348a3c3d465195dc1ceccde79f79e87769a64b8da04b2a4741"
+          },
+          {
+            "file": "setuptools-80.10.2/source/setuptools/_vendor/jaraco_context-6.1.0.dist-info/licenses/LICENSE",
+            "sha256": "9755a18519666e5f0f4cae3daad3d7012bcae48a600b31237d75e9fe134e6683"
+          },
+          {
+            "file": "setuptools-80.10.2/source/setuptools/_vendor/jaraco_functools-4.4.0.dist-info/licenses/LICENSE",
+            "sha256": "5a57cb4db85e2a2dd88c290628908add57e3451449e0a9a71fdfb38776fd759d"
+          },
+          {
+            "file": "setuptools-80.10.2/source/setuptools/_vendor/more_itertools-10.8.0.dist-info/licenses/LICENSE",
+            "sha256": "09f1c8c9e941af3e584d59641ea9b87d83c0cb0fd007eb5ef391a7e2643c1a46"
+          },
+          {
+            "file": "setuptools-80.10.2/source/setuptools/_vendor/packaging-26.0.dist-info/licenses/LICENSE",
+            "sha256": "cad1ef5bd340d73e074ba614d26f7deaca5c7940c3d8c34852e65c4909686c48"
+          },
+          {
+            "file": "setuptools-80.10.2/source/setuptools/_vendor/packaging-26.0.dist-info/licenses/LICENSE.APACHE",
+            "sha256": "0d542e0c8804e39aa7f37eb00da5a762149dc682d7829451287e11b938e94594"
+          },
+          {
+            "file": "setuptools-80.10.2/source/setuptools/_vendor/packaging-26.0.dist-info/licenses/LICENSE.BSD",
+            "sha256": "b70e7e9b742f1cc6f948b34c16aa39ffece94196364bc88ff0d2180f0028fac5"
+          },
+          {
+            "file": "setuptools-80.10.2/source/setuptools/_vendor/platformdirs-4.4.0.dist-info/licenses/LICENSE",
+            "sha256": "29e0fd62e929850e86eb28c3fdccf0cefdf4fa94879011cffb3d0d4bed6d4db6"
+          },
+          {
+            "file": "setuptools-80.10.2/source/setuptools/_vendor/tomli-2.4.0.dist-info/licenses/LICENSE",
+            "sha256": "b80816b0d530b8accb4c2211783790984a6e3b61922c2b5ee92f3372ab2742fe"
+          },
+          {
+            "file": "setuptools-80.10.2/source/setuptools/_vendor/wheel-0.46.3.dist-info/licenses/LICENSE.txt",
+            "sha256": "30c23618679108f3e8ea1d2a658c7ca417bdfc891c98ef1a89fa4ff0c9828654"
+          },
+          {
+            "file": "setuptools-80.10.2/source/setuptools/_vendor/zipp-3.23.0.dist-info/licenses/LICENSE",
+            "sha256": "5a57cb4db85e2a2dd88c290628908add57e3451449e0a9a71fdfb38776fd759d"
+          },
+          {
+            "file": "setuptools-80.10.2/source/setuptools/config/NOTICE",
+            "sha256": "2dddf08818297a3b89d43d95ff659d8da85741108c9136dfa3a4d856c0623bd8"
+          },
+          {
+            "file": "setuptools-80.10.2/source/setuptools/config/_validate_pyproject/NOTICE",
+            "sha256": "5d300dbfa643138b013b75ac9caeee591f951b8b0ee24288c34ccd926c4780c8"
+          }
+        ],
+        "archive_included": false
+      },
+      {
+        "url": "https://files.pythonhosted.org/packages/94/b8/f1f62a5e3c0ad2ff1d189590bfa4c46b4f3b6e49cef6f26c6ee4e575394d/setuptools-80.10.2-py3-none-any.whl",
+        "sha256": "95b30ddfb717250edb492926c92b5221f7ef3fbcc2b07579bcd4a27da21d0173",
+        "notice_files": [
+          {
+            "file": "setuptools-80.10.2/wheel/setuptools/_vendor/importlib_metadata-8.7.1.dist-info/licenses/LICENSE",
+            "sha256": "458502e12d97bbf64438606a20044aa85eb05fb0a8a807bb35dbec253fd1fc04"
+          },
+          {
+            "file": "setuptools-80.10.2/wheel/setuptools/_vendor/jaraco_context-6.1.0.dist-info/licenses/LICENSE",
+            "sha256": "9755a18519666e5f0f4cae3daad3d7012bcae48a600b31237d75e9fe134e6683"
+          },
+          {
+            "file": "setuptools-80.10.2/wheel/setuptools/_vendor/jaraco_functools-4.4.0.dist-info/licenses/LICENSE",
+            "sha256": "5a57cb4db85e2a2dd88c290628908add57e3451449e0a9a71fdfb38776fd759d"
+          },
+          {
+            "file": "setuptools-80.10.2/wheel/setuptools/_vendor/more_itertools-10.8.0.dist-info/licenses/LICENSE",
+            "sha256": "09f1c8c9e941af3e584d59641ea9b87d83c0cb0fd007eb5ef391a7e2643c1a46"
+          },
+          {
+            "file": "setuptools-80.10.2/wheel/setuptools/_vendor/packaging-26.0.dist-info/licenses/LICENSE",
+            "sha256": "cad1ef5bd340d73e074ba614d26f7deaca5c7940c3d8c34852e65c4909686c48"
+          },
+          {
+            "file": "setuptools-80.10.2/wheel/setuptools/_vendor/packaging-26.0.dist-info/licenses/LICENSE.APACHE",
+            "sha256": "0d542e0c8804e39aa7f37eb00da5a762149dc682d7829451287e11b938e94594"
+          },
+          {
+            "file": "setuptools-80.10.2/wheel/setuptools/_vendor/packaging-26.0.dist-info/licenses/LICENSE.BSD",
+            "sha256": "b70e7e9b742f1cc6f948b34c16aa39ffece94196364bc88ff0d2180f0028fac5"
+          },
+          {
+            "file": "setuptools-80.10.2/wheel/setuptools/_vendor/platformdirs-4.4.0.dist-info/licenses/LICENSE",
+            "sha256": "29e0fd62e929850e86eb28c3fdccf0cefdf4fa94879011cffb3d0d4bed6d4db6"
+          },
+          {
+            "file": "setuptools-80.10.2/wheel/setuptools/_vendor/tomli-2.4.0.dist-info/licenses/LICENSE",
+            "sha256": "b80816b0d530b8accb4c2211783790984a6e3b61922c2b5ee92f3372ab2742fe"
+          },
+          {
+            "file": "setuptools-80.10.2/wheel/setuptools/_vendor/wheel-0.46.3.dist-info/licenses/LICENSE.txt",
+            "sha256": "30c23618679108f3e8ea1d2a658c7ca417bdfc891c98ef1a89fa4ff0c9828654"
+          },
+          {
+            "file": "setuptools-80.10.2/wheel/setuptools/_vendor/zipp-3.23.0.dist-info/licenses/LICENSE",
+            "sha256": "5a57cb4db85e2a2dd88c290628908add57e3451449e0a9a71fdfb38776fd759d"
+          },
+          {
+            "file": "setuptools-80.10.2/wheel/setuptools/config/NOTICE",
+            "sha256": "2dddf08818297a3b89d43d95ff659d8da85741108c9136dfa3a4d856c0623bd8"
+          },
+          {
+            "file": "setuptools-80.10.2/wheel/setuptools/config/_validate_pyproject/NOTICE",
+            "sha256": "5d300dbfa643138b013b75ac9caeee591f951b8b0ee24288c34ccd926c4780c8"
+          },
+          {
+            "file": "setuptools-80.10.2/wheel/setuptools-80.10.2.dist-info/licenses/LICENSE",
+            "sha256": "86da0f01aeae46348a3c3d465195dc1ceccde79f79e87769a64b8da04b2a4741"
+          },
+          {
+            "file": "setuptools-80.10.2/wheel/setuptools/_vendor/autocommand-2.2.2.dist-info/LICENSE",
+            "sha256": "ade78d04982d69972d444a8e14a94f87a2334dd3855cc80348ea8e240aa0df2d"
+          },
+          {
+            "file": "setuptools-80.10.2/wheel/setuptools/_vendor/backports.tarfile-1.2.0.dist-info/LICENSE",
+            "sha256": "86da0f01aeae46348a3c3d465195dc1ceccde79f79e87769a64b8da04b2a4741"
+          },
+          {
+            "file": "setuptools-80.10.2/wheel/setuptools/_vendor/jaraco.text-4.0.0.dist-info/LICENSE",
+            "sha256": "86da0f01aeae46348a3c3d465195dc1ceccde79f79e87769a64b8da04b2a4741"
+          }
+        ],
+        "archive_included": false
+      }
+    ],
+    "frozen_module_comparison": {
+      "matched": [
+        "_distutils_hack",
+        "_distutils_hack.override",
+        "setuptools",
+        "setuptools._core_metadata",
+        "setuptools._discovery",
+        "setuptools._entry_points",
+        "setuptools._imp",
+        "setuptools._importlib",
+        "setuptools._itertools",
+        "setuptools._normalization",
+        "setuptools._path",
+        "setuptools._reqs",
+        "setuptools._shutil",
+        "setuptools._static",
+        "setuptools.archive_util",
+        "setuptools.depends",
+        "setuptools.discovery",
+        "setuptools.dist",
+        "setuptools.errors",
+        "setuptools.extension",
+        "setuptools.glob",
+        "setuptools.installer",
+        "setuptools.logging",
+        "setuptools.monkey",
+        "setuptools.msvc",
+        "setuptools.unicode_utils",
+        "setuptools.version",
+        "setuptools.warnings",
+        "setuptools.wheel",
+        "setuptools.windows_support",
+        "setuptools._distutils",
+        "setuptools._distutils._log",
+        "setuptools._distutils._modified",
+        "setuptools._distutils._msvccompiler",
+        "setuptools._distutils.archive_util",
+        "setuptools._distutils.ccompiler",
+        "setuptools._distutils.cmd",
+        "setuptools._distutils.core",
+        "setuptools._distutils.debug",
+        "setuptools._distutils.dir_util",
+        "setuptools._distutils.dist",
+        "setuptools._distutils.errors",
+        "setuptools._distutils.extension",
+        "setuptools._distutils.fancy_getopt",
+        "setuptools._distutils.file_util",
+        "setuptools._distutils.filelist",
+        "setuptools._distutils.log",
+        "setuptools._distutils.spawn",
+        "setuptools._distutils.sysconfig",
+        "setuptools._distutils.text_file",
+        "setuptools._distutils.util",
+        "setuptools._distutils.version",
+        "setuptools._distutils.versionpredicate",
+        "setuptools._distutils.command",
+        "setuptools._distutils.command.bdist",
+        "setuptools._distutils.command.build",
+        "setuptools._distutils.command.build_ext",
+        "setuptools._distutils.command.sdist",
+        "setuptools._distutils.compat",
+        "setuptools._distutils.compat.numpy",
+        "setuptools._distutils.compat.py39",
+        "setuptools._distutils.compilers.C.base",
+        "setuptools._distutils.compilers.C.errors",
+        "setuptools._distutils.compilers.C.msvc",
+        "setuptools._vendor.backports",
+        "setuptools._vendor.backports.tarfile",
+        "setuptools._vendor.backports.tarfile.compat",
+        "setuptools._vendor.backports.tarfile.compat.py38",
+        "setuptools._vendor.importlib_metadata",
+        "setuptools._vendor.importlib_metadata._adapters",
+        "setuptools._vendor.importlib_metadata._collections",
+        "setuptools._vendor.importlib_metadata._compat",
+        "setuptools._vendor.importlib_metadata._functools",
+        "setuptools._vendor.importlib_metadata._itertools",
+        "setuptools._vendor.importlib_metadata._meta",
+        "setuptools._vendor.importlib_metadata._text",
+        "setuptools._vendor.importlib_metadata._typing",
+        "setuptools._vendor.importlib_metadata.compat",
+        "setuptools._vendor.importlib_metadata.compat.py311",
+        "setuptools._vendor.importlib_metadata.compat.py39",
+        "setuptools._vendor.jaraco.context",
+        "setuptools._vendor.jaraco.functools",
+        "setuptools._vendor.jaraco.text",
+        "setuptools._vendor.more_itertools",
+        "setuptools._vendor.more_itertools.more",
+        "setuptools._vendor.more_itertools.recipes",
+        "setuptools._vendor.packaging",
+        "setuptools._vendor.packaging._elffile",
+        "setuptools._vendor.packaging._manylinux",
+        "setuptools._vendor.packaging._musllinux",
+        "setuptools._vendor.packaging._parser",
+        "setuptools._vendor.packaging._structures",
+        "setuptools._vendor.packaging._tokenizer",
+        "setuptools._vendor.packaging.markers",
+        "setuptools._vendor.packaging.requirements",
+        "setuptools._vendor.packaging.specifiers",
+        "setuptools._vendor.packaging.tags",
+        "setuptools._vendor.packaging.utils",
+        "setuptools._vendor.packaging.version",
+        "setuptools._vendor.tomli",
+        "setuptools._vendor.tomli._parser",
+        "setuptools._vendor.tomli._re",
+        "setuptools._vendor.tomli._types",
+        "setuptools._vendor.zipp",
+        "setuptools._vendor.zipp._functools",
+        "setuptools._vendor.zipp.glob",
+        "setuptools._vendor.zipp.compat",
+        "setuptools._vendor.zipp.compat.overlay",
+        "setuptools._vendor.zipp.compat.py310",
+        "setuptools._vendor.zipp.compat.py313",
+        "setuptools.command",
+        "setuptools.command._requirestxt",
+        "setuptools.command.bdist_egg",
+        "setuptools.command.bdist_wheel",
+        "setuptools.command.build",
+        "setuptools.command.egg_info",
+        "setuptools.command.sdist",
+        "setuptools.command.setopt",
+        "setuptools.compat",
+        "setuptools.compat.py310",
+        "setuptools.compat.py311",
+        "setuptools.compat.py39",
+        "setuptools.config",
+        "setuptools.config._apply_pyprojecttoml",
+        "setuptools.config.expand",
+        "setuptools.config.pyprojecttoml",
+        "setuptools.config.setupcfg",
+        "setuptools.config._validate_pyproject",
+        "setuptools.config._validate_pyproject.error_reporting",
+        "setuptools.config._validate_pyproject.extra_validations",
+        "setuptools.config._validate_pyproject.fastjsonschema_exceptions",
+        "setuptools.config._validate_pyproject.fastjsonschema_validations",
+        "setuptools.config._validate_pyproject.formats"
+      ],
+      "different": [],
+      "method": "Python 3.14 code instructions/constants/names/flags/exception table, excluding filename and line tables; compile optimization levels 0-2. Not a complete build provenance proof."
+    },
+    "binary_comparison": []
+  },
+  {
+    "name": "typing_extensions",
+    "candidate_version": "4.14.0",
+    "version_evidence": "Every overlapping frozen Python module matched the candidate wheel by normalized code comparison; native build provenance remains separate.",
+    "license_expression": "PSF-2.0",
+    "artifacts": [
+      {
+        "url": "https://files.pythonhosted.org/packages/d1/bc/51647cd02527e87d05cb083ccc402f93e441606ff1f01739a62c8ad09ba5/typing_extensions-4.14.0.tar.gz",
+        "sha256": "8676b788e32f02ab42d9e7c61324048ae4c6d844a399eebace3d4979d75ceef4",
+        "notice_files": [
+          {
+            "file": "typing_extensions-4.14.0/source/LICENSE",
+            "sha256": "3b2f81fe21d181c499c59a256c8e1968455d6689d269aa85373bfb6af41da3bf"
+          }
+        ],
+        "archive_included": false
+      },
+      {
+        "url": "https://files.pythonhosted.org/packages/69/e0/552843e0d356fbb5256d21449fa957fa4eff3bbc135a74a691ee70c7c5da/typing_extensions-4.14.0-py3-none-any.whl",
+        "sha256": "a1514509136dd0b477638fc68d6a91497af5076466ad0fa6c338e44e359944af",
+        "notice_files": [
+          {
+            "file": "typing_extensions-4.14.0/wheel/typing_extensions-4.14.0.dist-info/licenses/LICENSE",
+            "sha256": "3b2f81fe21d181c499c59a256c8e1968455d6689d269aa85373bfb6af41da3bf"
+          }
+        ],
+        "archive_included": false
+      }
+    ],
+    "frozen_module_comparison": {
+      "matched": [
+        "typing_extensions"
+      ],
+      "different": [],
+      "method": "Python 3.14 code instructions/constants/names/flags/exception table, excluding filename and line tables; compile optimization levels 0-2. Not a complete build provenance proof."
+    },
+    "binary_comparison": []
+  },
+  {
+    "name": "urllib3",
+    "candidate_version": "2.6.3",
+    "version_evidence": "Every overlapping frozen Python module matched the candidate wheel by normalized code comparison; native build provenance remains separate.",
+    "license_expression": "MIT",
+    "artifacts": [
+      {
+        "url": "https://files.pythonhosted.org/packages/c7/24/5f1b3bdffd70275f6661c76461e25f024d5a38a46f04aaca912426a2b1d3/urllib3-2.6.3.tar.gz",
+        "sha256": "1b62b6884944a57dbe321509ab94fd4d3b307075e0c2eae991ac71ee15ad38ed",
+        "notice_files": [
+          {
+            "file": "urllib3-2.6.3/source/LICENSE.txt",
+            "sha256": "130e3a64d5fdd5d096a752694634a7d9df284469de86e5732100268041e3d686"
+          }
+        ],
+        "archive_included": false
+      },
+      {
+        "url": "https://files.pythonhosted.org/packages/39/08/aaaad47bc4e9dc8c725e68f9d04865dbcb2052843ff09c97b08904852d84/urllib3-2.6.3-py3-none-any.whl",
+        "sha256": "bf272323e553dfb2e87d9bfd225ca7b0f467b919d7bbd355436d3fd37cb0acd4",
+        "notice_files": [
+          {
+            "file": "urllib3-2.6.3/wheel/urllib3-2.6.3.dist-info/licenses/LICENSE.txt",
+            "sha256": "130e3a64d5fdd5d096a752694634a7d9df284469de86e5732100268041e3d686"
+          }
+        ],
+        "archive_included": false
+      }
+    ],
+    "frozen_module_comparison": {
+      "matched": [
+        "urllib3",
+        "urllib3._base_connection",
+        "urllib3._collections",
+        "urllib3._request_methods",
+        "urllib3._version",
+        "urllib3.connection",
+        "urllib3.connectionpool",
+        "urllib3.exceptions",
+        "urllib3.fields",
+        "urllib3.filepost",
+        "urllib3.poolmanager",
+        "urllib3.response",
+        "urllib3.contrib",
+        "urllib3.contrib.pyopenssl",
+        "urllib3.contrib.socks",
+        "urllib3.contrib.emscripten",
+        "urllib3.contrib.emscripten.connection",
+        "urllib3.contrib.emscripten.fetch",
+        "urllib3.contrib.emscripten.request",
+        "urllib3.contrib.emscripten.response",
+        "urllib3.http2",
+        "urllib3.http2.connection",
+        "urllib3.http2.probe",
+        "urllib3.util",
+        "urllib3.util.connection",
+        "urllib3.util.proxy",
+        "urllib3.util.request",
+        "urllib3.util.response",
+        "urllib3.util.retry",
+        "urllib3.util.ssl_",
+        "urllib3.util.ssl_match_hostname",
+        "urllib3.util.ssltransport",
+        "urllib3.util.timeout",
+        "urllib3.util.url",
+        "urllib3.util.util",
+        "urllib3.util.wait"
+      ],
+      "different": [],
+      "method": "Python 3.14 code instructions/constants/names/flags/exception table, excluding filename and line tables; compile optimization levels 0-2. Not a complete build provenance proof."
+    },
+    "binary_comparison": []
+  },
+  {
+    "name": "wheel",
+    "candidate_version": "0.46.3",
+    "version_evidence": "Every overlapping frozen Python module matched the candidate wheel by normalized code comparison; native build provenance remains separate.",
+    "license_expression": "MIT",
+    "artifacts": [
+      {
+        "url": "https://files.pythonhosted.org/packages/89/24/a2eb353a6edac9a0303977c4cb048134959dd2a51b48a269dfc9dde00c8a/wheel-0.46.3.tar.gz",
+        "sha256": "e3e79874b07d776c40bd6033f8ddf76a7dad46a7b8aa1b2787a83083519a1803",
+        "notice_files": [
+          {
+            "file": "wheel-0.46.3/source/LICENSE.txt",
+            "sha256": "30c23618679108f3e8ea1d2a658c7ca417bdfc891c98ef1a89fa4ff0c9828654"
+          }
+        ],
+        "archive_included": false
+      },
+      {
+        "url": "https://files.pythonhosted.org/packages/87/22/b76d483683216dde3d67cba61fb2444be8d5be289bf628c13fc0fd90e5f9/wheel-0.46.3-py3-none-any.whl",
+        "sha256": "4b399d56c9d9338230118d705d9737a2a468ccca63d5e813e2a4fc7815d8bc4d",
+        "notice_files": [
+          {
+            "file": "wheel-0.46.3/wheel/wheel-0.46.3.dist-info/licenses/LICENSE.txt",
+            "sha256": "30c23618679108f3e8ea1d2a658c7ca417bdfc891c98ef1a89fa4ff0c9828654"
+          }
+        ],
+        "archive_included": false
+      }
+    ],
+    "frozen_module_comparison": {
+      "matched": [
+        "wheel",
+        "wheel.macosx_libfile",
+        "wheel.wheelfile"
+      ],
+      "different": [],
+      "method": "Python 3.14 code instructions/constants/names/flags/exception table, excluding filename and line tables; compile optimization levels 0-2. Not a complete build provenance proof."
+    },
+    "binary_comparison": []
+  },
+  {
+    "name": "mitmproxy_rs",
+    "candidate_version": "0.12.9",
+    "version_evidence": "Every overlapping frozen Python module matched the candidate wheel by normalized code comparison; native build provenance remains separate.",
+    "license_expression": null,
+    "artifacts": [
+      {
+        "url": "https://files.pythonhosted.org/packages/5d/5c/16a61303da76cd34aa6ddbd7ef6ac66d9ef8514c4d3a5b71831169d63236/mitmproxy_rs-0.12.9.tar.gz",
+        "sha256": "c6ffc35c002c675cac534442d92d1cdebd66fafd63754ad33b92ae968ea6e449",
+        "notice_files": [
+          {
+            "file": "mitmproxy_rs-0.12.9/source/LICENSE",
+            "sha256": "fb21d4527ce8b8bb01ece568a4b446cb3b547ae61e24764adb2be9a3d18bb5c7"
+          },
+          {
+            "file": "mitmproxy_rs-0.12.9/source/mitmproxy-windows/mitmproxy_windows/LICENSE",
+            "sha256": "14a0cb5214d536e4fdae6aa3f5696f981eeda106cd026e9794bba489ee79d628"
+          }
+        ],
+        "archive_included": true,
+        "archive_file": "mitmproxy_rs-0.12.9/mitmproxy_rs-0.12.9.tar.gz"
+      },
+      {
+        "url": "https://files.pythonhosted.org/packages/f6/78/dc9f4b4ef894709853407291ab281e478cb122b993633125b858eea523ba/mitmproxy_rs-0.12.9-cp312-abi3-macosx_10_12_x86_64.macosx_11_0_arm64.macosx_10_12_universal2.whl",
+        "sha256": "afeb3a2da2bc26474e1a2febaea4432430c5fde890dfce33bc4c1e65e6baef1b",
+        "notice_files": [],
+        "archive_included": false
+      }
+    ],
+    "frozen_module_comparison": {
+      "matched": [
+        "mitmproxy_rs"
+      ],
+      "different": [],
+      "method": "Python 3.14 code instructions/constants/names/flags/exception table, excluding filename and line tables; compile optimization levels 0-2. Not a complete build provenance proof."
+    },
+    "binary_comparison": [
+      {
+        "path": "mitmproxy_rs/mitmproxy_rs.abi3.so",
+        "wheel_sha256": "cf6a6fbd8fe33de00f58d30ca643167753e33fc19d1c9021ff406c81499c6a4c",
+        "bundled_sha256": "7adec3ee845b6a39d3a7f6de00c9d527900041a6b0ae3300a7875cb0c8cb8ed8",
+        "byte_identical": false,
+        "arm64_macho_sections_identical": true,
+        "comparison_scope": "All 14 file-backed sections identical after selecting arm64. Whole files differ; load commands, signing, and linkedit are not asserted identical."
+      }
+    ]
+  },
+  {
+    "name": "mitmproxy_macos",
+    "candidate_version": "0.12.9",
+    "version_evidence": "Every overlapping frozen Python module matched the candidate wheel by normalized code comparison; native build provenance remains separate.",
+    "license_expression": "MIT",
+    "artifacts": [
+      {
+        "url": "https://files.pythonhosted.org/packages/76/71/d5899c5d1593403bccdd4b56306d03a200e14483318f86b882a144f79a32/mitmproxy_macos-0.12.9-py3-none-any.whl",
+        "sha256": "20e024fbfeeecbdb4ee2a1e8361d18782146777fdc1e00dcfecd52c22a3219bf",
+        "notice_files": [],
+        "archive_included": false
+      }
+    ],
+    "frozen_module_comparison": {
+      "matched": [
+        "mitmproxy_macos"
+      ],
+      "different": [],
+      "method": "Python 3.14 code instructions/constants/names/flags/exception table, excluding filename and line tables; compile optimization levels 0-2. Not a complete build provenance proof."
+    },
+    "binary_comparison": [
+      {
+        "path": "mitmproxy_macos/Mitmproxy Redirector.app.tar",
+        "wheel_sha256": "6446defaa224e65d48ae5542fadec0b366692e7fb8bc955c74a3444bbb63eb62",
+        "bundled_sha256": "6446defaa224e65d48ae5542fadec0b366692e7fb8bc955c74a3444bbb63eb62",
+        "byte_identical": true
+      }
+    ],
+    "upstream_notices": [
+      {
+        "file": "mitmproxy_macos-0.12.9/upstream/LICENSE",
+        "url": "https://raw.githubusercontent.com/mitmproxy/mitmproxy_rs/7e7cc99f8b1d71edad1558ab090e95ebd174fec9/LICENSE",
+        "sha256": "fb21d4527ce8b8bb01ece568a4b446cb3b547ae61e24764adb2be9a3d18bb5c7"
+      },
+      {
+        "file": "mitmproxy_macos-0.12.9/upstream/mitmproxy-macos/pyproject.toml",
+        "url": "https://raw.githubusercontent.com/mitmproxy/mitmproxy_rs/7e7cc99f8b1d71edad1558ab090e95ebd174fec9/mitmproxy-macos/pyproject.toml",
+        "sha256": "94f7b040428e440adfc455e7dda23da12707d4064dbf09f9b981c82bc485f665"
+      }
+    ]
+  },
+  {
+    "name": "argon2_cffi_bindings",
+    "candidate_version": "25.1.0",
+    "version_evidence": "Every overlapping frozen Python module matched the candidate wheel by normalized code comparison; native build provenance remains separate.",
+    "license_expression": "MIT",
+    "artifacts": [
+      {
+        "url": "https://files.pythonhosted.org/packages/5c/2d/db8af0df73c1cf454f71b2bbe5e356b8c1f8041c979f505b3d3186e520a9/argon2_cffi_bindings-25.1.0.tar.gz",
+        "sha256": "b957f3e6ea4d55d820e40ff76f450952807013d361a65d7f28acc0acbf29229d",
+        "notice_files": [
+          {
+            "file": "argon2_cffi_bindings-25.1.0/source/LICENSE",
+            "sha256": "9c158d4f433627f48ac24b6b4d37970afe4172514673c5318014d7cca157c6df"
+          },
+          {
+            "file": "argon2_cffi_bindings-25.1.0/source/extras/libargon2/LICENSE",
+            "sha256": "ac36638bcfcedb75441a5daeeaf4ef75b565911712583c272830e9fa7fddb590"
+          }
+        ],
+        "archive_included": false
+      },
+      {
+        "url": "https://files.pythonhosted.org/packages/60/97/3c0a35f46e52108d4707c44b95cfe2afcafc50800b5450c197454569b776/argon2_cffi_bindings-25.1.0-cp314-cp314t-macosx_10_13_universal2.whl",
+        "sha256": "3d3f05610594151994ca9ccb3c771115bdb4daef161976a266f0dd8aa9996b8f",
+        "notice_files": [
+          {
+            "file": "argon2_cffi_bindings-25.1.0/wheel/argon2_cffi_bindings-25.1.0.dist-info/licenses/LICENSE",
+            "sha256": "9c158d4f433627f48ac24b6b4d37970afe4172514673c5318014d7cca157c6df"
+          }
+        ],
+        "archive_included": false
+      }
+    ],
+    "frozen_module_comparison": {
+      "matched": [
+        "_argon2_cffi_bindings"
+      ],
+      "different": [],
+      "method": "Python 3.14 code instructions/constants/names/flags/exception table, excluding filename and line tables; compile optimization levels 0-2. Not a complete build provenance proof."
+    },
+    "binary_comparison": []
+  }
+]
