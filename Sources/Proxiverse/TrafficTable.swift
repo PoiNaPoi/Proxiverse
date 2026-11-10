@@ -7,6 +7,7 @@ struct TrafficTable: NSViewRepresentable {
     var selectedIDs: Set<String> = []
     var pinnedIDs: Set<String> = []
     var filterRevision = 0
+    var columnResetRevision = 0
     var onSelection: ((Set<String>, String?) -> Void)?
     var onSortChanged: (TrafficSort) -> Void = { _ in }
     var onPin: (Set<String>, Bool) -> Void = { _, _ in }
@@ -15,6 +16,12 @@ struct TrafficTable: NSViewRepresentable {
     var onMapLocal: (TrafficFlow) -> Void = { _ in }
     var onBreakpoint: (TrafficFlow) -> Void = { _ in }
     var onReloaded: () -> Void = {}
+
+    static let columns: [(id: String, title: String, width: Double)] = [
+        ("id", "ID", 48), ("method", "Method", 68), ("status", "Status", 84),
+        ("host", "Host", 160), ("path", "Path", 240), ("time", "Time", 70),
+        ("size", "Size", 70), ("source", "Source", 90)
+    ]
 
     func makeCoordinator() -> Coordinator { Coordinator(parent: self) }
 
@@ -25,18 +32,18 @@ struct TrafficTable: NSViewRepresentable {
         table.rowHeight = 28
         table.usesAlternatingRowBackgroundColors = true
         table.allowsMultipleSelection = true
-        table.columnAutoresizingStyle = .lastColumnOnlyAutoresizingStyle
+        table.columnAutoresizingStyle = .uniformColumnAutoresizingStyle
         table.style = .fullWidth
         let menu = NSMenu()
         menu.autoenablesItems = false
         menu.delegate = context.coordinator
         table.menu = menu
-        for (identifier, title, width) in [("id", "ID", 56.0), ("method", "Method", 68.0), ("status", "Status", 92.0), ("source", "Source", 110.0), ("host", "Host", 180.0),
-                                           ("path", "Path", 360.0), ("time", "Time", 78.0), ("size", "Size", 78.0)] {
+        for (identifier, title, width) in Self.columns {
             let column = NSTableColumn(identifier: NSUserInterfaceItemIdentifier(identifier))
             column.title = title
             column.width = width
-            column.minWidth = 45
+            column.minWidth = identifier == "path" ? 100 : (identifier == "host" ? 100 : 45)
+            column.maxWidth = identifier == "path" ? 600 : 400
             column.sortDescriptorPrototype = NSSortDescriptor(key: identifier, ascending: true)
             table.addTableColumn(column)
         }
@@ -58,10 +65,12 @@ struct TrafficTable: NSViewRepresentable {
         let coordinator = context.coordinator
         let changedFilter = coordinator.parent.filterRevision != filterRevision
         let changedPins = coordinator.parent.pinnedIDs != pinnedIDs
+        let resetColumns = coordinator.parent.columnResetRevision != columnResetRevision
         coordinator.parent = self
         guard let table = coordinator.table else { return }
         coordinator.updating = true
         defer { coordinator.updating = false }
+        if resetColumns { coordinator.resetColumns(table) }
         if coordinator.sourceRows != rows || changedPins {
             coordinator.sourceRows = rows
             coordinator.sortAndReload(table, followFirstOnInsert: !changedFilter && !changedPins)
@@ -97,6 +106,21 @@ struct TrafficTable: NSViewRepresentable {
         }
 
         init(parent: TrafficTable) { self.parent = parent }
+        func resetColumns(_ table: NSTableView) {
+            let selectedRows = table.selectedRowIndexes
+            let available = table.enclosingScrollView?.contentSize.width ?? table.frame.width
+            let scale = min(1, available / TrafficTable.columns.reduce(0) { $0 + $1.width })
+            for (index, spec) in TrafficTable.columns.enumerated() {
+                let current = table.column(withIdentifier: NSUserInterfaceItemIdentifier(spec.id))
+                guard current >= 0 else { continue }
+                table.moveColumn(current, toColumn: index)
+                let column = table.tableColumns[index]
+                column.width = max(column.minWidth, spec.width * scale)
+            }
+            table.sizeToFit()
+            table.selectRowIndexes(selectedRows, byExtendingSelection: false)
+        }
+
         func numberOfRows(in tableView: NSTableView) -> Int { rows.count }
 
         func tableView(_ tableView: NSTableView, sortDescriptorsDidChange oldDescriptors: [NSSortDescriptor]) {

@@ -4,6 +4,9 @@ import SwiftUI
 struct ContentView: View {
     @ObservedObject var model: CaptureModel
     @Environment(\.openWindow) private var openWindow
+    @State private var inspectorVisible = true
+    @State private var columnResetRevision = 0
+    @State private var showSearchHelp = false
     @FocusState private var searchFocused: Bool
 
     private var orderedHosts: [String] {
@@ -44,23 +47,31 @@ struct ContentView: View {
             .disabled(model.busy)
             .keyboardShortcut("r", modifiers: [.command])
             .help(model.running ? "Stop capture" : "Start capture")
+            .accessibilityLabel(model.busy ? "Please wait" : (model.running ? "Stop capture" : "Start capture"))
             Button { model.clearDisplay() } label: { ToolbarLabel("Clear", systemImage: "trash") }
                 .help("Clear Display")
+                .accessibilityLabel("Clear display")
             Divider().frame(height: 30).padding(.horizontal, 6)
             Button { model.showMapLocalRules = true } label: { ToolbarLabel("Map Local", systemImage: "arrow.triangle.branch") }
+                .accessibilityLabel("Map Local")
             Button { model.showBreakpoints = true } label: {
                 ToolbarLabel(model.paused.isEmpty ? "Breakpoints" : "Breakpoints (\(model.paused.count))", systemImage: "pause.circle")
             }
+            .accessibilityLabel(model.paused.isEmpty ? "Breakpoints" : "Breakpoints, \(model.paused.count) paused")
             Spacer(minLength: 12)
             Button { model.showHTTPSDecryption = true } label: { ToolbarLabel("HTTPS", systemImage: "lock.open") }
                 .help("Choose domains to decrypt")
+                .accessibilityLabel("HTTPS decryption")
             Button { model.showSetup = true } label: { ToolbarLabel("Settings", systemImage: "slider.horizontal.3") }
-                .help("Capture Settings")
+                .help("Capture Settings and device setup")
+                .accessibilityLabel("Capture settings and device setup")
             Button { openWindow(id: "install-certificate") } label: { ToolbarLabel("Certificate", systemImage: "checkmark.seal") }
                 .help("Install Certificate")
+                .accessibilityLabel("Install certificate")
             Menu {
                 Toggle("Inspector on Right", isOn: $model.inspectorOnRight)
                 Toggle("Stack Request and Response", isOn: $model.messagesStacked)
+                Button("Reset Traffic Columns") { columnResetRevision += 1 }
                 Button("Focus Traffic Filter") { searchFocused = true }.keyboardShortcut("f")
             } label: {
                 ToolbarLabel("Layout", systemImage: "rectangle.split.2x2")
@@ -69,6 +80,7 @@ struct ContentView: View {
             .menuIndicator(.hidden)
             .fixedSize()
             .help("Workspace Layout")
+            .accessibilityLabel("Workspace layout")
         }
         .buttonStyle(ToolbarButtonStyle())
         .fixedSize()
@@ -161,7 +173,7 @@ struct ContentView: View {
                         .accessibilityLabel("Mac system proxy: \(model.macProxyStatusText)")
                     Label(model.caStatusText, systemImage: model.caTrustStatus == .trusted ? "lock.shield" : "exclamationmark.shield")
                         .accessibilityLabel("CA certificate: \(model.caStatusText)")
-                    Button("HTTPS & Device Setup…") { model.showSetup = true }
+                    Button("Set Up Capture & HTTPS…") { model.showSetup = true }
                         .buttonStyle(.link)
                         .help("Trust is checked on this Mac only. Phones, emulators, and apps with their own trust stores require separate CA setup.")
                 }.font(.caption).foregroundStyle(.secondary).padding(12)
@@ -172,13 +184,18 @@ struct ContentView: View {
                     Label(scopeTitle.title, systemImage: scopeTitle.icon)
                         .font(.headline).lineLimit(1)
                     Spacer()
+                    Button { inspectorVisible.toggle() } label: {
+                        Label(inspectorVisible && model.selectedID != nil ? "Hide Inspector" : "Show Inspector", systemImage: "sidebar.right")
+                    }
+                    .disabled(model.selectedID == nil)
+                    .help("Select a request to inspect its details")
                     Text("\(model.rows.count.formatted()) of \(model.retainedCount.formatted()) retained")
                         .font(.caption).foregroundStyle(.secondary).monospacedDigit()
                 }.padding(.horizontal, 14).padding(.vertical, 10)
                 Divider()
                 HStack(spacing: 8) {
                     Image(systemName: "magnifyingglass").foregroundStyle(.secondary)
-                    TextField("Search text or host:api.test method:GET status:400-499", text: $model.search)
+                    TextField("Search traffic…", text: $model.search)
                         .textFieldStyle(.plain).focused($searchFocused)
                         .accessibilityLabel("Filter traffic")
                         .help("AND filters: host, path, method, status, type, state. Prefix - to exclude. Quote values containing spaces.")
@@ -192,15 +209,27 @@ struct ContentView: View {
                             .buttonStyle(.plain).foregroundStyle(.secondary)
                             .accessibilityLabel("Clear traffic filter")
                     }
+                    Button { showSearchHelp.toggle() } label: { Image(systemName: "questionmark.circle") }
+                        .buttonStyle(.plain)
+                        .accessibilityLabel("Traffic search help")
+                        .popover(isPresented: $showSearchHelp) {
+                            VStack(alignment: .leading, spacing: 8) {
+                                Text("Search traffic").font(.headline)
+                                Text("Combine text with filters, for example:")
+                                Text("host:api.test method:GET status:400-499").monospaced()
+                                Text("Use host, path, method, status, type or state. Filters use AND. Prefix - to exclude; quote values containing spaces.")
+                            }.padding().frame(width: 360)
+                        }
                 }.padding(.horizontal, 14).padding(.vertical, 10)
                 TrafficFilterControls(model: model)
                 Divider()
                 WorkspaceSplit(vertical: model.inspectorOnRight, autosaveName: "Proxiverse.Workspace",
                                firstMinimum: model.inspectorOnRight ? 320 : 180,
-                               secondMinimum: model.inspectorOnRight ? 380 : 260) {
+                               secondMinimum: model.inspectorOnRight ? 380 : 260,
+                               secondCollapsed: model.selectedID == nil || !inspectorVisible) {
                     TrafficTable(rows: model.rows, selectedID: $model.selectedID,
                                  selectedIDs: model.selectedIDs, pinnedIDs: model.pinnedIDs,
-                                 filterRevision: model.filterRevision,
+                                 filterRevision: model.filterRevision, columnResetRevision: columnResetRevision,
                                  onSelection: model.selectTraffic, onSortChanged: model.updateTrafficSort,
                                  onPin: model.setPinned,
                                  onFilter: { _ = model.addFilter(field: $0, value: $1, excluded: $2) },
@@ -239,7 +268,8 @@ struct ContentView: View {
                     Button { model.showMetrics = true } label: {
                         Text("RAM \(model.memory) · CPU \(model.cpu)").monospacedDigit()
                     }.buttonStyle(.plain).help("UI + engine process tree; CPU is a decaying average sampled by ps")
-                    Text("v.0.0.2-beta")
+                    Text((Bundle.main.object(forInfoDictionaryKey: "CFBundleShortVersionString") as? String)
+                         .map { "v\($0)" } ?? "Development build")
                 }.font(.caption).foregroundStyle(.secondary).padding(.horizontal, 12).padding(.vertical, 8)
             }
         }
@@ -295,7 +325,8 @@ private struct ToolbarLabel: View {
         }
         .frame(width: 72, height: 42)
         .contentShape(RoundedRectangle(cornerRadius: 8))
-        .accessibilityElement(children: .combine)
+        .accessibilityElement(children: .ignore)
+        .accessibilityLabel(title)
     }
 }
 
@@ -629,54 +660,67 @@ struct SetupView: View {
     var body: some View {
         VStack(alignment: .leading, spacing: 16) {
             Text("Capture Settings").font(.title2.bold())
-            Button("HTTPS Decryption…") { showHTTPSDecryption = true }
-            Form {
-                TextField("Proxy port", value: $model.proxyPort, format: .number.grouping(.never))
-                TextField("Control port (localhost only)", value: $model.apiPort, format: .number.grouping(.never))
-                Toggle("Allow test devices on local network", isOn: $model.allowLAN)
-                Picker("Mac network service", selection: $model.service) {
-                    ForEach(model.services, id: \.self) { Text($0).tag($0) }
-                }.disabled(!model.setMacProxy)
-            }.disabled(model.running || model.busy)
-            MacCaptureToggle(model: model)
-            Group {
-                Text("Upstream HTTPS").font(.headline)
-                Toggle("Skip server certificate verification (debug only)", isOn: $model.skipUpstreamVerification)
-                    .disabled(model.running || model.busy)
-                if model.skipUpstreamVerification {
-                    Text("Server certificate and hostname checks will be skipped for all HTTPS hosts in this capture. A custom CA is not required. Enabled by default on each app launch. Changes apply on the next capture start.")
-                        .font(.caption).foregroundStyle(.orange)
+            ScrollView {
+                VStack(alignment: .leading, spacing: 16) {
+                    GroupBox("Get started") {
+                        VStack(alignment: .leading, spacing: 10) {
+                            Text("1. Connect your client").font(.headline)
+                            Text("For this Mac, enable Capture Mac Traffic. For a phone or emulator, allow local network access below and configure its proxy to this Mac’s LAN IP and port \(model.proxyPort).")
+                            Text("2. Install and trust the certificate").font(.headline)
+                            Button("Install Certificate on Mac / Device…") { dismiss(); openWindow(id: "install-certificate") }
+                            Text("3. Choose HTTPS domains").font(.headline)
+                            Text("Only selected domains are decrypted. Other HTTPS connections remain encrypted.")
+                            Button("Choose Domains…") { showHTTPSDecryption = true }
+                        }.frame(maxWidth: .infinity, alignment: .leading).padding(6)
+                    }
+                    Form {
+                        TextField("Proxy port", value: $model.proxyPort, format: .number.grouping(.never))
+                        TextField("Control port (localhost only)", value: $model.apiPort, format: .number.grouping(.never))
+                        Toggle("Allow test devices on local network", isOn: $model.allowLAN)
+                        Picker("Mac network service", selection: $model.service) {
+                            ForEach(model.services, id: \.self) { Text($0).tag($0) }
+                        }.disabled(!model.setMacProxy)
+                    }.disabled(model.running || model.busy)
+                    MacCaptureToggle(model: model)
+                    Group {
+                        Text("Upstream HTTPS").font(.headline)
+                        Toggle("Skip server certificate verification (debug only)", isOn: $model.skipUpstreamVerification)
+                            .disabled(model.running || model.busy)
+                        if model.skipUpstreamVerification {
+                            Text("Server certificate and hostname checks will be skipped for all HTTPS hosts in this capture. A custom CA is not required. Enabled by default on each app launch. Changes apply on the next capture start.")
+                                .font(.caption).foregroundStyle(.orange)
+                        }
+                        Text("Organization CA").font(.subheadline)
+                        Text(model.hasUpstreamCA ? "Custom CA bundle installed" : "Using standard trusted CAs")
+                            .font(.callout)
+                        HStack {
+                            Button(model.hasUpstreamCA ? "Replace CA File…" : "Choose CA File…", action: model.chooseUpstreamCA)
+                            if model.hasUpstreamCA { Button("Remove Custom CA", action: model.removeUpstreamCA) }
+                        }.disabled(model.running || model.busy || model.skipUpstreamVerification)
+                        Text("Select a PEM CA bundle provided by your organization. It is added to the standard CAs for server verification. Certificate and hostname checks stay enabled when the skip option is off. Stop capture before changing it; changes apply on the next start.")
+                            .font(.caption).foregroundStyle(.secondary)
+                    }
+                    Text("Mac proxy changes require administrator approval. Stop restores the previous settings. A saved recovery record is checked on the next launch after an unexpected exit.")
+                        .font(.caption).foregroundStyle(.secondary)
+                    if model.recoveryNeeded {
+                        Button("Restore Mac Proxy", action: model.restoreProxy).disabled(model.busy)
+                    }
+                    Divider()
+                    Text("Device trust notes").font(.headline)
+                    Text("Start capture once to create this Mac’s CA. On iOS, enable full trust in Certificate Trust Settings. Android/debug apps must trust the CA separately; disable pinning only in the debug build.")
+                        .font(.callout).textSelection(.enabled)
+                    HStack {
+                        Button("Show Public CA Certificate", action: model.openCertificate)
+                        Button("Open Setup Guide") {
+                            if let url = URL(string: "https://docs.mitmproxy.org/stable/concepts/certificates/") { NSWorkspace.shared.open(url) }
+                        }
+                    }
+                    Text("CA private keys stay on this Mac. Body previews are temporary (128 MiB disk budget), capped at 256 KiB; bodies over 1 MiB are streamed. Compressed/binary previews are omitted in this baseline.")
+                        .font(.caption).foregroundStyle(.secondary)
                 }
-                Text("Organization CA").font(.subheadline)
-                Text(model.hasUpstreamCA ? "Custom CA bundle installed" : "Using standard trusted CAs")
-                    .font(.callout)
-                HStack {
-                    Button(model.hasUpstreamCA ? "Replace CA File…" : "Choose CA File…", action: model.chooseUpstreamCA)
-                    if model.hasUpstreamCA { Button("Remove Custom CA", action: model.removeUpstreamCA) }
-                }.disabled(model.running || model.busy || model.skipUpstreamVerification)
-                Text("Select a PEM CA bundle provided by your organization. It is added to the standard CAs for server verification. Certificate and hostname checks stay enabled when the skip option is off. Stop capture before changing it; changes apply on the next start.")
-                    .font(.caption).foregroundStyle(.secondary)
             }
-            Text("Mac proxy changes require administrator approval. Stop restores the previous settings. A saved recovery record is checked on the next launch after an unexpected exit.")
-                .font(.caption).foregroundStyle(.secondary)
-            if model.recoveryNeeded {
-                Button("Restore Mac Proxy", action: model.restoreProxy).disabled(model.busy)
-            }
-            Divider()
-            Text("HTTPS & test devices").font(.headline)
-            Text("1. Start capture once to create this Mac’s CA.\n2. Trust the public CA on your Mac or test device.\n3. For devices, enable LAN access and set the Wi-Fi HTTP proxy to this Mac’s LAN IP and port \(model.proxyPort).\n4. iOS: enable full trust in Certificate Trust Settings. Android/debug apps: configure trust for the CA; disable pinning only in the debug build.")
-                .font(.callout).textSelection(.enabled)
-            Button("Install on Phone / Emulator…") { dismiss(); openWindow(id: "install-certificate") }
-            HStack {
-                Button("Show Public CA Certificate", action: model.openCertificate)
-                Button("Open Setup Guide") {
-                    if let url = URL(string: "https://docs.mitmproxy.org/stable/concepts/certificates/") { NSWorkspace.shared.open(url) }
-                }
-            }
-            Text("CA private keys stay on this Mac. Body previews are temporary (128 MiB disk budget), capped at 256 KiB; bodies over 1 MiB are streamed. Compressed/binary previews are omitted in this baseline.")
-                .font(.caption).foregroundStyle(.secondary)
             HStack { Spacer(); Button("Done") { dismiss() }.keyboardShortcut(.defaultAction) }
-        }.padding(24).frame(width: 600)
+        }.padding(24).frame(width: 600, height: 650)
         .sheet(isPresented: $showHTTPSDecryption) { HTTPSDecryptionView(model: model) }
     }
 }

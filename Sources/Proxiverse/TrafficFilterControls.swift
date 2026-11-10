@@ -40,7 +40,11 @@ struct TrafficFilterControls: View {
                 } label: {
                     Label(active.map { $0.name + (model.savedFilterModified ? " (modified)" : "") } ?? "Saved Filters",
                           systemImage: "line.3.horizontal.decrease.circle")
+                        .lineLimit(1).truncationMode(.tail)
                 }
+                .frame(maxWidth: 220)
+                .fixedSize(horizontal: true, vertical: false)
+                .help(active?.name ?? "Apply or manage saved filters")
                 Button("Save…") {
                     renaming = nil
                     filterName = ""

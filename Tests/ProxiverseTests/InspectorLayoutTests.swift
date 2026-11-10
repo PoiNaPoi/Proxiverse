@@ -5,6 +5,37 @@ import XCTest
 
 @MainActor
 final class InspectorLayoutTests: XCTestCase {
+    func testInspectorCollapseReturnsSpaceToTrafficAndCanReopenInBothOrientations() async {
+        for vertical in [false, true] {
+            let controller = WorkspaceSplitController(first: Color.clear, second: Color.clear)
+            let window = NSWindow(contentRect: NSRect(x: 0, y: 0, width: 1000, height: 700),
+                                  styleMask: [.titled, .resizable], backing: .buffered, defer: false)
+            window.contentViewController = controller
+            window.setContentSize(NSSize(width: 1000, height: 700))
+            controller.view.frame = NSRect(x: 0, y: 0, width: 1000, height: 700)
+            let name = "Proxiverse.Tests.Collapse.\(UUID().uuidString)"
+            controller.configure(vertical: vertical, autosaveName: name,
+                                 firstMinimum: 180, secondMinimum: 260, secondCollapsed: true)
+            for _ in 0..<5 {
+                controller.view.layoutSubtreeIfNeeded()
+                try? await Task.sleep(for: .milliseconds(10))
+            }
+            XCTAssertTrue(controller.splitViewItems[1].isCollapsed)
+            let collapsedTrafficSize = vertical ? controller.firstHost.view.frame.width : controller.firstHost.view.frame.height
+
+            controller.configure(vertical: vertical, autosaveName: name,
+                                 firstMinimum: 180, secondMinimum: 260, secondCollapsed: false)
+            for _ in 0..<5 {
+                controller.view.layoutSubtreeIfNeeded()
+                try? await Task.sleep(for: .milliseconds(10))
+            }
+            XCTAssertFalse(controller.splitViewItems[1].isCollapsed)
+            let expandedTrafficSize = vertical ? controller.firstHost.view.frame.width : controller.firstHost.view.frame.height
+            XCTAssertGreaterThan(collapsedTrafficSize, expandedTrafficSize)
+            window.contentViewController = nil
+        }
+    }
+
     func testEmptyInspectorDoesNotShowMessagePanesBehindThePlaceholder() async {
         for stacked in [false, true] {
             for loading in [false, true] {

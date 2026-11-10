@@ -6,15 +6,17 @@ struct WorkspaceSplit<First: View, Second: View>: NSViewControllerRepresentable 
     let autosaveName: String
     let firstMinimum: CGFloat
     let secondMinimum: CGFloat
+    let secondCollapsed: Bool?
     let first: First
     let second: Second
 
-    init(vertical: Bool, autosaveName: String, firstMinimum: CGFloat, secondMinimum: CGFloat,
+    init(vertical: Bool, autosaveName: String, firstMinimum: CGFloat, secondMinimum: CGFloat, secondCollapsed: Bool? = nil,
          @ViewBuilder first: () -> First, @ViewBuilder second: () -> Second) {
         self.vertical = vertical
         self.autosaveName = autosaveName
         self.firstMinimum = firstMinimum
         self.secondMinimum = secondMinimum
+        self.secondCollapsed = secondCollapsed
         self.first = first()
         self.second = second()
     }
@@ -27,7 +29,7 @@ struct WorkspaceSplit<First: View, Second: View>: NSViewControllerRepresentable 
         controller.firstHost.rootView = first
         controller.secondHost.rootView = second
         controller.configure(vertical: vertical, autosaveName: autosaveName,
-                             firstMinimum: firstMinimum, secondMinimum: secondMinimum)
+                             firstMinimum: firstMinimum, secondMinimum: secondMinimum, secondCollapsed: secondCollapsed)
     }
 }
 
@@ -47,7 +49,7 @@ final class WorkspaceSplitController<First: View, Second: View>: NSSplitViewCont
     @available(*, unavailable)
     required init?(coder: NSCoder) { fatalError("init(coder:) is unavailable") }
 
-    func configure(vertical: Bool, autosaveName: String, firstMinimum: CGFloat, secondMinimum: CGFloat) {
+    func configure(vertical: Bool, autosaveName: String, firstMinimum: CGFloat, secondMinimum: CGFloat, secondCollapsed: Bool? = nil) {
         let name = NSSplitView.AutosaveName(autosaveName + (vertical ? ".vertical" : ".horizontal"))
         if splitView.isVertical != vertical || splitView.autosaveName != name {
             splitView.autosaveName = nil
@@ -56,5 +58,11 @@ final class WorkspaceSplitController<First: View, Second: View>: NSSplitViewCont
         }
         splitViewItems[0].minimumThickness = firstMinimum
         splitViewItems[1].minimumThickness = secondMinimum
+        if let secondCollapsed {
+            splitViewItems[1].canCollapse = true
+            if splitViewItems[1].isCollapsed != secondCollapsed {
+                splitViewItems[1].isCollapsed = secondCollapsed
+            }
+        }
     }
 }

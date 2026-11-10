@@ -5,6 +5,35 @@ import XCTest
 
 @MainActor
 final class TrafficInteractionTests: XCTestCase {
+    func testResetColumnsRestoresReadableOrderWithoutChangingTrafficSelectionOrSort() {
+        let table = NSTableView(frame: NSRect(x: 0, y: 0, width: 800, height: 400))
+        let scroll = NSScrollView(frame: table.frame)
+        scroll.documentView = table
+        for spec in TrafficTable.columns.reversed() {
+            let column = NSTableColumn(identifier: NSUserInterfaceItemIdentifier(spec.id))
+            column.minWidth = 45
+            column.width = 1000
+            table.addTableColumn(column)
+        }
+        table.columnAutoresizingStyle = .uniformColumnAutoresizingStyle
+        let coordinator = TrafficTable.Coordinator(parent: TrafficTable(rows: [flow(1)], selectedID: .constant("flow-1")))
+        coordinator.sourceRows = [flow(1)]
+        coordinator.rows = [flow(1)]
+        table.dataSource = coordinator
+        table.reloadData()
+        table.sortDescriptors = [NSSortDescriptor(key: "status", ascending: true)]
+        table.selectRowIndexes(IndexSet(integer: 0), byExtendingSelection: false)
+        XCTAssertEqual(table.selectedRow, 0)
+
+        coordinator.resetColumns(table)
+
+        XCTAssertEqual(table.tableColumns.map { $0.identifier.rawValue }, TrafficTable.columns.map(\.id))
+        XCTAssertLessThanOrEqual(table.tableColumns.reduce(0) { $0 + $1.width }, scroll.contentSize.width + 8)
+        XCTAssertGreaterThanOrEqual(table.tableColumns[4].width, 100)
+        XCTAssertEqual(table.selectedRow, 0)
+        XCTAssertEqual(table.sortDescriptors.first?.key, "status")
+    }
+
     private func flow(_ number: Int) -> TrafficFlow {
         TrafficFlow(id: "flow-\(number)", method: "POST", url: "https://api.test/items/\(number)?page=2", host: "api.test",
                     status: 201, state: "complete", started: Double(number), duration: 0.1, size: 30, error: nil, number: number)
