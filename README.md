@@ -134,6 +134,9 @@ The [usage and development guide](docs/USAGE.md) includes engine smoke tests and
 benchmark commands. [Baseline measurements](docs/BASELINE.md) document their scope;
 release notes record known test failures for each build.
 
+GitHub security automation is configured in the [security checks guide](docs/SECURITY_CHECKS.md),
+including CodeQL analysis for Swift/Python and Dependabot updates for Actions.
+
 ## Feedback and contributions
 
 Bug reports and focused pull requests are welcome. For a bug report, include your

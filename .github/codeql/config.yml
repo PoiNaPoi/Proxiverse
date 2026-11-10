@@ -1,0 +1,5 @@
+name: Proxiverse security analysis
+
+paths:
+  - Sources
+  - scripts
