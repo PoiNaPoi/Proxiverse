@@ -8,7 +8,7 @@ run เก่าบน branch เดียวกันจะถูกยกเ�
 
 | Job | สิ่งที่ตรวจ |
 | --- | --- |
-| `Build & Test` | `./scripts/swift.sh build` และ `./scripts/swift.sh test` ทั้งชุด |
+| `Build & Test` | `./scripts/swift.sh build`, ดาวน์โหลดและตรวจ checksum/signature ของ engine ด้วย `./scripts/fetch-engine.sh` แล้วรัน `./scripts/swift.sh test` ทั้งชุด รวม tests ที่เปิด engine จริง |
 | `Engine Integration` | ดาวน์โหลด engine ที่ pin ไว้ ตรวจ checksum/signature แล้วรัน capture 100 requests, Map Local/breakpoints และ selective HTTPS decryption |
 | `Package Verification` | หลังสองงานแรกผ่าน เฉพาะ push `main`/tag หรือสั่งเอง: ตรวจ source archives, build release `.app`, สร้าง ZIP แล้วแตกกลับเพื่อตรวจ signature, arm64, bundle metadata และไฟล์ legal/source |
 | `Draft Release` | เฉพาะ push tag หลัง package ผ่าน: ตรวจ checksum ของ artifacts ที่ดาวน์โหลด แล้วสร้าง Draft Pre-release บน GitHub |

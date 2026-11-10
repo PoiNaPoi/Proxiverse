@@ -31,6 +31,8 @@ jobs:
           persist-credentials: false
       - name: Build Swift sources
         run: ./scripts/swift.sh build 2>&1 | tee build.log
+      - name: Fetch and verify pinned engine for runtime tests
+        run: ./scripts/fetch-engine.sh 2>&1 | tee fetch-engine.log
       - name: Run Swift tests
         run: ./scripts/swift.sh test 2>&1 | tee tests.log
       - name: Upload build and test logs
@@ -40,6 +42,7 @@ jobs:
           name: swift-logs
           path: |
             build.log
+            fetch-engine.log
             tests.log
           retention-days: 7
 

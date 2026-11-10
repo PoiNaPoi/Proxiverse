@@ -103,9 +103,11 @@ final class DebugRulesTests: XCTestCase {
         XCTAssertEqual(payload?["cancel"] as? Bool, true)
     }
 
-    @MainActor func testLaunchDefaultsAllowLANWithoutEnablingSystemProxy() {
-        let model = CaptureModel()
-        XCTAssertTrue(model.allowLAN)
+    @MainActor func testLaunchDefaultsUseLocalhostWithoutEnablingSystemProxy() {
+        let root = FileManager.default.temporaryDirectory.appendingPathComponent(UUID().uuidString)
+        defer { try? FileManager.default.removeItem(at: root) }
+        let model = CaptureModel(settingsStore: AppSettingsStore(root: root))
+        XCTAssertFalse(model.allowLAN)
         XCTAssertFalse(model.setMacProxy)
     }
 
