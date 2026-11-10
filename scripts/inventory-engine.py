@@ -45,7 +45,8 @@ output = {
     "native_files": native,
     "embedded_archives": embedded,
 }
-destination = root / "vendor/third-party/ENGINE_INVENTORY.json"
+destination = root / ".cache/license-review/ENGINE_INVENTORY.json"
+destination.parent.mkdir(parents=True, exist_ok=True)
 destination.write_text(json.dumps(output, indent=2) + "\n")
 print(f"Recorded {len(frozen.toc)} frozen modules, {len(native)} Mach-O files, "
       f"and {len(embedded)} embedded archives")

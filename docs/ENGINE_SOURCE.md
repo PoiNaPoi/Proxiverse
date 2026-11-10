@@ -6,6 +6,14 @@ LGPL libraries, together with a tested local rebuild route. Third-party code
 retains its own license. See `THIRD_PARTY_NOTICES.md` and the supplied license
 texts; the Proxiverse MIT license does not replace them.
 
+The supplemental license and attribution texts are consolidated in
+`vendor/third-party/THIRD_PARTY_LICENSES.txt` (under `Legal/third-party/` in the
+app). `DISTRIBUTION_MANIFEST.json` records that document and all five supplied
+source archive checksums. Developer audit evidence is kept separately under
+`docs/license-audit/` in the repository; it is not required to run this rebuild
+recipe and is not copied into the app. Source archives retain their original
+internal license notices.
+
 ## Obtain and verify source
 
 In a source checkout or the companion `Proxiverse-engine-source-12.2.3.zip`,

@@ -1,6 +1,7 @@
 #!/bin/bash
 set -euo pipefail
 cd "$(dirname "$0")/.."
+python3 scripts/verify-third-party-notices.py
 
 app="dist/Proxiverse.app"
 output="$PWD/dist/ci"
@@ -19,10 +20,12 @@ test "$(lipo -archs "$extracted/Contents/MacOS/Proxiverse")" = arm64
 test "$(lipo -archs "$extracted/Contents/Resources/Engine/mitmproxy.app/Contents/MacOS/mitmdump")" = arm64
 test "$(/usr/libexec/PlistBuddy -c 'Print :CFBundleIdentifier' "$extracted/Contents/Info.plist")" = dev.proxiverse.mac
 test "$(/usr/libexec/PlistBuddy -c 'Print :LSMinimumSystemVersion' "$extracted/Contents/Info.plist")" = 14.0
-for file in LICENSE THIRD_PARTY_NOTICES.md docs/PRIVACY.md docs/AUTHORIZED_USE.md docs/ENGINE_SOURCE.md docs/DEPENDENCY_AUDIT.md docs/PROVENANCE.md docs/provenance-assets.json; do
+for file in LICENSE THIRD_PARTY_NOTICES.md docs/PRIVACY.md docs/AUTHORIZED_USE.md docs/ENGINE_SOURCE.md; do
     cmp "$file" "$extracted/Contents/Resources/Legal/$(basename "$file")"
 done
 diff -qr vendor/third-party "$extracted/Contents/Resources/Legal/third-party"
+test ! -e "$extracted/Contents/Resources/Legal/DEPENDENCY_AUDIT.md"
+test ! -e "$extracted/Contents/Resources/Legal/provenance-assets.json"
 cmp vendor/mitmproxy-LICENSE.txt "$extracted/Contents/Resources/mitmproxy-LICENSE.txt"
 (
     cd "$output"

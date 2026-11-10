@@ -1,0 +1,48 @@
+{
+  "schema": 1,
+  "engine": {
+    "name": "mitmproxy",
+    "version": "12.2.3",
+    "upstream_archive_sha256": "0a09ee3b82569e8985aff8186e4792618b8e5d0c766098db093d09a87d4b013a",
+    "executable_sha256": "ed2dc3ae2f1cb77b415e2083bffd20261c12421550cac02a1030de2e3e6e52f4",
+    "tree_sha256": "b13c82d669a951685274832552f9a16973d6ee80c783997230e45b254b939032",
+    "tree_hash_method": "Sorted relative paths; one compact JSON array [file,path,content_sha256] or [symlink,path,target] per line; UTF-8, ensure_ascii=true."
+  },
+  "selection_method": "Known Python/native notices plus source-derived macOS Rust normal/build dependency candidates; dev-only edges and other targets excluded. Not an exact original-binary SBOM.",
+  "notices": {
+    "file": "THIRD_PARTY_LICENSES.txt",
+    "sha256": "97729479f58b36a68b3657f09faef1e0ad36735e61bcee6f6f52e1604c22f3b0"
+  },
+  "source_archives": [
+    {
+      "component": "certifi 2026.01.04",
+      "file": "certifi-2026.01.04/certifi-2026.1.4.tar.gz",
+      "url": "https://files.pythonhosted.org/packages/e0/2d/a891ca51311197f6ad14a7ef42e2399f36cf2f9bd44752b3dc4eab60fdc5/certifi-2026.1.4.tar.gz",
+      "sha256": "ac726dd470482006e014ad384921ed6438c457018f4b3d204aea4281258b2120"
+    },
+    {
+      "component": "ldap3 2.9.1",
+      "file": "ldap3-2.9.1/ldap3-2.9.1.tar.gz",
+      "url": "https://files.pythonhosted.org/packages/43/ac/96bd5464e3edbc61595d0d69989f5d9969ae411866427b2500a8e5b812c0/ldap3-2.9.1.tar.gz",
+      "sha256": "f3e7fc4718e3f09dda568b57100095e0ce58633bcabbed8667ce3f8fbaa4229f"
+    },
+    {
+      "component": "urwid 3.0.3",
+      "file": "urwid-3.0.3/urwid-3.0.3.tar.gz",
+      "url": "https://files.pythonhosted.org/packages/bb/d3/09683323e2290732a39dc92ca5031d5e5ddda56f8d236f885a400535b29a/urwid-3.0.3.tar.gz",
+      "sha256": "300804dd568cda5aa1c5b204227bd0cfe7a62cef2d00987c5eb2e4e64294ed9b"
+    },
+    {
+      "component": "mitmproxy 12.2.3",
+      "file": "mitmproxy-12.2.3/mitmproxy-6c09d56e4c29a92f5ad01b03199977584b8ea14f.tar.gz",
+      "url": "https://codeload.github.com/mitmproxy/mitmproxy/tar.gz/6c09d56e4c29a92f5ad01b03199977584b8ea14f",
+      "sha256": "e08a9b63dfe24e75cf9e3e63c91309813e20ac6cee10cbb51c04dfc772969f24"
+    },
+    {
+      "component": "mitmproxy_rs 0.12.9",
+      "file": "mitmproxy_rs-0.12.9/mitmproxy_rs-0.12.9.tar.gz",
+      "url": "https://files.pythonhosted.org/packages/5d/5c/16a61303da76cd34aa6ddbd7ef6ac66d9ef8514c4d3a5b71831169d63236/mitmproxy_rs-0.12.9.tar.gz",
+      "sha256": "c6ffc35c002c675cac534442d92d1cdebd66fafd63754ad33b92ae968ea6e449"
+    }
+  ]
+}

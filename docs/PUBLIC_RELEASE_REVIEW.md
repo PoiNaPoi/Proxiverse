@@ -31,10 +31,11 @@ Prepared 2026-11-09. This is a release review record, not legal clearance.
 - [ ] Complete the engine's transitive dependency and native-library license
   audit. THIRD_PARTY_NOTICES.md records the verified subset and gaps; preserving
   vendor files alone is not a complete compliance opinion.
-  Additional review on 2026-11-10 supplied 12 distributions' notices, a frozen
-  module/native inventory, and Rust lockfile notices. `DEPENDENCY_AUDIT.md`
-  records evidence and unresolved original-build/static-dependency gaps; this
-  item remains open rather than claiming a completed legal audit.
+  Review on 2026-11-10 consolidated redistribution texts, preserved covered
+  sources and selected source-derived macOS Rust candidates instead of treating
+  the whole cross-platform lockfile as shipped code. Audit evidence is retained
+  separately in `license-audit/`; `DEPENDENCY_AUDIT.md` records original-native-
+  build provenance limits. This item does not claim completed legal clearance.
 - [x] Pattern-scanned reachable local Git history (2 commits, 102 blobs) for
   private-key markers and common AWS/GitHub/Google API key formats. The only
   matches were deliberately invalid private-key markers in two unit test files;

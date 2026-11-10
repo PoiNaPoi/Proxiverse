@@ -4,6 +4,7 @@ import hashlib
 import io
 import json
 import sys
+import tarfile
 import types
 import urllib.request
 import zipfile
@@ -19,7 +20,8 @@ cache = root / ".cache/license-audit"
 cache.mkdir(parents=True, exist_ok=True)
 archive = CArchiveReader(str(root / "vendor/mitmproxy.app/Contents/MacOS/mitmdump"))
 frozen = archive.open_embedded_archive("PYZ.pyz")
-packages = json.loads((root / "vendor/third-party/ADDITIONAL_NOTICE_SOURCES.json").read_text())
+with tarfile.open(root / "docs/license-audit/evidence.tar.gz") as evidence:
+    packages = json.load(evidence.extractfile("ADDITIONAL_NOTICE_SOURCES.json"))
 
 
 def normalized(code):

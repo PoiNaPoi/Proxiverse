@@ -161,6 +161,10 @@ and the evidence and limits of the provenance review.
 The app bundles [mitmproxy](https://github.com/mitmproxy/mitmproxy) and its dependencies,
 which retain their respective licenses.
 
+Supplemental license texts are collected in one
+[third-party license document](vendor/third-party/THIRD_PARTY_LICENSES.txt).
+Developer audit evidence is maintained separately from the app's legal materials.
+
 See [Third-party notices](THIRD_PARTY_NOTICES.md) for attribution and
 [Engine source and replacement](docs/ENGINE_SOURCE.md) for the supplied source
 archives and local rebuild instructions. Outstanding distribution and dependency
