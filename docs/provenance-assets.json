@@ -4,15 +4,11 @@
   "files": [
     {
       "file": "images/Proxiverse-icon.png",
-      "sha256": "a0774ee16b6566910409556be933b736a8fa3f5adc29f9c3e2995052602e93cb"
-    },
-    {
-      "file": "images/Proxiverse.jpeg",
-      "sha256": "be6a58a64008bcb684f045092344d6124dd57d054f4077cb600a15edb2926c20"
+      "sha256": "ce8d8c8f3a473fdfa406c6783166a43cbe4121e335c5eaba3d2ce0cd2e219b86"
     },
     {
       "file": "Sources/Proxiverse/Resources/Proxiverse.icns",
-      "sha256": "60334d9e4ae9f20a21d678960c594d9ede41f6bce64aa66112495c6f41e89c9a"
+      "sha256": "907211dc9a0c9fc484b0ec9a3f0d53aa0206790582cad8d3ec975cf93e217116"
     },
     {
       "file": "Sources/Proxiverse/Resources/install-certificate.dex",
