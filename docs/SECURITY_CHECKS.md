@@ -66,10 +66,12 @@ test ที่ต้องติดตั้ง CA บน Android emulator ย�
 
 ## การตรวจอัตโนมัติ
 
-ไฟล์ `.github/workflows/codeql.yml` ตั้งให้ CodeQL ตรวจเมื่อ push เข้า `main`,
-เปิดหรืออัปเดต Pull Request ที่เข้า `main`, ทุกวันจันทร์เวลา 09:23 น. ประเทศไทย
-และสั่งเองผ่าน **Actions → CodeQL → Run workflow** ได้
-การรันตามรอบและปุ่มสั่งเองต้องมี workflow อยู่บน default branch ก่อน
+ไฟล์ `.github/workflows/codeql.yml` ตั้งให้ CodeQL ตรวจเมื่อเปิด, เปิดใหม่ หรือ push commit
+เพิ่มใน Pull Request ที่เข้า `main` และสั่งเองผ่าน **Actions → CodeQL → Run workflow** ได้
+ไม่รันอัตโนมัติเมื่อ push เข้า `main` หรือรันตามรอบรายสัปดาห์
+เมื่อ push commit ใหม่ใน PR เดิม run ที่กำลังทำงานอยู่จะถูกยกเลิกเพื่อใช้ผลจาก commit ล่าสุด
+ปุ่มสั่งเองต้องมี workflow อยู่บน default branch ก่อน
+หากต้องการอัปเดตผลวิเคราะห์ของ `main` ให้สั่งเองโดยเลือก branch `main`
 
 - Swift: build ด้วย `./scripts/swift.sh build` บน macOS 15 แล้ววิเคราะห์โค้ดที่ build
 - Python: วิเคราะห์ `Sources` และ `scripts` บน Linux โดยไม่รันสคริปต์
