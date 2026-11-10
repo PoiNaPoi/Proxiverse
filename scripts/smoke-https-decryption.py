@@ -44,6 +44,7 @@ def main():
                        check=True, stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
         origin = ThreadingHTTPServer(("127.0.0.1", 0), Origin)
         context = ssl.SSLContext(ssl.PROTOCOL_TLS_SERVER)
+        context.minimum_version = ssl.TLSVersion.TLSv1_2
         context.load_cert_chain(root / "server.pem", root / "server.key")
         origin.socket = context.wrap_socket(origin.socket, server_side=True)
         threading.Thread(target=origin.serve_forever, daemon=True).start()
