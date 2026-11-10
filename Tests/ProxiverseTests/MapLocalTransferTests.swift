@@ -59,8 +59,8 @@ final class MapLocalTransferTests: XCTestCase {
         XCTAssertThrowsError(try MapLocalTransfer.export(draft, store: store, selectedIDs: []))
     }
 
-    func testProxymanBackupAndSingleToolTreePreserveFolderStateHTTPResponseAndMethods() throws {
-        let node = proxymanNode(response: Data("HTTP/1.1 201 Created\r\nContent-Type: application/json\r\nSet-Cookie: a=1\r\nSet-Cookie: b=2\r\nContent-Length: 2\r\n\r\n{}".utf8))
+    func testConfigBackupAndSingleToolTreePreserveFolderStateHTTPResponseAndMethods() throws {
+        let node = mapLocalNode(response: Data("HTTP/1.1 201 Created\r\nContent-Type: application/json\r\nSet-Cookie: a=1\r\nSet-Cookie: b=2\r\nContent-Length: 2\r\n\r\n{}".utf8))
         let tree: [[String: Any]] = [["nodeType": ["folder": ["_0": ["isEnabled": false, "entries": [node]]]]]]
         let treeData = try JSONSerialization.data(withJSONObject: tree)
         let backup = try JSONSerialization.data(withJSONObject: ["mapLocalData": ["data": treeData.base64EncodedString(), "isEnabled": true]])
@@ -79,7 +79,7 @@ final class MapLocalTransferTests: XCTestCase {
 
     func testRawBinaryAndLFResponseAndAnyMethod() throws {
         for bytes in [Data([0, 255, 0]), Data("HTTP/1.1 404 Not Found\nContent-Type: text/plain\n\nmissing\n".utf8)] {
-            var source = proxymanSource(response: bytes)
+            var source = mapLocalSource(response: bytes)
             source["method"] = ["any": [:]]
             let entries = try MapLocalTransfer.decode(JSONSerialization.data(withJSONObject: [["nodeType": ["node": ["_0": source]]]]))
             XCTAssertEqual(entries[0].rule.method, "*")
@@ -90,12 +90,12 @@ final class MapLocalTransferTests: XCTestCase {
     func testRejectsUnsupportedRulesAndMissingEmbeddedFile() throws {
         for change: [String: Any] in [["regex": "useRegex"], ["isDirectoryFileEnable": true],
                                      ["graphQLQueryName": "GetUser"], ["localFile": ["path": "/private/secret"]]] {
-            var source = proxymanSource(response: Data("{}".utf8))
+            var source = mapLocalSource(response: Data("{}".utf8))
             source.merge(change) { _, value in value }
             let data = try JSONSerialization.data(withJSONObject: [["nodeType": ["node": ["_0": source]]]])
             XCTAssertThrowsError(try MapLocalTransfer.decode(data))
         }
-        let external = proxymanNode(response: Data("HTTP/1.1 200 OK\n\n<FILE_URL=\"/private/secret\">".utf8))
+        let external = mapLocalNode(response: Data("HTTP/1.1 200 OK\n\n<FILE_URL=\"/private/secret\">".utf8))
         XCTAssertThrowsError(try MapLocalTransfer.decode(JSONSerialization.data(withJSONObject: [external])))
     }
 
@@ -114,8 +114,8 @@ final class MapLocalTransferTests: XCTestCase {
         XCTAssertThrowsError(try MapLocalTransfer.append(entries, to: draft, store: store, otherRuleCount: 198))
     }
 
-    func testActualProxymanExportWhenProvided() throws {
-        guard let path = ProcessInfo.processInfo.environment["PROXIVERSE_TEST_PROXYMAN_EXPORT"] else {
+    func testActualMapLocalExportWhenProvided() throws {
+        guard let path = ProcessInfo.processInfo.environment["PROXIVERSE_TEST_MAP_LOCAL_EXPORT"] else {
             throw XCTSkip("Optional local compatibility check")
         }
         let data = try Data(contentsOf: URL(fileURLWithPath: path))
@@ -143,7 +143,7 @@ final class MapLocalTransferTests: XCTestCase {
         let supportedTree = try JSONSerialization.data(withJSONObject: embeddedNodes(tree))
         let supportedBackup = try JSONSerialization.data(withJSONObject: ["mapLocalData": ["data": supportedTree.base64EncodedString()]])
         let entries = try MapLocalTransfer.decode(supportedBackup)
-        print("Verified \(entries.count) embedded rules from installed Proxyman export")
+        print("Verified \(entries.count) embedded rules from provided Map Local export")
         let root = temporaryRoot()
         defer { try? FileManager.default.removeItem(at: root) }
         let store = RuleStore(root: root)
@@ -157,11 +157,11 @@ final class MapLocalTransferTests: XCTestCase {
         FileManager.default.temporaryDirectory.appendingPathComponent(UUID().uuidString)
     }
 
-    private func proxymanNode(response: Data) -> [String: Any] {
-        ["nodeType": ["node": ["_0": proxymanSource(response: response)]]]
+    private func mapLocalNode(response: Data) -> [String: Any] {
+        ["nodeType": ["node": ["_0": mapLocalSource(response: response)]]]
     }
 
-    private func proxymanSource(response: Data) -> [String: Any] {
+    private func mapLocalSource(response: Data) -> [String: Any] {
         ["name": "Fixture", "url": "https://api.example.test:8443/items?x=1", "regex": "useWildcard",
          "isEnabled": true, "isLocalFileEnable": true, "isDirectoryFileEnable": false, "isIncludingPaths": true,
          "method": ["exact": [["name": "GET"], ["name": "POST"]]],

@@ -57,9 +57,9 @@ enum MapLocalTransfer {
                 tree = try JSONSerialization.jsonObject(with: bytes)
             }
             guard let nodes = tree as? [[String: Any]] else {
-                throw AppFailure("Choose a Proxiverse Map Local export or a Proxyman Map Local .config file")
+                throw AppFailure("Choose a Proxiverse Map Local export or a Map Local .config file")
             }
-            entries = try proxymanNodes(nodes, enabled: true)
+            entries = try mapLocalNodes(nodes, enabled: true)
         }
         guard !entries.isEmpty, entries.count <= 200 else { throw AppFailure("Import requires 1–200 Map Local rules") }
         guard entries.allSatisfy({ $0.rule.kind == "mapLocal" && $0.body.count <= RuleStore.maximumMockBytes }) else {
@@ -102,33 +102,33 @@ enum MapLocalTransfer {
         }
     }
 
-    private static func proxymanNodes(_ nodes: [[String: Any]], enabled: Bool) throws -> [Entry] {
+    private static func mapLocalNodes(_ nodes: [[String: Any]], enabled: Bool) throws -> [Entry] {
         var result: [Entry] = []
         for node in nodes {
-            guard let type = node["nodeType"] as? [String: Any] else { throw AppFailure("Invalid Proxyman Map Local tree") }
+            guard let type = node["nodeType"] as? [String: Any] else { throw AppFailure("Invalid Map Local tree") }
             if let folder = (type["folder"] as? [String: Any])?["_0"] as? [String: Any],
                let children = folder["entries"] as? [[String: Any]] {
-                result += try proxymanNodes(children, enabled: enabled && (folder["isEnabled"] as? Bool ?? true))
+                result += try mapLocalNodes(children, enabled: enabled && (folder["isEnabled"] as? Bool ?? true))
             } else if let rule = (type["node"] as? [String: Any])?["_0"] as? [String: Any] {
-                result += try proxymanRule(rule, enabled: enabled)
-            } else { throw AppFailure("Invalid Proxyman Map Local node") }
+                result += try mapLocalRule(rule, enabled: enabled)
+            } else { throw AppFailure("Invalid Map Local node") }
             guard result.count <= 200 else { throw AppFailure("Maximum 200 rules") }
         }
         return result
     }
 
-    private static func proxymanRule(_ source: [String: Any], enabled: Bool) throws -> [Entry] {
+    private static func mapLocalRule(_ source: [String: Any], enabled: Bool) throws -> [Entry] {
         let name = source["name"] as? String ?? "Imported response"
         guard source["regex"] as? String == "useWildcard",
               source["isDirectoryFileEnable"] as? Bool != true,
               source["isLocalFileEnable"] as? Bool == true,
               (source["graphQLQueryName"] as? String ?? "").isEmpty else {
-            throw AppFailure("\(name): Proxyman Regex, Directory and GraphQL rules are not supported")
+            throw AppFailure("\(name): Regex, Directory and GraphQL rules are not supported")
         }
         guard let url = source["url"] as? String, !url.isEmpty, url.count <= 8192,
               let local = source["localFile"] as? [String: Any],
               let encoded = local["importFileData"] as? String, let bytes = Data(base64Encoded: encoded) else {
-            throw AppFailure("\(name): missing embedded response. Export the rule with its response file from Proxyman")
+            throw AppFailure("\(name): missing embedded response. Export the rule with its response file embedded")
         }
         var rule = DebugRule()
         rule.name = name
@@ -145,7 +145,7 @@ enum MapLocalTransfer {
         if method["any"] != nil { methods = ["*"] }
         else if let exact = method["exact"] as? [[String: Any]], !exact.isEmpty,
                 exact.allSatisfy({ $0["name"] is String }) { methods = exact.compactMap { $0["name"] as? String } }
-        else { throw AppFailure("\(name): unsupported Proxyman HTTP method") }
+        else { throw AppFailure("\(name): unsupported HTTP method") }
         return methods.map { method in
             var copy = rule
             copy.method = method

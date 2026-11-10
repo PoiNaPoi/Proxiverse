@@ -210,7 +210,7 @@ struct RulesView: View {
         let panel = NSOpenPanel()
         panel.canChooseDirectories = false
         panel.allowsMultipleSelection = false
-        panel.message = "Import Proxiverse JSON or Proxyman Map Local .config. Rules are appended."
+        panel.message = "Import Proxiverse JSON or Map Local .config. Rules are appended."
         guard panel.runModal() == .OK, let url = panel.url else { return }
         do {
             let size = try url.resourceValues(forKeys: [.fileSizeKey]).fileSize ?? 0

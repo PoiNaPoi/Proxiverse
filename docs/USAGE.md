@@ -536,13 +536,13 @@ Map Local รองรับ request body ที่ทราบขนาดไ�
 
 Import เป็นการเพิ่ม ไม่แทนกฎเดิมทั้งหมด และกฎที่เปิดใช้งานจะมีผลหลังนำเข้าสำเร็จ
 
-### 12.3 ไฟล์จาก Proxyman และขีดจำกัด
+### 12.3 รูปแบบไฟล์และขีดจำกัด
 
-รองรับ Proxyman macOS `.config` ที่มี `mapLocalData` และ JSON tree ของ Map Local แบบแยก กฎในโฟลเดอร์จะคลี่ตามลำดับเดิมและรักษาสถานะปิดของโฟลเดอร์ กฎเครื่องมือชนิดอื่นใน backup ไม่ถูกนำเข้า
+รองรับไฟล์ `.config` ที่มี `mapLocalData` และ JSON tree ของ Map Local แบบแยก กฎในโฟลเดอร์จะคลี่ตามลำดับเดิมและรักษาสถานะปิดของโฟลเดอร์ กฎเครื่องมือชนิดอื่นใน backup ไม่ถูกนำเข้า
 
-กฎที่นำเข้าจาก Proxyman ใช้ **URL pattern / Include subpaths** เพื่อคง protocol, port และ query; หลาย methods แยกเป็นหลายกฎ รองรับ wildcard และ response ที่ฝังมาเป็น raw file หรือ HTTP message
+กฎที่นำเข้าจากรูปแบบนี้ใช้ **URL pattern / Include subpaths** เพื่อคง protocol, port และ query; หลาย methods แยกเป็นหลายกฎ รองรับ wildcard และ response ที่ฝังมาเป็น raw file หรือ HTTP message
 
-หากมี Regex, Directory, GraphQL, `FILE_URL` ภายนอก หรือ response file ไม่ได้ฝังมา จะยกเลิกการนำเข้าทั้งชุดพร้อมแจ้งเหตุผลก่อนเปลี่ยนรายการ Import จำกัดไฟล์ 256 MiB, body 8 MiB ต่อกฎ และกฎทุกชนิดรวมสูงสุด 200 กฎ Export เป็น format ของ Proxiverse สำหรับนำกลับเข้า Proxiverse ไม่ใช่การส่งออกกลับ Proxyman
+หากมี Regex, Directory, GraphQL, `FILE_URL` ภายนอก หรือ response file ไม่ได้ฝังมา จะยกเลิกการนำเข้าทั้งชุดพร้อมแจ้งเหตุผลก่อนเปลี่ยนรายการ Import จำกัดไฟล์ 256 MiB, body 8 MiB ต่อกฎ และกฎทุกชนิดรวมสูงสุด 200 กฎ Export เป็น format ของ Proxiverse สำหรับนำกลับเข้า Proxiverse
 
 <a id="breakpoints"></a>
 

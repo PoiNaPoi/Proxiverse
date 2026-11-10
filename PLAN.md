@@ -4,11 +4,11 @@
 
 ## 1. เป้าหมาย
 
-พัฒนา Proxiverse ให้มี workflow และความสามารถหลักใกล้เคียง Proxyman:
+พัฒนา Proxiverse ให้รองรับ workflow หลัก:
 
 **Capture → Filter → Inspect → Mock/Edit/Repeat → Save/Share**
 
-เน้นความสะดวกในการใช้งานจริง ความถูกต้องของข้อมูล และความลื่นของ native macOS app ไม่ใช่การทำ pixel-perfect clone หรือคัดลอก branding, icons, assets และ source code ของ Proxyman
+เน้นความสะดวกในการใช้งานจริง ความถูกต้องของข้อมูล และความลื่นของ native macOS app
 
 เอกสารนี้รวบรวม roadmap ที่ตกลงไว้ พร้อมสถานะหลังงาน Map Local และ JSON editor ล่าสุด ไม่ได้หมายความว่าทุก phase เสร็จแล้ว และการบันทึกเอกสารนี้ไม่ได้เริ่ม implementation ระยะถัดไป
 
@@ -321,5 +321,3 @@ Dependency graph นี้ไม่บังคับให้ทุก phase �
 - [Native JSON editing/folding layout](Sources/Proxiverse/JSONEditorTextView.swift)
 - [Engine bridge](Sources/Proxiverse/Resources/bridge.py)
 - [Regression tests](Tests/ProxiverseTests)
-
-อ้างอิงความสามารถและ workflow จาก [เอกสาร Proxyman](https://proxyman.com/docs/) และ [changelog](https://proxyman.com/changelog) เป็นแนวทาง ไม่ไล่เพิ่ม scope อัตโนมัติเมื่อมีรุ่นใหม่

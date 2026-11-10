@@ -21,9 +21,8 @@ Prepared 2026-11-09. This is a release review record, not legal clearance.
 - [x] The same owner declaration covers project images, including the PNG/JPEG
   artwork and generated icon. Retain provenance/permission records outside the
   public repository if they contain confidential information.
-- [x] On 2026-11-10 the owner additionally confirmed no decompilation/disassembly
-  of Proxyman or extraction of its code/artwork/resources for this project, and
-  confirmed distribution rights including employer/client/third-party concerns.
+- [x] On 2026-11-10 the owner additionally confirmed distribution rights
+  including employer/client/third-party concerns.
   `PROVENANCE.md` records the declaration and its verification limits; asset
   hashes are in `provenance-assets.json`. README clarifies independent affiliation.
 - [ ] Review the name/logo for trademark conflicts in intended markets. No

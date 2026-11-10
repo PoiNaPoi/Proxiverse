@@ -34,7 +34,7 @@ mitmproxy engine, so app users do not need to install Python separately.
 | **Breakpoints** | Pause requests or responses, edit supported headers and bodies, then continue or cancel. |
 | **Search and saved filters** | Filter by host, path, method, status, content type, or state. Save filters and pin requests or domains. |
 | **Device setup** | Configure Mac capture and use certificate setup helpers for iOS Simulator, Android/ADB, and phones or tablets on your network. |
-| **Rule sharing** | Import and export portable Map Local rules, including supported Proxyman Map Local exports with embedded responses. |
+| **Rule sharing** | Import and export portable Map Local rules, including supported Map Local exports with embedded responses. |
 | **Workspace layout** | Arrange inspectors beside or below traffic, with light/dark appearance and saved layout preferences. |
 
 ## Download
@@ -151,9 +151,7 @@ public issues. Check the [usage guide](docs/USAGE.md) and
 
 ## License and acknowledgments
 
-Proxiverse is an independent project and is not affiliated with, endorsed by, or
-sponsored by Proxyman. Import features mention Proxyman to describe supported
-file compatibility; they do not imply a partnership or endorsement.
+Proxiverse is an independent project.
 
 Proxiverse-owned code and documentation are licensed under the [MIT License](LICENSE).
 See [Code and artwork provenance](docs/PROVENANCE.md) for the owner's declaration
