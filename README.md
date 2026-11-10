@@ -1,8 +1,8 @@
 <p align="center">
-  <img src="images/Proxiverse-icon.png" alt="Proxiverse app icon" width="128" />
+  <img src="images/Reqnivo-icon.png" alt="Reqnivo app icon" width="128" />
 </p>
 
-<h1 align="center">Proxiverse</h1>
+<h1 align="center">Reqnivo</h1>
 
 <p align="center">
   A native macOS HTTP &amp; HTTPS debugger.<br />
@@ -14,13 +14,13 @@
 </p>
 
 <p align="center">
-  <a href="https://github.com/PoiNaPoi/Proxiverse/releases">Download</a> ·
+  <a href="https://github.com/PoiNaPoi/Reqnivo/releases">Download</a> ·
   <a href="#quick-start">Quick start</a> ·
   <a href="docs/USAGE.md">คู่มือภาษาไทย</a> ·
-  <a href="https://github.com/PoiNaPoi/Proxiverse/issues">Report an issue</a>
+  <a href="https://github.com/PoiNaPoi/Reqnivo/issues">Report an issue</a>
 </p>
 
-Proxiverse helps you inspect and debug HTTP APIs on your Mac, simulators, emulators,
+Reqnivo helps you inspect and debug HTTP APIs on your Mac, simulators, emulators,
 and connected test devices. It combines a native interface with a bundled
 mitmproxy engine, so app users do not need to install Python separately.
 
@@ -39,8 +39,8 @@ mitmproxy engine, so app users do not need to install Python separately.
 
 ## Download
 
-Get the macOS arm64 ZIP from [GitHub Releases](https://github.com/PoiNaPoi/Proxiverse/releases),
-extract it, and move **Proxiverse.app** to Applications. Check the release notes for
+Get the macOS arm64 ZIP from [GitHub Releases](https://github.com/PoiNaPoi/Reqnivo/releases),
+extract it, and move **Reqnivo.app** to Applications. Check the release notes for
 the build's validation results and known issues.
 
 - **Requirements:** Apple Silicon Mac, macOS 14 or later. Intel builds are not provided.
@@ -56,7 +56,7 @@ on a second Mac remain unverified.
 
 ### Capture from your Mac
 
-1. Open Proxiverse. The app starts a capture automatically on first launch.
+1. Open Reqnivo. The app starts a capture automatically on first launch.
    Fresh settings use a local-only proxy at `127.0.0.1:9090`.
 2. Enable **Capture Mac Traffic** in the sidebar and approve the macOS permission
    request. This routes traffic from apps that use the selected network service's
@@ -66,7 +66,7 @@ on a second Mac remain unverified.
    **HTTPS** or **Enable Decryption**, then reconnect the client.
 4. Select a request to inspect its headers and body. Right-click it to create a
    **Map Local** or breakpoint rule.
-5. Click **Stop** when finished. Proxiverse attempts to restore the Mac proxy
+5. Click **Stop** when finished. Reqnivo attempts to restore the Mac proxy
    settings it changed.
 
 HTTPS decryption is off by default. Trusting the CA and enabling a hostname are
@@ -92,15 +92,15 @@ Certificate pinning must be handled in your own test app's debug configuration.
 
 ## Privacy and local data
 
-Capture processing runs locally on your Mac. Proxiverse does not implement a
+Capture processing runs locally on your Mac. Reqnivo does not implement a
 developer-operated capture upload, account, analytics, or crash-reporting service.
 
 Captured headers and body previews can contain credentials, cookies, and personal
-data. They are **not automatically redacted or encrypted by Proxiverse**. Local
+data. They are **not automatically redacted or encrypted by Reqnivo**. Local
 settings, rules, certificates, and capture data use
-`~/Library/Application Support/Proxiverse/` by default.
+`~/Library/Application Support/Reqnivo/` by default.
 
-Use Proxiverse only with systems and data you are authorized to test. Enable LAN
+Use Reqnivo only with systems and data you are authorized to test. Enable LAN
 access only on a trusted test network. Restore device proxy settings and remove
 installed test CAs when you no longer need them.
 
@@ -114,14 +114,14 @@ toolchain. The build downloads a pinned mitmproxy engine and verifies its checks
 and code signature.
 
 ```sh
-git clone https://github.com/PoiNaPoi/Proxiverse.git
-cd Proxiverse
+git clone https://github.com/PoiNaPoi/Reqnivo.git Reqnivo
+cd Reqnivo
 ./scripts/build-app.sh
-open dist/Proxiverse.app
+open dist/Reqnivo.app
 ```
 
 The build script bundles the engine and generates app icons from
-[`images/Proxiverse-icon.png`](images/Proxiverse-icon.png). It creates a local,
+[`images/Reqnivo-icon.png`](images/Reqnivo-icon.png). It creates a local,
 ad-hoc signed app.
 
 Run the Swift tests:
@@ -142,18 +142,18 @@ and Dependabot updates for Actions.
 ## Feedback and contributions
 
 Bug reports and focused pull requests are welcome. For a bug report, include your
-macOS version, Mac architecture, Proxiverse version, steps to reproduce, and the
+macOS version, Mac architecture, Reqnivo version, steps to reproduce, and the
 expected and actual behavior. Use a minimal example with synthetic data.
 
 Do not attach private captures, credentials, CA private keys, or personal data to
 public issues. Check the [usage guide](docs/USAGE.md) and
-[existing issues](https://github.com/PoiNaPoi/Proxiverse/issues) before opening a report.
+[existing issues](https://github.com/PoiNaPoi/Reqnivo/issues) before opening a report.
 
 ## License and acknowledgments
 
-Proxiverse is an independent project.
+Reqnivo is an independent project.
 
-Proxiverse-owned code and documentation are licensed under the [MIT License](LICENSE).
+Reqnivo-owned code and documentation are licensed under the [MIT License](LICENSE).
 See [Code and artwork provenance](docs/PROVENANCE.md) for the owner's declaration
 and the evidence and limits of the provenance review.
 The app bundles [mitmproxy](https://github.com/mitmproxy/mitmproxy) and its dependencies,

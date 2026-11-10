@@ -1,6 +1,6 @@
-Proxiverse third-party licenses and notices
+Reqnivo third-party licenses and notices
 
-Proxiverse-owned code is MIT licensed; third-party material retains its own terms.
+Reqnivo-owned code is MIT licensed; third-party material retains its own terms.
 Original notices inside the unmodified signed engine are also retained.
 This document includes known Python/native components and conservatively selected
 macOS Rust normal/build dependency candidates. It is not an exact linked-code SBOM.

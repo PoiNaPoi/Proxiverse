@@ -1,10 +1,10 @@
-# คู่มือใช้งาน Proxiverse ภาษาไทย
+# คู่มือใช้งาน Reqnivo ภาษาไทย
 
 [กลับไปหน้า README](../README.md)
 
 คู่มือนี้เริ่มตั้งแต่เปิดแอปครั้งแรกไปจนถึงอ่าน API, จำลอง response และหยุด request เพื่อแก้ไขก่อนส่งต่อ ชื่อปุ่มภาษาอังกฤษในคู่มือตรงกับหน้าจอแอป เพื่อให้เปิดอ่านแล้วทำตามได้ทีละขั้น
 
-Proxiverse เป็นแอปบน Mac สำหรับตรวจ HTTP/HTTPS ที่ส่งผ่าน proxy ของแอป ใช้ได้ทั้งกับโปรแกรมบน Mac, โทรศัพท์, iOS Simulator และ Android Emulator โดยมี capture engine รวมมาให้แล้ว ผู้ใช้แอปไม่ต้องติดตั้ง Python
+Reqnivo เป็นแอปบน Mac สำหรับตรวจ HTTP/HTTPS ที่ส่งผ่าน proxy ของแอป ใช้ได้ทั้งกับโปรแกรมบน Mac, โทรศัพท์, iOS Simulator และ Android Emulator โดยมี capture engine รวมมาให้แล้ว ผู้ใช้แอปไม่ต้องติดตั้ง Python
 
 รุ่นปัจจุบันเป็น early beta รองรับ Apple Silicon และตั้งเป้าหมาย macOS 14 ขึ้นไป ไม่มี build สำหรับ Intel การตั้ง deployment target ไม่ได้ยืนยันว่าทดสอบครบทุกเวอร์ชัน macOS โปรดอ่านผลทดสอบและข้อจำกัดของไฟล์ที่ดาวน์โหลดใน release notes ด้วย
 
@@ -38,7 +38,7 @@ Proxiverse เป็นแอปบน Mac สำหรับตรวจ HTTP/H
 | --- | --- |
 | Client | โปรแกรมที่เรียก API เช่น Safari หรือแอปที่กำลังทดสอบบนมือถือ |
 | Server | เครื่องปลายทางที่ให้บริการ API |
-| Proxy | จุดที่ client ส่งข้อมูลผ่านก่อนถึง server ในที่นี้คือ Proxiverse บน Mac |
+| Proxy | จุดที่ client ส่งข้อมูลผ่านก่อนถึง server ในที่นี้คือ Reqnivo บน Mac |
 | Traffic | คำขอและคำตอบที่วิ่งผ่าน proxy |
 | Request | ข้อมูลที่ client ส่ง เช่น `GET /products` หรือข้อมูล JSON ตอนกดบันทึก |
 | Response | ข้อมูลที่ server ตอบ เช่น status `200` และรายการสินค้า |
@@ -54,7 +54,7 @@ Proxiverse เป็นแอปบน Mac สำหรับตรวจ HTTP/H
 | Breakpoint | หยุด request หรือ response ไว้ เพื่ออ่านและแก้ก่อนกดส่งต่อ |
 | Inspector | แผงรายละเอียดของรายการที่เลือก แสดง Request และ Response |
 
-เมื่อใช้งานปกติ ข้อมูลเดินทางจาก client ผ่าน Proxiverse ไปยัง server และคำตอบย้อนกลับผ่าน Proxiverse มายัง client การเปิดแอปอย่างเดียวไม่ได้ทำให้ทุกโปรแกรมส่งข้อมูลผ่าน proxy ต้องตั้งค่าที่ client หรือเปิด **Capture Mac Traffic** ก่อน
+เมื่อใช้งานปกติ ข้อมูลเดินทางจาก client ผ่าน Reqnivo ไปยัง server และคำตอบย้อนกลับผ่าน Reqnivo มายัง client การเปิดแอปอย่างเดียวไม่ได้ทำให้ทุกโปรแกรมส่งข้อมูลผ่าน proxy ต้องตั้งค่าที่ client หรือเปิด **Capture Mac Traffic** ก่อน
 
 การอ่าน HTTPS ต้องครบสามอย่าง: client ส่งผ่าน proxy, client เชื่อถือ CA ของ Mac เครื่องที่จับ traffic และเปิด decryption ให้ hostname นั้น ถ้าขาดอย่างใดอย่างหนึ่งอาจเห็นเพียง connection ที่เข้ารหัส หรือ client เชื่อมต่อไม่สำเร็จ
 
@@ -66,8 +66,8 @@ Proxiverse เป็นแอปบน Mac สำหรับตรวจ HTTP/H
 
 ### 2.1 ติดตั้งจากไฟล์ ZIP
 
-1. ดาวน์โหลดไฟล์ macOS arm64 ZIP จาก [GitHub Releases ของ Proxiverse](https://github.com/PoiNaPoi/Proxiverse/releases)
-2. แตก ZIP แล้วลาก **Proxiverse.app** ไปไว้ใน **Applications**
+1. ดาวน์โหลดไฟล์ macOS arm64 ZIP จาก [GitHub Releases ของ Reqnivo](https://github.com/PoiNaPoi/Reqnivo/releases)
+2. แตก ZIP แล้วลาก **Reqnivo.app** ไปไว้ใน **Applications**
 3. เปิดแอปจาก Applications
 4. build ปัจจุบันใช้ ad-hoc signature และยังไม่ผ่าน Apple notarization ถ้า macOS บล็อก ให้ตรวจสอบแหล่งดาวน์โหลด แล้วใช้ตัวเลือกอนุญาตใน **System Settings → Privacy & Security** ตามที่ macOS แสดง
 5. เมื่อเปิดแอป แอปจะพยายามเริ่ม capture อัตโนมัติหนึ่งครั้งในการเปิดรอบนั้น ถ้าเริ่มไม่สำเร็จ ให้อ่านข้อความผิดพลาด แก้การตั้งค่า แล้วกด **Start Capture**
@@ -131,7 +131,7 @@ ID เป็นเลขรายการในรอบ capture ไม่เ�
 
 ### 4.1 จับจาก Safari หรือแอปที่ใช้ system proxy
 
-1. เปิด Proxiverse แล้วตรวจว่า capture กำลังทำงาน หากหยุดอยู่ให้กด **Start Capture**
+1. เปิด Reqnivo แล้วตรวจว่า capture กำลังทำงาน หากหยุดอยู่ให้กด **Start Capture**
 2. ติ๊ก **Capture Mac Traffic** ด้านล่าง sidebar
 3. อนุมัติคำขอสิทธิ์ของ macOS เพื่อเปลี่ยน proxy รูปแบบการยืนยันตัวตนขึ้นกับเครื่องและบัญชี อาจเป็นรหัสผ่านหรือ Touch ID
 4. เปิด Safari แล้วเรียกเว็บหรือระบบทดสอบที่ได้รับอนุญาต
@@ -163,11 +163,11 @@ curl --noproxy '' --proxy http://127.0.0.1:9090 http://example.com/
 
 1. เริ่ม capture อย่างน้อยหนึ่งครั้ง เพื่อให้ engine สร้าง CA ของ Mac เครื่องนี้
 2. กด **Certificate → Show Public CA Certificate** หรือ **Settings → Show Public CA Certificate**
-3. ใช้ไฟล์ public CA ที่แอปเปิดให้ คือ `mitmproxy-ca-cert.pem` ภายใต้ `~/Library/Application Support/Proxiverse/ca/` สำหรับค่า data directory ปกติ
+3. ใช้ไฟล์ public CA ที่แอปเปิดให้ คือ `mitmproxy-ca-cert.pem` ภายใต้ `~/Library/Application Support/Reqnivo/ca/` สำหรับค่า data directory ปกติ
 4. เปิดไฟล์ด้วย **Keychain Access** แล้วเพิ่มลง keychain ที่ใช้กับการทดสอบ หากแอปเปิดให้เห็นไฟล์ใน Finder ให้เปิดไฟล์จากตรงนั้น
 5. ใน Keychain Access หา certificate ของ mitmproxy ให้ตรงกับไฟล์จาก Mac เครื่องนี้ ดับเบิลคลิกเพื่อเปิดรายละเอียด
 6. กาง **Trust** แล้วตั้ง **When using this certificate → Always Trust** ปิดหน้าต่างและยืนยันสิทธิ์เมื่อ macOS ขอ
-7. กลับมาที่ Proxiverse รอสถานะตรวจ trust ซึ่งอัปเดตประมาณทุก 2 วินาที เมื่อสำเร็จจะแสดง **HTTPS trusted on this Mac**
+7. กลับมาที่ Reqnivo รอสถานะตรวจ trust ซึ่งอัปเดตประมาณทุก 2 วินาที เมื่อสำเร็จจะแสดง **HTTPS trusted on this Mac**
 
 ชื่อเมนูอาจต่างตามภาษาและ macOS หากพบ certificate ชื่อซ้ำ ให้ตรวจรายละเอียดว่าเป็น CA ของ capture นี้ ไม่เลือกจากชื่ออย่างเดียว ขั้นตอนเปลี่ยน trust อ้างอิง [Keychain Access ของ Apple](https://support.apple.com/guide/keychain-access/change-the-trust-settings-of-a-certificate-kyca11871/mac)
 
@@ -175,7 +175,7 @@ curl --noproxy '' --proxy http://127.0.0.1:9090 http://example.com/
 
 ### 5.2 เปิดถอดรหัสโดเมนที่ต้องการ
 
-1. จาก client เรียก URL ทดสอบสักครั้ง เช่น `https://example.com/` ให้ host ปรากฏใน Proxiverse
+1. จาก client เรียก URL ทดสอบสักครั้ง เช่น `https://example.com/` ให้ host ปรากฏใน Reqnivo
 2. เลือกแถว **Encrypted** แล้วกด **Enable Decryption** หรือคลิกขวาที่โดเมนใน sidebar → **Enable HTTPS Decryption**
 3. กด **HTTPS** บน toolbar เพื่อตรวจว่ารายการโดเมนนั้นเปิดอยู่ หน้านี้จัดการโดเมนที่เคยเปิดจากหน้าหลัก ไม่ได้เพิ่มทุกโดเมนที่พบอัตโนมัติ
 4. ปิด connection เดิมของ client แล้วเรียกใหม่ วิธีที่ตรงไปตรงมาคือปิดแล้วเปิดโปรแกรมที่ทดสอบใหม่ การ reload อย่างเดียวอาจยังใช้ TLS connection เดิม
@@ -191,7 +191,7 @@ curl --noproxy '' --proxy http://127.0.0.1:9090 http://example.com/
 
 ```sh
 curl --noproxy '' --proxy http://127.0.0.1:9090 \
-  --cacert "$HOME/Library/Application Support/Proxiverse/ca/mitmproxy-ca-cert.pem" \
+  --cacert "$HOME/Library/Application Support/Reqnivo/ca/mitmproxy-ca-cert.pem" \
   https://example.com/
 ```
 
@@ -204,14 +204,14 @@ curl --noproxy '' --proxy http://127.0.0.1:9090 \
 ### 6.1 เปิดให้โทรศัพท์เชื่อมต่อ Mac
 
 1. ให้ Mac และโทรศัพท์อยู่เครือข่ายเดียวกันที่เข้าถึงกันได้
-2. ใน Proxiverse กด **Stop → Settings**
+2. ใน Reqnivo กด **Stop → Settings**
 3. เปิด **Allow test devices on local network** แล้วกด **Done → Start Capture**
 4. ดู **Proxy IP : Port** ใน sidebar หรือ **Certificate → Phone / Tablet** จด LAN IP ของ Mac และ Proxy port
 5. บน iPhone/iPad เปิด **Settings → Wi-Fi → ปุ่มข้อมูลข้างเครือข่ายที่ใช้งาน → Configure Proxy**
 6. เลือก **Manual** แล้วกรอก Server เป็น LAN IP ของ Mac เช่น `192.168.1.25` และ Port เป็น `9090` ตามค่าจริง แล้วบันทึก
 7. เปิด Safari บนโทรศัพท์ไปที่ `http://mitm.it` โดยใช้ `http://` หรือสแกน QR ในหน้าต่าง Certificate หลังตั้ง proxy แล้ว
 
-**ตรวจผล:** ต้องเห็นหน้าดาวน์โหลด certificate ของ mitmproxy และควรมี traffic จากโทรศัพท์เข้ามาใน Proxiverse ถ้าไม่เห็นหน้าติดตั้งให้ตรวจ routing/proxy ก่อน ไม่ต้องรีบติดตั้ง CA ใหม่
+**ตรวจผล:** ต้องเห็นหน้าดาวน์โหลด certificate ของ mitmproxy และควรมี traffic จากโทรศัพท์เข้ามาใน Reqnivo ถ้าไม่เห็นหน้าติดตั้งให้ตรวจ routing/proxy ก่อน ไม่ต้องรีบติดตั้ง CA ใหม่
 
 ### 6.2 ติดตั้ง profile และเปิด full trust
 
@@ -219,14 +219,14 @@ curl --noproxy '' --proxy http://127.0.0.1:9090 \
 2. เปิด **Settings → General → VPN & Device Management** เลือก profile ที่ดาวน์โหลด แล้วกดติดตั้ง ยืนยันตามที่อุปกรณ์ขอ
 3. เปิด **Settings → General → About → Certificate Trust Settings**
 4. เปิด full trust ให้ root certificate ของ mitmproxy ที่เพิ่งติดตั้ง
-5. บน Proxiverse เปิด decryption ให้โดเมนที่แอปเรียกตาม [ขั้นตอน HTTPS](#https)
+5. บน Reqnivo เปิด decryption ให้โดเมนที่แอปเรียกตาม [ขั้นตอน HTTPS](#https)
 6. ปิดและเปิดแอปที่ทดสอบบนโทรศัพท์ใหม่ แล้วทำรายการที่ต้องการตรวจ
 
 **ตรวจผล:** ต้องเห็น request ใหม่ของโดเมนนั้นที่อ่าน headers/body ได้ การติดตั้ง profile อย่างเดียวยังไม่เปิด SSL/TLS trust ขั้นตอน full trust อ้างอิง [Apple Support](https://support.apple.com/en-us/102390)
 
 ถ้า Safari ใช้ได้แต่แอปทดสอบใช้ไม่ได้ อาจมี trust store หรือ certificate pinning ของแอป ต้องใช้ debug configuration ของแอปทีมที่อนุญาตให้ตรวจ HTTPS
 
-เมื่อเลิกทดสอบ ให้คืนค่า **Configure Proxy** เป็นค่าเดิม เช่น Off และลบ profile/CA ที่ติดตั้งเมื่อไม่ใช้แล้ว ถ้าปิด Proxiverse แต่โทรศัพท์ยังชี้ proxy มาที่ Mac อาจใช้อินเทอร์เน็ตไม่ได้
+เมื่อเลิกทดสอบ ให้คืนค่า **Configure Proxy** เป็นค่าเดิม เช่น Off และลบ profile/CA ที่ติดตั้งเมื่อไม่ใช้แล้ว ถ้าปิด Reqnivo แต่โทรศัพท์ยังชี้ proxy มาที่ Mac อาจใช้อินเทอร์เน็ตไม่ได้
 
 <a id="android-device"></a>
 
@@ -240,7 +240,7 @@ curl --noproxy '' --proxy http://127.0.0.1:9090 \
 4. เปิด browser บนโทรศัพท์ไปที่ `http://mitm.it` ดาวน์โหลด CA สำหรับ Android
 5. เปิด **Settings → Security → Install a certificate → CA certificate** แล้วเลือกไฟล์ที่ดาวน์โหลด ชื่อและตำแหน่งเมนูต่างกันตามผู้ผลิต/Android version
 6. ทำขั้นตอนยืนยันการติดตั้งบนอุปกรณ์ให้เสร็จ
-7. เปิด decryption ให้โดเมนบน Proxiverse แล้วปิด/เปิดแอปที่ทดสอบใหม่
+7. เปิด decryption ให้โดเมนบน Reqnivo แล้วปิด/เปิดแอปที่ทดสอบใหม่
 
 **ตรวจผล:** ต้องเห็น request ใหม่ที่อ่านรายละเอียดได้ หาก browser ใช้ได้แต่แอปใช้ไม่ได้ ให้ดูเรื่อง debug trust ด้านล่าง
 
@@ -249,10 +249,10 @@ curl --noproxy '' --proxy http://127.0.0.1:9090 \
 วิธีนี้ต้องมี Android SDK Platform-Tools บน Mac และเปิด USB debugging บนอุปกรณ์ การต่อสาย USB ใช้สำหรับติดตั้ง CA ส่วนการส่ง traffic ยังต้องตั้ง proxy แยก
 
 1. ต่อโทรศัพท์กับ Mac และอนุญาต USB debugging บนหน้าจอโทรศัพท์
-2. ใน Proxiverse กด **Certificate → Android / Emulator (ADB)**
+2. ใน Reqnivo กด **Certificate → Android / Emulator (ADB)**
 3. กด **Refresh** แล้วเลือกอุปกรณ์ใน **Target**
 4. สำหรับเครื่องทั่วไปที่ไม่มี root กด **Copy CA & Open Settings**
-5. แอปคัดลอก public CA ไปที่ `Download/Proxiverse-CA.cer` และเปิด Security Settings ให้เลือกติดตั้ง CA ด้วยตนเอง
+5. แอปคัดลอก public CA ไปที่ `Download/Reqnivo-CA.cer` และเปิด Security Settings ให้เลือกติดตั้ง CA ด้วยตนเอง
 6. ทำขั้นตอนติดตั้งบนอุปกรณ์จนจบ ข้อความว่า copied หมายถึงคัดลอกแล้ว ยังไม่ได้ยืนยันว่า Android ติดตั้งหรือ trust สำเร็จ
 
 **Install CA Automatically** ใช้ได้กับ root ADB เช่น debug emulator ที่รองรับเท่านั้น แอปติดตั้งและอ่านกลับมาตรวจใน **user CA store** ไม่ใช่ system CA โทรศัพท์ไม่มี root และ Google Play emulator image ให้ใช้วิธีคัดลอกแล้วติดตั้งเอง
@@ -278,7 +278,7 @@ curl --noproxy '' --proxy http://127.0.0.1:9090 \
 
 ไฟล์ XML ต้องถูกอ้างผ่าน `android:networkSecurityConfig="@xml/network_security_config"` ใน `<application>` ของ manifest ด้วย `debug-overrides` มีผลเมื่อ `android:debuggable` เป็น true ให้รักษา configuration เดิมของโครงการ และตรวจ network library/pinning ที่แอปใช้แยกด้วย รายละเอียดอ้างอิง [Android Network Security Configuration](https://developer.android.com/privacy-and-security/security-config)
 
-ติดตั้ง CA แล้วไม่ได้หมายความว่าใช้ได้กับทุกแอป Proxiverse ไม่ได้ปรับ certificate pinning ของแอปภายนอกให้เอง เมื่อทดสอบจบให้คืน proxy เป็นค่าเดิมและลบ user CA ที่ไม่ใช้แล้ว
+ติดตั้ง CA แล้วไม่ได้หมายความว่าใช้ได้กับทุกแอป Reqnivo ไม่ได้ปรับ certificate pinning ของแอปภายนอกให้เอง เมื่อทดสอบจบให้คืน proxy เป็นค่าเดิมและลบ user CA ที่ไม่ใช้แล้ว
 
 <a id="simulators"></a>
 
@@ -287,7 +287,7 @@ curl --noproxy '' --proxy http://127.0.0.1:9090 \
 ### 8.1 iOS Simulator
 
 1. เปิด Simulator ที่ต้องการทดสอบจาก Xcode และรอให้ boot เสร็จ
-2. เริ่ม capture บน Proxiverse อย่างน้อยหนึ่งครั้งเพื่อสร้าง CA
+2. เริ่ม capture บน Reqnivo อย่างน้อยหนึ่งครั้งเพื่อสร้าง CA
 3. กด **Certificate → iOS Simulator → Refresh**
 4. เลือกเครื่องใน **Target** แล้วกด **Install & Trust CA** แอปใช้ `xcrun simctl keychain <UDID> add-root-cert` กับเครื่องที่เลือก
 5. ตั้งทางผ่าน proxy แยกจากการติดตั้ง CA โดยเปิด **Capture Mac Traffic** และเลือก Mac network service ให้ตรงกับที่ใช้
@@ -301,8 +301,8 @@ curl --noproxy '' --proxy http://127.0.0.1:9090 \
 ### 8.2 Android Emulator ของ Android Studio
 
 1. เปิด emulator และรอ boot เสร็จ
-2. บน Proxiverse กด **Stop → Settings** เปิด **Allow test devices on local network** แล้ว Start ใหม่
-3. ตั้ง proxy ของ emulator เป็น host `10.0.2.2` และ port ของ Proxiverse เช่น `9090` โดยใช้หน้าตั้ง proxy ของ environment ที่ใช้งาน
+2. บน Reqnivo กด **Stop → Settings** เปิด **Allow test devices on local network** แล้ว Start ใหม่
+3. ตั้ง proxy ของ emulator เป็น host `10.0.2.2` และ port ของ Reqnivo เช่น `9090` โดยใช้หน้าตั้ง proxy ของ environment ที่ใช้งาน
 4. กด **Certificate → Android / Emulator (ADB) → Refresh** แล้วเลือก emulator
 5. ถ้าเป็น debug emulator ที่รองรับ root ADB กด **Install CA Automatically** แอปสามารถเรียก `adb root` ให้เอง
 6. หาก root ไม่ได้ เช่น Google Play image ใช้ **Copy CA & Open Settings** และติดตั้ง user CA ด้วยตนเอง
@@ -524,9 +524,9 @@ Map Local รองรับ request body ที่ทราบขนาดไ�
 4. เลือกที่บันทึกไฟล์
 5. ตรวจ body/headers ว่าไม่มีข้อมูลลับก่อนแชร์ ไฟล์ส่งออกมี response body รวมอยู่ด้วย
 
-ไฟล์เป็น Proxiverse JSON รูปแบบ `Proxiverse.MapLocal` รวมทั้ง binary และข้อความที่ยังรอบันทึก ส่งเป็นไฟล์เดียวโดยไม่ต้องคัดลอก mock-files แยก และรักษาลำดับกฎ
+ไฟล์เป็น Reqnivo JSON รูปแบบ `Reqnivo.MapLocal` รวมทั้ง binary และข้อความที่ยังรอบันทึก ส่งเป็นไฟล์เดียวโดยไม่ต้องคัดลอก mock-files แยก และรักษาลำดับกฎ
 
-### 12.2 นำกฎกลับเข้า Proxiverse
+### 12.2 นำกฎกลับเข้า Reqnivo
 
 1. เปิด **Map Local → Import…**
 2. เลือกไฟล์ที่ต้องการ
@@ -542,7 +542,7 @@ Import เป็นการเพิ่ม ไม่แทนกฎเดิม
 
 กฎที่นำเข้าจากรูปแบบนี้ใช้ **URL pattern / Include subpaths** เพื่อคง protocol, port และ query; หลาย methods แยกเป็นหลายกฎ รองรับ wildcard และ response ที่ฝังมาเป็น raw file หรือ HTTP message
 
-หากมี Regex, Directory, GraphQL, `FILE_URL` ภายนอก หรือ response file ไม่ได้ฝังมา จะยกเลิกการนำเข้าทั้งชุดพร้อมแจ้งเหตุผลก่อนเปลี่ยนรายการ Import จำกัดไฟล์ 256 MiB, body 8 MiB ต่อกฎ และกฎทุกชนิดรวมสูงสุด 200 กฎ Export เป็น format ของ Proxiverse สำหรับนำกลับเข้า Proxiverse
+หากมี Regex, Directory, GraphQL, `FILE_URL` ภายนอก หรือ response file ไม่ได้ฝังมา จะยกเลิกการนำเข้าทั้งชุดพร้อมแจ้งเหตุผลก่อนเปลี่ยนรายการ Import จำกัดไฟล์ 256 MiB, body 8 MiB ต่อกฎ และกฎทุกชนิดรวมสูงสุด 200 กฎ Export เป็น format ของ Reqnivo สำหรับนำกลับเข้า Reqnivo
 
 <a id="breakpoints"></a>
 
@@ -618,7 +618,7 @@ chunked JSON ที่ไม่บีบอัดสามารถรอ body �
 
 ### 14.1 CA ของ client กับ CA ของ server ต่างกันอย่างไร
 
-**Show Public CA Certificate** ใช้ให้ client เช่นโทรศัพท์เชื่อถือ Proxiverse ส่วน **Choose CA File…** ใช้ให้ Proxiverse เชื่อถือ server ภายในองค์กร การเพิ่ม CA ฝั่งหนึ่งไม่ได้แก้อีกฝั่ง
+**Show Public CA Certificate** ใช้ให้ client เช่นโทรศัพท์เชื่อถือ Reqnivo ส่วน **Choose CA File…** ใช้ให้ Reqnivo เชื่อถือ server ภายในองค์กร การเพิ่ม CA ฝั่งหนึ่งไม่ได้แก้อีกฝั่ง
 
 ถ้า API ภายในขึ้น `self-signed certificate in certificate chain` ให้ขอ PEM CA/bundle ของ server จากทีมที่ดูแล แล้วทำดังนี้:
 
@@ -631,7 +631,7 @@ chunked JSON ที่ไม่บีบอัดสามารถรอ body �
 
 ### 14.2 ตัวเลือก Skip ใช้เมื่อไร
 
-ใช้ในงาน debug ที่ต้องข้ามการตรวจ certificate/hostname ของ server ชั่วคราว ต้อง Stop → เปลี่ยนตัวเลือก → Start ใหม่ มีผลครอบคลุมปลายทาง HTTPS ที่ถอดรหัสใน capture รอบนั้น ไม่ใช่เฉพาะ request แถวเดียว และยังต้องให้ client trust Proxiverse CA ตามปกติ
+ใช้ในงาน debug ที่ต้องข้ามการตรวจ certificate/hostname ของ server ชั่วคราว ต้อง Stop → เปลี่ยนตัวเลือก → Start ใหม่ มีผลครอบคลุมปลายทาง HTTPS ที่ถอดรหัสใน capture รอบนั้น ไม่ใช่เฉพาะ request แถวเดียว และยังต้องให้ client trust Reqnivo CA ตามปกติ
 
 ค่าตั้งต้นใน settings ใหม่ปิด Skip และค่าที่บันทึกไว้จะถูกโหลดกลับ ให้ตรวจ checkbox ก่อนเริ่มใช้งาน ตัวเลือกนี้ไม่ทำให้ HTTPS ที่ยังไม่เปิด decryption อ่านได้ และไม่แก้ pinning ของ client
 
@@ -725,7 +725,7 @@ Simulator ต้อง boot แล้ว; Android ต้องมี Platform-To
 
 หากแอป crash/ถูก force quit ให้เปิดกลับมาเพื่อให้ตรวจ recovery record ก่อน ระบบไม่เปลี่ยนทับ endpoint ที่โปรแกรมอื่นแก้ไปแล้ว และ proxy ที่มี authentication เดิมอาจถูกปฏิเสธเพื่อไม่ทำข้อมูล authentication หาย
 
-**Clear** ไม่เท่ากับลบข้อมูลส่วนบุคคลทั้งหมด และลบ Proxiverse.app อย่างเดียวไม่ลบ Application Support หรือ CA ที่ติดตั้งไว้ หากต้อง reset ให้คืน proxy และถอน CA ก่อนปิดแอปแล้วจัดการข้อมูลตาม [Privacy and local data](PRIVACY.md) ระวังว่าการล้าง ca จะเปลี่ยน CA เมื่อสร้างใหม่
+**Clear** ไม่เท่ากับลบข้อมูลส่วนบุคคลทั้งหมด และลบ Reqnivo.app อย่างเดียวไม่ลบ Application Support หรือ CA ที่ติดตั้งไว้ หากต้อง reset ให้คืน proxy และถอน CA ก่อนปิดแอปแล้วจัดการข้อมูลตาม [Privacy and local data](PRIVACY.md) ระวังว่าการล้าง ca จะเปลี่ยน CA เมื่อสร้างใหม่
 
 <a id="storage"></a>
 
@@ -733,7 +733,7 @@ Simulator ต้อง boot แล้ว; Android ต้องมี Platform-To
 
 ### 17.1 ตำแหน่งข้อมูล
 
-ค่าเริ่มต้นอยู่ใน `~/Library/Application Support/Proxiverse/` เปิด Finder → **Go → Go to Folder…** แล้ววาง path นี้ได้ หากตั้ง `PROXIVERSE_DATA_DIR` จะใช้ directory นั้นแทน
+ค่าเริ่มต้นอยู่ใน `~/Library/Application Support/Reqnivo/` เปิด Finder → **Go → Go to Folder…** แล้ววาง path นี้ได้ หากตั้ง `REQNIVO_DATA_DIR` จะใช้ directory นั้นแทน
 
 | ข้อมูล | ที่เก็บ / อายุข้อมูล |
 | --- | --- |
@@ -747,7 +747,7 @@ Simulator ต้อง boot แล้ว; Android ต้องมี Platform-To
 
 ห้ามแชร์ CA private key ใช้เฉพาะ public `mitmproxy-ca-cert.pem` เมื่อติดตั้งให้ client ไฟล์ `mitmproxy-ca.pem` มี private key รวมอยู่ด้วย
 
-ข้อมูล capture ไม่ถูกเข้ารหัสโดย Proxiverse และไม่ได้ redact อัตโนมัติ แม้ directory มี private permissions ผู้ที่เข้าถึงบัญชี, สิทธิ์ผู้ดูแล หรือ backups ยังอาจเข้าถึงได้
+ข้อมูล capture ไม่ถูกเข้ารหัสโดย Reqnivo และไม่ได้ redact อัตโนมัติ แม้ directory มี private permissions ผู้ที่เข้าถึงบัญชี, สิทธิ์ผู้ดูแล หรือ backups ยังอาจเข้าถึงได้
 
 ### 17.2 ขีดจำกัดที่มีผลกับการใช้งาน
 
@@ -782,7 +782,7 @@ LAN mode รับจากอุปกรณ์ที่เข้าถึง M
 
 ### 18.1 จับ request แรก
 
-1. เปิด Proxiverse และ Start Capture
+1. เปิด Reqnivo และ Start Capture
 2. เลือก All Traffic และล้างคำค้น
 3. ใน Terminal รัน:
 
@@ -790,7 +790,7 @@ LAN mode รับจากอุปกรณ์ที่เข้าถึง M
 curl --noproxy '' --proxy http://127.0.0.1:9090 http://example.com/
 ```
 
-4. กลับมาที่ Proxiverse เลือกแถว `GET example.com /`
+4. กลับมาที่ Reqnivo เลือกแถว `GET example.com /`
 5. เปิด Request Headers และ Response Body เพื่อลองอ่านสองฝั่ง ไม่จำเป็นว่า server ต้องตอบ status ใดสถานะหนึ่งจึงจะตรวจ routing ได้
 
 ### 18.2 เปลี่ยนคำตอบด้วย Map Local
@@ -802,7 +802,7 @@ curl --noproxy '' --proxy http://127.0.0.1:9090 http://example.com/
 5. เลือก Text / JSON แล้วใส่:
 
 ```json
-{"message":"สวัสดีจาก Proxiverse","step":1}
+{"message":"สวัสดีจาก Reqnivo","step":1}
 ```
 
 6. รอบันทึกสำเร็จ แล้วรัน curl คำสั่งเดิมอีกครั้ง
@@ -837,10 +837,10 @@ curl --noproxy '' --proxy http://127.0.0.1:9090 http://example.com/
 ```sh
 ./scripts/fetch-engine.sh
 ./scripts/build-app.sh
-open dist/Proxiverse.app
+open dist/Reqnivo.app
 ```
 
-build ใช้โลโก้หลัก [`images/Proxiverse-icon.png`](../images/Proxiverse-icon.png) สร้าง Proxiverse.icns สำหรับแอป, Dock และ About หากเปลี่ยนโค้ดแล้วให้ปิด/เปิดแอป build ใหม่เพื่อโหลด executable ใหม่
+build ใช้โลโก้หลัก [`images/Reqnivo-icon.png`](../images/Reqnivo-icon.png) สร้าง Reqnivo.icns สำหรับแอป, Dock และ About หากเปลี่ยนโค้ดแล้วให้ปิด/เปิดแอป build ใหม่เพื่อโหลด executable ใหม่
 
 ### 19.2 การทดสอบและวัด baseline
 
@@ -853,7 +853,7 @@ build ใช้โลโก้หลัก [`images/Proxiverse-icon.png`](../ima
 /usr/bin/python3 scripts/smoke-https-decryption.py
 /usr/bin/python3 scripts/smoke-engine.py --count 10000 --output .cache/engine-https-burst.json
 /usr/bin/python3 scripts/smoke-engine.py --count 300 --rate 10 \
-  --app dist/Proxiverse.app --output .cache/native-paced-baseline.json
+  --app dist/Reqnivo.app --output .cache/native-paced-baseline.json
 ```
 
 Integration scripts สร้าง local fixture และ test CA ชั่วคราว ไม่แก้ trust store หรือ system proxy สำหรับการตรวจ engine หากจะทดสอบ GUI ให้ Stop แอปที่ใช้งานอยู่ก่อนเพื่อไม่ชน port 9090/9091
@@ -867,15 +867,15 @@ Integration scripts สร้าง local fixture และ test CA ชั่ว
 คำสั่งนี้ติดตั้ง CA ของ Mac ลง emulator ที่ระบุจริง ต้องเลือกเครื่องทดสอบที่อนุญาต แล้วรันจาก root ของ repository:
 
 ```sh
-PROXIVERSE_CERT_TEST_EMULATOR=emulator-5554 ./scripts/swift.sh test --filter DeviceCertificateTests
+REQNIVO_CERT_TEST_EMULATOR=emulator-5554 ./scripts/swift.sh test --filter DeviceCertificateTests
 ```
 
 ตัวช่วย Android เป็น DEX ที่ bundle มากับแอป ใช้ native TrustedCertificateStore จัดการชื่อไฟล์/hash collision และตรวจ cert หลังติดตั้ง หากแก้ `scripts/android/InstallCertificate.java` ให้รัน `./scripts/build-certificate-helper.sh` ซึ่งต้องใช้ JDK 17+ และ Android SDK Build-Tools แล้ว build แอปใหม่ ผู้ใช้แอปปกติไม่ต้องมี JDK
 
 ### 19.4 โครงสร้างและรายละเอียดสำหรับตรวจพฤติกรรม
 
-- `Sources/Proxiverse`: SwiftUI/AppKit, traffic model, process lifecycle, settings และ Mac proxy recovery
-- `Sources/Proxiverse/Resources/bridge.py`: loopback control API, bearer token, body preview storage และ parent watchdog
+- `Sources/Reqnivo`: SwiftUI/AppKit, traffic model, process lifecycle, settings และ Mac proxy recovery
+- `Sources/Reqnivo/Resources/bridge.py`: loopback control API, bearer token, body preview storage และ parent watchdog
 - `scripts`: fetch engine แบบ pin version/checksum, build app และ integration/benchmark harness
 - UI poll metadata เป็นชุดทุก 250 ms และโหลด detail เมื่อเลือก ไม่ส่ง body ทุกแถวเข้า UI; engine เป็น subprocess แยก lifecycle
 - Control API ใช้ schema version 1 จาก `/health`; message มี `captureState` เช่น `complete`, `truncated`, `streamed`, `encoded`, `binary` ข้อมูลเก่าที่ไม่มีฟิลด์ไม่ถือเป็นหลักฐานว่า body ครบ
@@ -885,4 +885,4 @@ PROXIVERSE_CERT_TEST_EMULATOR=emulator-5554 ./scripts/swift.sh test --filter Dev
 
 Engine pin ไว้ที่ mitmproxy **12.2.3 macOS arm64** build script ตรวจ SHA-256 และ code signature ต้นฉบับ vendor และ dependency notices ต้องคงไว้เมื่อแจก ดู [Third-party notices](../THIRD_PARTY_NOTICES.md) และ [ENGINE_SOURCE.md](ENGINE_SOURCE.md) สำหรับ source/checksum และการ rebuild/เปลี่ยน engine ในสำเนาแอป
 
-ขั้นตอน rebuild ไม่ใช่การรับรอง byte-identical build, legal clearance หรือ audit dependency native/Rust ครบทุกตัว โค้ด Proxiverse ใช้ [MIT License](../LICENSE) ส่วน dependency ใช้ license ของแต่ละโครงการ ดู [Public release review](PUBLIC_RELEASE_REVIEW.md) สำหรับรายการที่ยังต้องยืนยันก่อนเผยแพร่
+ขั้นตอน rebuild ไม่ใช่การรับรอง byte-identical build, legal clearance หรือ audit dependency native/Rust ครบทุกตัว โค้ด Reqnivo ใช้ [MIT License](../LICENSE) ส่วน dependency ใช้ license ของแต่ละโครงการ ดู [Public release review](PUBLIC_RELEASE_REVIEW.md) สำหรับรายการที่ยังต้องยืนยันก่อนเผยแพร่

@@ -1,4 +1,4 @@
-Proxiverse beta for macOS. This draft is created automatically; review the notes
+Reqnivo beta for macOS. This draft is created automatically; review the notes
 and test the downloaded app before publishing.
 
 - Apple Silicon (arm64), macOS 14 or later.

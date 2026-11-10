@@ -38,6 +38,6 @@ public final class InstallCertificate {
             Object restored = Class.forName("android.os.SELinux").getMethod("restorecon", File.class).invoke(null, installed);
             if (!Boolean.TRUE.equals(restored)) throw new IllegalStateException("Cannot restore CA security context");
         }
-        System.out.println("PROXIVERSE_CA_INSTALLED:" + alias);
+        System.out.println("REQNIVO_CA_INSTALLED:" + alias);
     }
 }

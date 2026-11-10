@@ -59,7 +59,7 @@ class Origin(BaseHTTPRequestHandler):
 
 
 def main():
-    with tempfile.TemporaryDirectory(prefix="proxiverse-rules-") as temp:
+    with tempfile.TemporaryDirectory(prefix="reqnivo-rules-") as temp:
         root = Path(temp)
         (root / "mock-files").mkdir()
         (root / "mock-files/first.mock").write_text('{"local":1}')
@@ -69,11 +69,11 @@ def main():
         origin = ThreadingHTTPServer(("127.0.0.1", 0), Origin)
         threading.Thread(target=origin.serve_forever, daemon=True).start()
         url = f"http://127.0.0.1:{origin.server_port}"
-        env = dict(os.environ, PROXIVERSE_TOKEN=token, PROXIVERSE_API_PORT=str(control),
-                   PROXIVERSE_CAPTURE_DIR=str(root / "captures"), PROXIVERSE_RULES_FILE=str(root / "rules.json"),
-                   PROXIVERSE_PARENT_PID=str(os.getpid()), PYTHONDONTWRITEBYTECODE="1")
+        env = dict(os.environ, REQNIVO_TOKEN=token, REQNIVO_API_PORT=str(control),
+                   REQNIVO_CAPTURE_DIR=str(root / "captures"), REQNIVO_RULES_FILE=str(root / "rules.json"),
+                   REQNIVO_PARENT_PID=str(os.getpid()), PYTHONDONTWRITEBYTECODE="1")
         command = [str(ROOT / "vendor/mitmproxy.app/Contents/MacOS/mitmdump"), "-q", "-s",
-                   str(ROOT / "Sources/Proxiverse/Resources/bridge.py"), "-p", str(proxy),
+                   str(ROOT / "Sources/Reqnivo/Resources/bridge.py"), "-p", str(proxy),
                    "--listen-host", "127.0.0.1", "--set", f"confdir={root / 'ca'}",
                    "--set", "stream_large_bodies=1m", "--set", "connection_strategy=lazy"]
         log = open(root / "engine.log", "w")

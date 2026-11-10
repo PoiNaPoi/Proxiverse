@@ -1,6 +1,6 @@
 # Privacy and local data
 
-Applies to Proxiverse 0.0.4. This document describes the application code and bundled
+Applies to Reqnivo 0.0.4. This document describes the application code and bundled
 capture workflow, not a certification that every dependency has been independently
 audited. Use the app only for [authorized testing](AUTHORIZED_USE.md).
 
@@ -18,7 +18,7 @@ audited. Use the app only for [authorized testing](AUTHORIZED_USE.md).
 
 ## Where information goes
 
-Capture processing and the native control API run on your Mac. Proxiverse does
+Capture processing and the native control API run on your Mac. Reqnivo does
 not implement a developer-operated capture upload, account, analytics, or
 crash-reporting service. Proxied traffic still communicates with its destination
 servers unless a debugging rule changes it. Opening documentation uses your
@@ -27,14 +27,14 @@ Your operating system, browser, backup software, and external device tools have
 their own behavior and policies.
 
 LAN mode accepts proxy connections from reachable devices on the local network;
-it does not upload captures to a Proxiverse cloud service. Only enable it on a
+it does not upload captures to a Reqnivo cloud service. Only enable it on a
 trusted test network. The control API listens on localhost and requires a
 per-capture bearer token.
 
 ## Storage and retention
 
-The default directory is `~/Library/Application Support/Proxiverse/`.
-`PROXIVERSE_DATA_DIR`, when set, selects a different directory.
+The default directory is `~/Library/Application Support/Reqnivo/`.
+`REQNIVO_DATA_DIR`, when set, selects a different directory.
 
 | Data | Location and lifetime |
 | --- | --- |
@@ -46,18 +46,18 @@ The default directory is `~/Library/Application Support/Proxiverse/`.
 | Engine log and proxy recovery information | Local application data; no fixed automatic expiration is promised. Do not assume logs are free of sensitive information. |
 
 Application data directories use private filesystem permissions. Capture files
-are not encrypted by Proxiverse; directory permissions do not protect against
+are not encrypted by Reqnivo; directory permissions do not protect against
 someone with access to your account, administrator privileges, or backups.
 
 ## Cleanup and support
 
 1. Stop capture. If Mac proxy recovery is required, restore the proxy using the
    app or macOS Network settings before removing application data.
-2. Restore proxy settings on test devices and remove the Proxiverse/mitmproxy CA
+2. Restore proxy settings on test devices and remove the Reqnivo/mitmproxy CA
    from each device or trust store where you installed it. On macOS use Keychain
    Access to review the certificate; device Settings handles mobile certificates.
 3. Quit the app. Remove leftover `captures/` data if necessary. To reset all local
-   Proxiverse data, remove its application data directory only after proxy recovery
+   Reqnivo data, remove its application data directory only after proxy recovery
    and certificate cleanup. Deleting the app alone does not delete that directory.
 4. Review backups, exported Map Local files, clipboard contents, and screenshots
    separately. Local cleanup does not erase copies already shared elsewhere.

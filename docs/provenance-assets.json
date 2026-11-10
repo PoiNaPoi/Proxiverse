@@ -3,24 +3,24 @@
   "evidence": "Owner declaration and current repository files; hashes identify reviewed files, not ownership.",
   "files": [
     {
-      "file": "images/Proxiverse-icon.png",
+      "file": "images/Reqnivo-icon.png",
       "sha256": "ce8d8c8f3a473fdfa406c6783166a43cbe4121e335c5eaba3d2ce0cd2e219b86"
     },
     {
-      "file": "Sources/Proxiverse/Resources/Proxiverse.icns",
+      "file": "Sources/Reqnivo/Resources/Reqnivo.icns",
       "sha256": "907211dc9a0c9fc484b0ec9a3f0d53aa0206790582cad8d3ec975cf93e217116"
     },
     {
-      "file": "Sources/Proxiverse/Resources/install-certificate.dex",
-      "sha256": "4fffe630f6208534fafdbabaea7492e09a2ba5b2edfc87dfecd619b9c1b51dbd"
+      "file": "Sources/Reqnivo/Resources/install-certificate.dex",
+      "sha256": "53ffbf10dabe7e1ecb1a4f6a5c3a6024045de083d3ac5047c8b9b541538c9b2b"
     },
     {
       "file": "scripts/android/InstallCertificate.java",
-      "sha256": "48d37319a25bfde16977ffcd4a3c9d8fa7bb8208a3ad837e6e0861565bd3b4c0"
+      "sha256": "caf615c3d91069b3621e3bbf2a8f08e0d974732fa343749743e9a3f63c9d8d23"
     },
     {
       "file": "scripts/build-certificate-helper.sh",
-      "sha256": "3995d7562982753c5e4aec5de84d26b5e31f4195ddfdc2cc4093823a441e77e5"
+      "sha256": "f9da8ef922d083d5d53235fc2361d1d5f20e4267cef9082c87a49f852c86b167"
     }
   ]
 }

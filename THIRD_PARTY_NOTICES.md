@@ -1,6 +1,6 @@
 # Third-party software notices
 
-The MIT license in `LICENSE` covers Proxiverse-owned material only. Bundled
+The MIT license in `LICENSE` covers Reqnivo-owned material only. Bundled
 third-party code, data, and artwork retain their own copyright and license terms.
 
 ## Where to find the texts
@@ -11,7 +11,7 @@ all selected component attributions retained. It includes known Python/native
 components and a conservative set of source-derived macOS Rust dependencies.
 It does not assert that every listed build dependency is linked into the app.
 
-In Proxiverse.app, find it at:
+In Reqnivo.app, find it at:
 
 `Contents/Resources/Legal/third-party/THIRD_PARTY_LICENSES.txt`
 
@@ -21,7 +21,7 @@ MIT text is at `Contents/Resources/mitmproxy-LICENSE.txt`.
 
 ## Engine
 
-Proxiverse redistributes the unmodified official **mitmproxy 12.2.3 macOS arm64**
+Reqnivo redistributes the unmodified official **mitmproxy 12.2.3 macOS arm64**
 bundle. Its upstream archive SHA-256 is:
 
 `0a09ee3b82569e8985aff8186e4792618b8e5d0c766098db093d09a87d4b013a`
@@ -41,7 +41,7 @@ The app includes exact-version source archives for **ldap3 2.9.1** and
 modification/rebuild/replacement guide. The certifi source archive includes the
 MPL-covered CA data matched to the bundle. Public Suffix List data is retained
 in readable form inside the engine alongside its MPL notices. No MPL or LGPL
-license is replaced by Proxiverse's MIT license.
+license is replaced by Reqnivo's MIT license.
 
 See `docs/ENGINE_SOURCE.md` in the repository, or `ENGINE_SOURCE.md` in the app's
 Legal directory, for source locations, verification, modification and local

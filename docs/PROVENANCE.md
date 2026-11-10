@@ -11,17 +11,17 @@ third-party work for which permission might be missing. This is an owner
 declaration; underlying employment/client agreements were not independently read.
 
 Third-party dependencies retain their own licenses. The declaration does not
-assign their copyright to Proxiverse or replace their distribution requirements.
+assign their copyright to Reqnivo or replace their distribution requirements.
 
 ## Repository evidence
 
 | Material | Evidence and boundary |
 | --- | --- |
-| `Sources/Proxiverse/` and project tests | Project source under MIT. The owner's distribution-rights declaration covers it; this is not proof of independent authorship of every line. |
-| `Sources/Proxiverse/MapLocalTransfer.swift` | Parses supported exported Map Local data into Proxiverse rules. Tests use synthetic data and an optional owner-provided export. This does not independently establish how the format was learned. |
-| `images/Proxiverse-icon.png` | Canonical icon input used by `scripts/build-app.sh`. AI-generated Reqnivo artwork selected by the owner on 2026-11-10 to replace the previous project artwork. Creation references and prompts are retained in the design conversation outside this repository. |
-| `Sources/Proxiverse/Resources/Proxiverse.icns` | Generated icon; `scripts/build-app.sh` regenerates it from the canonical PNG. |
-| `Sources/Proxiverse/Resources/install-certificate.dex` | Android certificate helper. Source is `scripts/android/InstallCertificate.java`; build recipe is `scripts/build-certificate-helper.sh`. A byte-identical DEX rebuild was not part of this provenance review. |
+| `Sources/Reqnivo/` and project tests | Project source under MIT. The owner's distribution-rights declaration covers it; this is not proof of independent authorship of every line. |
+| `Sources/Reqnivo/MapLocalTransfer.swift` | Parses supported exported Map Local data into Reqnivo rules. Tests use synthetic data and an optional owner-provided export. This does not independently establish how the format was learned. |
+| `images/Reqnivo-icon.png` | Canonical icon input used by `scripts/build-app.sh`. AI-generated Reqnivo artwork selected by the owner on 2026-11-10 to replace the previous project artwork. Creation references and prompts are retained in the design conversation outside this repository. |
+| `Sources/Reqnivo/Resources/Reqnivo.icns` | Generated icon; `scripts/build-app.sh` regenerates it from the canonical PNG. |
+| `Sources/Reqnivo/Resources/install-certificate.dex` | Android certificate helper. Source is `scripts/android/InstallCertificate.java`; build recipe is `scripts/build-certificate-helper.sh`. A byte-identical DEX rebuild was not part of this provenance review. |
 | Bundled engine and dependencies | Upstream mitmproxy. See `THIRD_PARTY_NOTICES.md`, `docs/DEPENDENCY_AUDIT.md`, and the versioned source/notice manifests in `vendor/third-party/`. |
 
 `docs/provenance-assets.json` records SHA-256 values of the reviewed artwork and

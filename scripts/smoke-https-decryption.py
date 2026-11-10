@@ -36,7 +36,7 @@ class Origin(BaseHTTPRequestHandler):
 
 
 def main():
-    with tempfile.TemporaryDirectory(prefix="proxiverse-https-scope-") as temp:
+    with tempfile.TemporaryDirectory(prefix="reqnivo-https-scope-") as temp:
         root = Path(temp)
         subprocess.run(["/usr/bin/openssl", "req", "-x509", "-newkey", "rsa:2048", "-nodes", "-days", "1",
                         "-subj", "/CN=localhost", "-addext", "subjectAltName=DNS:localhost",
@@ -50,9 +50,9 @@ def main():
         threading.Thread(target=origin.serve_forever, daemon=True).start()
         proxy, control = free_port(), free_port()
         token = secrets.token_hex(32)
-        env = dict(os.environ, PROXIVERSE_TOKEN=token, PROXIVERSE_API_PORT=str(control),
-                   PROXIVERSE_CAPTURE_DIR=str(root / "captures"), PROXIVERSE_HTTPS_HOSTS="[]",
-                   PROXIVERSE_PARENT_PID=str(os.getpid()), PROXIVERSE_UPSTREAM_CA=str(root / "server.pem"),
+        env = dict(os.environ, REQNIVO_TOKEN=token, REQNIVO_API_PORT=str(control),
+                   REQNIVO_CAPTURE_DIR=str(root / "captures"), REQNIVO_HTTPS_HOSTS="[]",
+                   REQNIVO_PARENT_PID=str(os.getpid()), REQNIVO_UPSTREAM_CA=str(root / "server.pem"),
                    PYTHONDONTWRITEBYTECODE="1")
 
         def api(path, hosts=None, authorized=True):
@@ -78,7 +78,7 @@ def main():
         with open(root / "engine.log", "w") as log:
             process = subprocess.Popen([
                 str(ROOT / "vendor/mitmproxy.app/Contents/MacOS/mitmdump"), "-q", "-s",
-                str(ROOT / "Sources/Proxiverse/Resources/bridge.py"), "--listen-host", "127.0.0.1", "-p", str(proxy),
+                str(ROOT / "Sources/Reqnivo/Resources/bridge.py"), "--listen-host", "127.0.0.1", "-p", str(proxy),
                 "--set", f"confdir={root / 'ca'}", "--set", "connection_strategy=lazy"], env=env, stdout=log, stderr=log)
             try:
                 for _ in range(150):

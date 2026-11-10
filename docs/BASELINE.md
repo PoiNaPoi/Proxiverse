@@ -9,7 +9,7 @@ Release build บน Apple Silicon / RAM 16 GB / macOS 27.0.1; native benchmark 
 ./scripts/build-app.sh
 /usr/bin/python3 scripts/smoke-engine.py --count 100 --output .cache/p2-engine-smoke.json
 /usr/bin/python3 scripts/smoke-rules.py
-/usr/bin/python3 scripts/smoke-engine.py --app dist/Proxiverse.app --count 10000 --output .cache/p2-native-burst.json
+/usr/bin/python3 scripts/smoke-engine.py --app dist/Reqnivo.app --count 10000 --output .cache/p2-native-burst.json
 ```
 
 - Swift suite **113 tests ผ่าน**; release build/ad-hoc signature verification, standalone HTTPS smoke (100 requests) และ rules smoke ผ่าน
@@ -38,7 +38,7 @@ Raw reports: [P2 native burst](benchmarks/p2-native-burst.json), [P2 engine HTTP
 
 ## P0 comparable baseline — 27 ตุลาคม 2026
 
-Release build บน Apple Silicon / RAM 16 GB / macOS 27.0.1 ยังไม่ได้ยืนยันบน macOS 14 หรือเครื่อง RAM 8 GB รันแต่ละชุด **ทีละชุด ไม่ซ้อนกัน** บน ephemeral ports (`PROXIVERSE_PROXY_PORT`/`PROXIVERSE_API_PORT`) พร้อม data directory/CA ชั่วคราว ไม่แตะ system proxy/Keychain และไม่ชนพอร์ต 9090/9091 ของแอปจริง
+Release build บน Apple Silicon / RAM 16 GB / macOS 27.0.1 ยังไม่ได้ยืนยันบน macOS 14 หรือเครื่อง RAM 8 GB รันแต่ละชุด **ทีละชุด ไม่ซ้อนกัน** บน ephemeral ports (`REQNIVO_PROXY_PORT`/`REQNIVO_API_PORT`) พร้อม data directory/CA ชั่วคราว ไม่แตะ system proxy/Keychain และไม่ชนพอร์ต 9090/9091 ของแอปจริง
 
 วิธีวัดที่เปลี่ยนจากรอบ 15 ตุลาคม: โหมด `--benchmark` รอให้ capture นิ่ง แล้ว **กรองจริง** (คำค้น 5 แบบ + domain/All ซ้ำ 5 รอบ = 37 ตัวอย่าง end-to-end) และ **เลือกแถวจริง 25 แถว** กระจายทั่วรายการ harness จะ fail หาก `benchmarkComplete` ไม่เป็นจริง, ตัวอย่างน้อยกว่า 20, หรือมี timeout
 

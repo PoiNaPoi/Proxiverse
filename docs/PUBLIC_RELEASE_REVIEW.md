@@ -4,7 +4,7 @@ Prepared 2026-11-09. This is a release review record, not legal clearance.
 
 ## Implemented in 0.0.3
 
-- MIT license for Proxiverse-owned code, with third-party licenses kept separate.
+- MIT license for Reqnivo-owned code, with third-party licenses kept separate.
 - Authorized-use and privacy documentation included with the app.
 - Permission and sensitive-data explanations in HTTPS and CA setup views.
 - Localhost and upstream certificate verification defaults for fresh settings.
@@ -16,7 +16,7 @@ Prepared 2026-11-09. This is a release review record, not legal clearance.
 
 - [x] The project owner confirmed on 2026-11-09 that they have the right to
   publicly distribute all project code and images. The project uses MIT with
-  attribution to Proxiverse contributors. This records the owner's declaration;
+  attribution to Reqnivo contributors. This records the owner's declaration;
   employment/client agreements were not independently inspected.
 - [x] The same owner declaration covers project images, including the PNG/JPEG
   artwork and generated icon. Retain provenance/permission records outside the
@@ -59,7 +59,7 @@ Prepared 2026-11-09. This is a release review record, not legal clearance.
   packaging/rebuild preparation step, not the full transitive license audit.
 - Local validation passed: release build, 10 focused settings/HTTPS/upstream
   verification tests, selective HTTPS smoke test, and `git diff --check`.
-- `dist/Proxiverse-v0.0.3-macOS-arm64.zip` was checked for ZIP integrity, matching
+- `dist/Reqnivo-v0.0.3-macOS-arm64.zip` was checked for ZIP integrity, matching
   bundled legal documents/notices, version metadata, and absence of runtime
   capture/CA paths. Extracted app passed `codesign --verify --deep --strict`.
   SHA-256 values for the local release ZIPs are in `dist/SHA256SUMS.txt`.

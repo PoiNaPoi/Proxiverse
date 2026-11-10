@@ -2,7 +2,7 @@
 """Real standalone-engine integration test. Never changes system proxy/Keychain.
 
 Use /usr/bin/python3 scripts/smoke-engine.py --count 10000 for a burst baseline.
-Optional --app dist/Proxiverse.app also launches the real native UI in benchmark mode.
+Optional --app dist/Reqnivo.app also launches the real native UI in benchmark mode.
 """
 import argparse
 import base64
@@ -91,16 +91,16 @@ def main():
     args = parser.parse_args()
     if args.app and args.insecure:
         parser.error("--insecure tests the standalone engine only")
-    directory = Path(tempfile.mkdtemp(prefix="proxiverse-smoke-"))
+    directory = Path(tempfile.mkdtemp(prefix="reqnivo-smoke-"))
     os.chmod(directory, 0o700)
-    # Always ephemeral ports so automated runs never collide with a user's running Proxiverse (9090/9091).
+    # Always ephemeral ports so automated runs never collide with a user's running Reqnivo (9090/9091).
     proxy_port = free_port()
     api_port = free_port()
     token = secrets.token_hex(32)
-    env = dict(os.environ, PROXIVERSE_TOKEN=token, PROXIVERSE_API_PORT=str(api_port), PROXIVERSE_PROXY_PORT=str(proxy_port),
-               PROXIVERSE_HTTPS_HOSTS=json.dumps(["localhost", "127.0.0.1"]),
-               PROXIVERSE_CAPTURE_DIR=str(directory / "captures"), PROXIVERSE_PARENT_PID=str(os.getpid()),
-               PROXIVERSE_UPSTREAM_CA=str(directory / "server.crt"))
+    env = dict(os.environ, REQNIVO_TOKEN=token, REQNIVO_API_PORT=str(api_port), REQNIVO_PROXY_PORT=str(proxy_port),
+               REQNIVO_HTTPS_HOSTS=json.dumps(["localhost", "127.0.0.1"]),
+               REQNIVO_CAPTURE_DIR=str(directory / "captures"), REQNIVO_PARENT_PID=str(os.getpid()),
+               REQNIVO_UPSTREAM_CA=str(directory / "server.crt"))
     log = open(directory / "engine.log", "w")
     process = None
     server = None
@@ -127,15 +127,15 @@ def main():
                 "inspectorOnRight": False, "messagesStacked": False,
                 "httpsDecryptionHosts": {"localhost": True, "127.0.0.1": True},
             }))
-            env["PROXIVERSE_DATA_DIR"] = str(app_data)
-            process = subprocess.Popen([str(args.app.resolve() / "Contents/MacOS/Proxiverse"), "--benchmark",
+            env["REQNIVO_DATA_DIR"] = str(app_data)
+            process = subprocess.Popen([str(args.app.resolve() / "Contents/MacOS/Reqnivo"), "--benchmark",
                                         "--benchmark-output", str(directory / "ui-metrics.json"),
                                         "--benchmark-expected-flows", str(args.count + 4)], env=env, stdout=log, stderr=log)
             ca = directory / "app-data/ca/mitmproxy-ca-cert.pem"
         else:
             process = subprocess.Popen([
                 str(ROOT / "vendor/mitmproxy.app/Contents/MacOS/mitmdump"), "-q", "-s",
-                str(ROOT / "Sources/Proxiverse/Resources/bridge.py"), "--listen-host", "127.0.0.1", "-p", str(proxy_port),
+                str(ROOT / "Sources/Reqnivo/Resources/bridge.py"), "--listen-host", "127.0.0.1", "-p", str(proxy_port),
                 "--set", "confdir=" + str(directory / "ca"), "--set", "stream_large_bodies=1m",
                 "--set", "connection_strategy=lazy", "--set", "ssl_insecure=" + str(args.insecure).lower()
             ], env=env, stdout=log, stderr=log)

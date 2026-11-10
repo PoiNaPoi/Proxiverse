@@ -1,10 +1,10 @@
-# แผนพัฒนา Proxiverse
+# แผนพัฒนา Reqnivo
 
 อัปเดต: 27 ตุลาคม 2026
 
 ## 1. เป้าหมาย
 
-พัฒนา Proxiverse ให้รองรับ workflow หลัก:
+พัฒนา Reqnivo ให้รองรับ workflow หลัก:
 
 **Capture → Filter → Inspect → Mock/Edit/Repeat → Save/Share**
 
@@ -311,13 +311,13 @@ Dependency graph นี้ไม่บังคับให้ทุก phase �
 
 - [README และวิธีใช้งาน](README.md)
 - [Baseline และข้อจำกัดการวัดเดิม](docs/BASELINE.md)
-- [Capture model](Sources/Proxiverse/CaptureModel.swift)
-- [Traffic table](Sources/Proxiverse/TrafficTable.swift)
-- [Workspace layouts](Sources/Proxiverse/WorkspaceSplit.swift)
-- [Rules UI](Sources/Proxiverse/RulesView.swift) และ [draft lifecycle](Sources/Proxiverse/RuleWorkspaceDraft.swift)
-- [Rules และ managed mock files](Sources/Proxiverse/DebugRules.swift)
-- [JSON presentation/formatter](Sources/Proxiverse/MessagePreview.swift)
-- [Editable syntax component](Sources/Proxiverse/SyntaxTextEditor.swift)
-- [Native JSON editing/folding layout](Sources/Proxiverse/JSONEditorTextView.swift)
-- [Engine bridge](Sources/Proxiverse/Resources/bridge.py)
-- [Regression tests](Tests/ProxiverseTests)
+- [Capture model](Sources/Reqnivo/CaptureModel.swift)
+- [Traffic table](Sources/Reqnivo/TrafficTable.swift)
+- [Workspace layouts](Sources/Reqnivo/WorkspaceSplit.swift)
+- [Rules UI](Sources/Reqnivo/RulesView.swift) และ [draft lifecycle](Sources/Reqnivo/RuleWorkspaceDraft.swift)
+- [Rules และ managed mock files](Sources/Reqnivo/DebugRules.swift)
+- [JSON presentation/formatter](Sources/Reqnivo/MessagePreview.swift)
+- [Editable syntax component](Sources/Reqnivo/SyntaxTextEditor.swift)
+- [Native JSON editing/folding layout](Sources/Reqnivo/JSONEditorTextView.swift)
+- [Engine bridge](Sources/Reqnivo/Resources/bridge.py)
+- [Regression tests](Tests/ReqnivoTests)

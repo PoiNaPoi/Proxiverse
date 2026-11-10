@@ -14,7 +14,7 @@ run เก่าบน branch เดียวกันจะถูกยกเ�
 | `Draft Release` | เฉพาะ push tag หลัง package ผ่าน: ตรวจ checksum ของ artifacts ที่ดาวน์โหลด แล้วสร้าง Draft Pre-release บน GitHub |
 
 CI เก็บ stdout/stderr เป็น artifacts อายุ 7 วัน รวมถึงเมื่อ job ล้มเหลว
-แพ็กเกจที่ตรวจผ่านอยู่ใน artifact `Proxiverse-macOS-arm64-<commit SHA>` อายุ 14 วัน
+แพ็กเกจที่ตรวจผ่านอยู่ใน artifact `Reqnivo-macOS-arm64-<commit SHA>` อายุ 14 วัน
 ประกอบด้วย ZIP และ `SHA256SUMS.txt` ดาวน์โหลดจากหน้า run แล้วแตก artifact ก่อนใช้
 ตรวจ checksum ได้ด้วย `shasum -a 256 -c SHA256SUMS.txt` ในโฟลเดอร์ที่มี ZIP
 การรันบน `main` หรือสั่งเองไม่สร้าง GitHub Release แพ็กเกจยังใช้ ad-hoc signing ตาม build script
@@ -35,7 +35,7 @@ CI เก็บ stdout/stderr เป็น artifacts อายุ 7 วัน �
 4. ดู **Actions → CI** ของ tag นั้น ระบบรัน build/tests และ engine integration ใหม่
    จาก commit ของ tag หาก test ล้มเหลวหรือ version ไม่ตรง tag จะไม่สร้าง Draft
 5. เมื่อผ่าน ไปที่ **Releases** จะพบ Draft ที่เลือก Pre-release ไว้ พร้อม app ZIP,
-   `Proxiverse-engine-source-12.2.3.zip` และ `SHA256SUMS.txt` ที่ครอบคลุมทั้งสอง ZIP
+   `Reqnivo-engine-source-12.2.3.zip` และ `SHA256SUMS.txt` ที่ครอบคลุมทั้งสอง ZIP
    source ZIP รวม archives, notices และ helper scripts จาก commit ของ tag
    Release notes มีข้อความตั้งต้นและรายการเปลี่ยนแปลงที่ GitHub สร้างให้
 6. ตรวจ notes และทดสอบไฟล์ดาวน์โหลด ก่อนกด Publish ด้วยตนเอง

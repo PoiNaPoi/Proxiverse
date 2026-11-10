@@ -48,14 +48,14 @@ source, work = map(Path, sys.argv[1:])
 original = source / "release/specs/onedir.spec"
 text = original.read_text()
 local = text.replace("codesign_identity='Developer ID Application'", "codesign_identity=None")
-(source / "release/specs/proxiverse-local.spec").write_text(local)
+(source / "release/specs/reqnivo-local.spec").write_text(local)
 (work / "PACKAGING.patch").write_text("".join(difflib.unified_diff(
     text.splitlines(keepends=True), local.splitlines(keepends=True),
-    fromfile="upstream/onedir.spec", tofile="local/proxiverse-local.spec")))
+    fromfile="upstream/onedir.spec", tofile="local/reqnivo-local.spec")))
 PY
 export PATH="$source_root/.venv/bin:$PATH"
 cd release/specs
-pyinstaller --clean --noconfirm --workpath "$work/build" --distpath "$work/output" proxiverse-local.spec
+pyinstaller --clean --noconfirm --workpath "$work/build" --distpath "$work/output" reqnivo-local.spec
 engine="$work/output/mitmproxy.app"
 "$engine/Contents/MacOS/mitmdump" --version
 "$engine/Contents/MacOS/mitmdump" --listen-host 127.0.0.1 --listen-port 0 \

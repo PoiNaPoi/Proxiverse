@@ -1,6 +1,6 @@
 # Authorized use
 
-Proxiverse is a local HTTP/HTTPS debugging tool for development and authorized
+Reqnivo is a local HTTP/HTTPS debugging tool for development and authorized
 testing. Inspect, modify, or interrupt traffic only when you have permission
 covering the relevant systems, devices, accounts, data, and testing activities.
 Owning a device, installing a CA, or selecting a domain does not by itself grant
@@ -13,7 +13,7 @@ credential theft, surveillance, or disruption of another person's systems.
 
 ## Certificates and network access
 
-- Trust the Proxiverse CA only on devices you are authorized to configure.
+- Trust the Reqnivo CA only on devices you are authorized to configure.
   Trust allows interception of selected HTTPS domains when traffic is routed
   through this proxy. Remove that trust when testing is finished.
 - Keep the CA private key private. Share only the public CA certificate needed
@@ -26,7 +26,7 @@ credential theft, surveillance, or disruption of another person's systems.
   weakens protection for decrypted HTTPS traffic. Use it only for controlled
   debugging; prefer a trusted custom upstream CA when available.
 - Stop capture and restore device proxy settings after testing. Quitting or
-  deleting Proxiverse does not remove trusted CA certificates from your devices.
+  deleting Reqnivo does not remove trusted CA certificates from your devices.
 
 ## Handling captures
 
@@ -37,7 +37,7 @@ for local storage and cleanup details.
 
 ## Software terms
 
-Proxiverse code is provided under the MIT License (`LICENSE`). Bundled third-party
+Reqnivo code is provided under the MIT License (`LICENSE`). Bundled third-party
 software retains its own licenses; see `THIRD_PARTY_NOTICES.md`.
 In the source repository these files are at the repository root; in the packaged
 app they are beside this document in `Contents/Resources/Legal/`.

@@ -1,10 +1,10 @@
 # Engine source and local replacement
 
-Proxiverse distributes the official mitmproxy 12.2.3 macOS arm64 engine. The
+Reqnivo distributes the official mitmproxy 12.2.3 macOS arm64 engine. The
 archives below provide an upstream engine source snapshot and source for its
 LGPL libraries, together with a tested local rebuild route. Third-party code
 retains its own license. See `THIRD_PARTY_NOTICES.md` and the supplied license
-texts; the Proxiverse MIT license does not replace them.
+texts; the Reqnivo MIT license does not replace them.
 
 The supplemental license and attribution texts are consolidated in
 `vendor/third-party/THIRD_PARTY_LICENSES.txt` (under `Legal/third-party/` in the
@@ -16,7 +16,7 @@ internal license notices.
 
 ## Obtain and verify source
 
-In a source checkout or the companion `Proxiverse-engine-source-12.2.3.zip`,
+In a source checkout or the companion `Reqnivo-engine-source-12.2.3.zip`,
 the archives are at:
 
 - `vendor/third-party/ldap3-2.9.1/ldap3-2.9.1.tar.gz`
@@ -36,7 +36,7 @@ python3 scripts/verify-engine-sources.py
 ```
 
 New app builds also copy these archives, manifests, and this guide into
-`Proxiverse.app/Contents/Resources/Legal/` (the archives are under
+`Reqnivo.app/Contents/Resources/Legal/` (the archives are under
 `third-party/`). Distribute the companion source archive and its checksum
 alongside the app so recipients also have the helper scripts and directory layout.
 
@@ -64,7 +64,7 @@ The script:
    for PyInstaller packaging.
 4. Installs ldap3 and urwid from the supplied local source directories. Fresh
    installs are forced so edits to Python files are reflected on the next build.
-5. Creates `proxiverse-local.spec` from upstream `onedir.spec`, changing only
+5. Creates `reqnivo-local.spec` from upstream `onedir.spec`, changing only
    `codesign_identity='Developer ID Application'` to `codesign_identity=None`.
    This requests local ad-hoc signing rather than upstream's Developer ID.
 6. Builds the engine, runs upstream's local self-test with an isolated CA
@@ -106,29 +106,29 @@ notices and meet the applicable source/modification requirements.
 ## Use the replacement in a separate app copy
 
 Quit the app copy being modified. From the project root, first create a separate
-copy of an existing Proxiverse.app (adjust the input path if necessary):
+copy of an existing Reqnivo.app (adjust the input path if necessary):
 
 ```sh
-ditto dist/Proxiverse.app .cache/Proxiverse-local-engine.app
+ditto dist/Reqnivo.app .cache/Reqnivo-local-engine.app
 ```
 
 Remove the engine from that separate copy, install the rebuilt engine, and sign
 the outer app again:
 
 ```sh
-rm -rf .cache/Proxiverse-local-engine.app/Contents/Resources/Engine/mitmproxy.app
-ditto .cache/engine-rebuild/output/mitmproxy.app .cache/Proxiverse-local-engine.app/Contents/Resources/Engine/mitmproxy.app
-codesign --force --sign - .cache/Proxiverse-local-engine.app
-codesign --verify --deep --strict .cache/Proxiverse-local-engine.app
+rm -rf .cache/Reqnivo-local-engine.app/Contents/Resources/Engine/mitmproxy.app
+ditto .cache/engine-rebuild/output/mitmproxy.app .cache/Reqnivo-local-engine.app/Contents/Resources/Engine/mitmproxy.app
+codesign --force --sign - .cache/Reqnivo-local-engine.app
+codesign --verify --deep --strict .cache/Reqnivo-local-engine.app
 ```
 
 For an isolated manual capture session, launch its executable with a separate
 data directory and unused ports:
 
 ```sh
-PROXIVERSE_DATA_DIR="$PWD/.cache/local-engine-data" \
-PROXIVERSE_PROXY_PORT=19090 PROXIVERSE_API_PORT=19091 \
-  .cache/Proxiverse-local-engine.app/Contents/MacOS/Proxiverse
+REQNIVO_DATA_DIR="$PWD/.cache/local-engine-data" \
+REQNIVO_PROXY_PORT=19090 REQNIVO_API_PORT=19091 \
+  .cache/Reqnivo-local-engine.app/Contents/MacOS/Reqnivo
 ```
 
 Do not enable Capture Mac Traffic or install/trust the test CA unless you intend
@@ -145,10 +145,10 @@ components may differ between the lock-based rebuild and the original binary.
 Further transitive dependency review remains recorded in `PUBLIC_RELEASE_REVIEW.md`.
 
 Local verification on 2026-11-09 (Apple Silicon): archive checksums, lock-based
-engine build, upstream self-test, code-signature verification, and Proxiverse's
+engine build, upstream self-test, code-signature verification, and Reqnivo's
 selective HTTPS smoke test passed. Temporary markers added to both local LGPL
 libraries were observed inside a rebuilt binary, verifying that local source
 edits reach the packaged engine. The markers were then removed and the final
-engine rebuilt and checked again. A separate Proxiverse.app copy with the rebuilt
+engine rebuilt and checked again. A separate Reqnivo.app copy with the rebuilt
 engine passed deep/strict signature verification. The replacement app's graphical
 capture workflow and a second Mac were not tested.

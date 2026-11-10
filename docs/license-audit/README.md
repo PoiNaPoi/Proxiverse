@@ -1,6 +1,6 @@
 # License audit evidence
 
-This directory is for maintainers. It is not copied into Proxiverse.app.
+This directory is for maintainers. It is not copied into Reqnivo.app.
 
 - `evidence.tar.gz` preserves original notice texts and provenance manifests,
   including cross-platform candidates from the former broad Rust lockfile scan.

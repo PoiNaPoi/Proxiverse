@@ -29,8 +29,8 @@ with tarfile.open(evidence) as archive:
         group = groups.setdefault(key, {"text": data, "origins": set()})
         group["origins"].add((item["component"], item["member"]))
 
-parts = [b"Proxiverse third-party licenses and notices\n\n"
-         b"Proxiverse-owned code is MIT licensed; third-party material retains its own terms.\n"
+parts = [b"Reqnivo third-party licenses and notices\n\n"
+         b"Reqnivo-owned code is MIT licensed; third-party material retains its own terms.\n"
          b"Original notices inside the unmodified signed engine are also retained.\n"
          b"This document includes known Python/native components and conservatively selected\n"
          b"macOS Rust normal/build dependency candidates. It is not an exact linked-code SBOM.\n"

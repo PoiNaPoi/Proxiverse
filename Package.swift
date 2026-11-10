@@ -2,11 +2,11 @@
 import PackageDescription
 
 let package = Package(
-    name: "Proxiverse",
+    name: "Reqnivo",
     platforms: [.macOS(.v14)],
-    products: [.executable(name: "Proxiverse", targets: ["Proxiverse"])],
+    products: [.executable(name: "Reqnivo", targets: ["Reqnivo"])],
     targets: [
-        .executableTarget(name: "Proxiverse", resources: [.copy("Resources/bridge.py"), .copy("Resources/install-certificate.dex"), .copy("Resources/Proxiverse.icns")]),
-        .testTarget(name: "ProxiverseTests", dependencies: ["Proxiverse"])
+        .executableTarget(name: "Reqnivo", resources: [.copy("Resources/bridge.py"), .copy("Resources/install-certificate.dex"), .copy("Resources/Reqnivo.icns")]),
+        .testTarget(name: "ReqnivoTests", dependencies: ["Reqnivo"])
     ]
 )

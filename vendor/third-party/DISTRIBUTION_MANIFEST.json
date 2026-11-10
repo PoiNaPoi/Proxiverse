@@ -11,7 +11,7 @@
   "selection_method": "Known Python/native notices plus source-derived macOS Rust normal/build dependency candidates; dev-only edges and other targets excluded. Not an exact original-binary SBOM.",
   "notices": {
     "file": "THIRD_PARTY_LICENSES.txt",
-    "sha256": "97729479f58b36a68b3657f09faef1e0ad36735e61bcee6f6f52e1604c22f3b0"
+    "sha256": "f5ea75a026bcd00f476297d1a2d57c1c54997444187c8310e2269ca84b8280ae"
   },
   "source_archives": [
     {
