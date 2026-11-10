@@ -20,6 +20,19 @@ cp "$bin_path/Proxiverse" "$app/Contents/MacOS/Proxiverse"
 rm -rf "$app/Contents/MacOS/Proxiverse_Proxiverse.bundle"
 rm -rf "$app/Contents/Resources/Proxiverse_Proxiverse.bundle"
 cp -R "$bin_path/Proxiverse_Proxiverse.bundle" "$app/Contents/Resources/"
+# Older SwiftPM versions emit a flat resource bundle without signing metadata.
+resource_bundle="$app/Contents/Resources/Proxiverse_Proxiverse.bundle"
+if [ ! -f "$resource_bundle/Info.plist" ] && [ ! -f "$resource_bundle/Contents/Info.plist" ]; then
+    cat > "$resource_bundle/Info.plist" <<'PLIST'
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0"><dict>
+<key>CFBundleIdentifier</key><string>dev.proxiverse.mac.resources</string>
+<key>CFBundleName</key><string>Proxiverse_Proxiverse</string>
+<key>CFBundlePackageType</key><string>BNDL</string>
+</dict></plist>
+PLIST
+fi
 rm -rf "$app/Contents/Resources/Engine/mitmproxy.app"
 cp -R vendor/mitmproxy.app "$app/Contents/Resources/Engine/"
 cp vendor/mitmproxy-LICENSE.txt "$app/Contents/Resources/"
