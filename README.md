@@ -75,10 +75,16 @@ separate steps; existing TLS connections must reconnect before changes take effe
 ### Capture from a test device
 
 1. Stop capture, open **Capture Settings**, enable **Allow test devices on local
-   network**, and start capture again.
+   network**, and start capture again. LAN access uses **Approve Devices on Mac**.
 2. Connect the device to the same trusted network and set its HTTP proxy to the
    Mac's LAN IP and proxy port shown in the certificate setup helper.
-3. Open **Install Certificate** and follow the instructions for your device.
+3. Open `http://mitm.it` on the phone. The first connection is blocked. On the
+   Mac, open the separate **LAN Devices** dialog from the main window, compare the displayed IP
+   with the phone's Wi-Fi details, and click **Allow**. Retry the page. No
+   username/password is needed. **Revoke** disconnects active traffic; approvals
+   expire when capture stops. Approval is based on IP, not verified device identity.
+   Mac loopback capture does not require approval.
+4. Open **Install Certificate** and follow the instructions for your device.
    Enable HTTPS decryption for the host you are testing, then reconnect the client.
 
 iPhone and iPad require full certificate trust after profile installation. Android

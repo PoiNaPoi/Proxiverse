@@ -61,6 +61,8 @@ jobs:
         run: python3 scripts/smoke-engine.py --count 100 2>&1 | tee smoke-engine.log
       - name: Test Map Local and breakpoints
         run: python3 scripts/smoke-rules.py 2>&1 | tee smoke-rules.log
+      - name: Test LAN device approval
+        run: python3 scripts/smoke-lan-devices.py 2>&1 | tee smoke-lan-devices.log
       - name: Test selective HTTPS decryption
         run: python3 scripts/smoke-https-decryption.py 2>&1 | tee smoke-https.log
       - name: Upload integration logs

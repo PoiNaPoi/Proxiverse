@@ -3,6 +3,35 @@ import XCTest
 
 final class UpstreamVerificationTests: XCTestCase {
     @MainActor
+    func testRuntimeLANStartsWithDeviceApproval() async throws {
+        let root = FileManager.default.temporaryDirectory.appendingPathComponent(UUID().uuidString)
+        let previous = ProcessInfo.processInfo.environment["REQNIVO_DATA_DIR"]
+        setenv("REQNIVO_DATA_DIR", root.path, 1)
+        defer {
+            if let previous { setenv("REQNIVO_DATA_DIR", previous, 1) }
+            else { unsetenv("REQNIVO_DATA_DIR") }
+            try? FileManager.default.removeItem(at: root)
+        }
+        let ports = try SystemProxy.command("/usr/bin/python3", ["-c", """
+        import socket
+        a, b = socket.socket(), socket.socket()
+        a.bind(('127.0.0.1', 0)); b.bind(('127.0.0.1', 0))
+        print(a.getsockname()[1], b.getsockname()[1])
+        """]).split(separator: " ").compactMap { Int($0.trimmingCharacters(in: .whitespacesAndNewlines)) }
+        let runtime = EngineRuntime()
+        do {
+            try await runtime.start(proxyPort: ports[0], apiPort: ports[1], lan: true)
+            let api = try XCTUnwrap(runtime.api)
+            let devices = try await api.get("/lan-devices", as: [LANDevice].self)
+            XCTAssertTrue(devices.isEmpty)
+            await runtime.stop()
+        } catch {
+            await runtime.stop()
+            throw error
+        }
+    }
+
+    @MainActor
     func testRuntimeRejectsUntrustedServerUntilBypassIsEnabled() async throws {
         let root = FileManager.default.temporaryDirectory.appendingPathComponent(UUID().uuidString)
         try FileManager.default.createDirectory(at: root, withIntermediateDirectories: true)

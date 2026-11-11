@@ -59,6 +59,10 @@ struct DeviceCertificateView: View {
             Text("Server: \(addresses.isEmpty ? "Mac’s LAN IP (check Network Settings)" : addresses.joined(separator: " / "))\nPort: \(model.proxyPort)")
                 .font(.body.monospaced()).textSelection(.enabled)
             Text("Choose the Mac address reachable from the phone. VPN or firewall settings may affect the connection.").font(.caption).foregroundStyle(.secondary)
+            if model.allowLAN {
+                Text("Open LAN Devices in the main window and approve this phone’s IP before continuing.")
+                    .font(.callout).foregroundStyle(.secondary)
+            }
             HStack(spacing: 16) {
                 if let qrCode { Image(nsImage: qrCode).interpolation(.none).accessibilityLabel("QR code for http://mitm.it") }
                 VStack(alignment: .leading, spacing: 8) {

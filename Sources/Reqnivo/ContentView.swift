@@ -7,6 +7,7 @@ struct ContentView: View {
     @State private var inspectorVisible = true
     @State private var columnResetRevision = 0
     @State private var showSearchHelp = false
+    @State private var showLANDevices = false
     @FocusState private var searchFocused: Bool
 
     private var orderedHosts: [String] {
@@ -167,7 +168,11 @@ struct ContentView: View {
                         .accessibilityLabel("Capture engine: \(model.captureStatusText)")
                     Label(model.lanStatusText, systemImage: "wifi")
                         .accessibilityLabel("Network access: \(model.lanStatusText)")
-                    ProxyConnectionView(port: model.proxyPort, allowLAN: model.allowLAN)
+                    if model.allowLAN {
+                        Button("LAN Devices (\(model.lanDevices.filter { !$0.approved }.count) waiting)") {
+                            showLANDevices = true
+                        }
+                    }
                     MacCaptureToggle(model: model)
                     Label(model.macProxyStatusText, systemImage: "desktopcomputer")
                         .accessibilityLabel("Mac system proxy: \(model.macProxyStatusText)")
@@ -281,6 +286,7 @@ struct ContentView: View {
             }
         }
         .sheet(isPresented: $model.showSetup) { SetupView(model: model) }
+        .sheet(isPresented: $showLANDevices) { LANDevicesView(model: model) }
         .sheet(isPresented: $model.showHTTPSDecryption) { HTTPSDecryptionView(model: model) }
         .onChange(of: model.showCertificateInstaller) { _, show in
             if show { openWindow(id: "install-certificate"); model.showCertificateInstaller = false }
@@ -342,52 +348,6 @@ private struct ToolbarButtonStyle: ButtonStyle {
             }
             .opacity(isEnabled ? 1 : 0.4)
             .onHover { isHovered = $0 }
-    }
-}
-
-private struct ProxyConnectionView: View {
-    let port: Int
-    let allowLAN: Bool
-    @State private var addresses: [String] = []
-
-    var body: some View {
-        VStack(alignment: .leading, spacing: 6) {
-            Text("Proxy IP : Port").fontWeight(.medium)
-            if allowLAN {
-                ForEach(addresses, id: \.self) { address in
-                    connectionRow(address)
-                }
-                if addresses.isEmpty {
-                    Text("No LAN IP available").font(.caption2)
-                }
-            }
-        }
-        .task {
-            while !Task.isCancelled {
-                addresses = DeviceCertificate.lanAddresses()
-                do { try await Task.sleep(for: .seconds(5)) }
-                catch { return }
-            }
-        }
-    }
-
-    private func connectionRow(_ address: String) -> some View {
-        let endpoint = "\(address):\(port)"
-        return HStack(spacing: 6) {
-            Text(endpoint)
-                .monospaced().textSelection(.enabled).lineLimit(1)
-                .help("Connect from a device on the same network")
-            Spacer(minLength: 0)
-            Button {
-                NSPasteboard.general.clearContents()
-                NSPasteboard.general.setString(endpoint, forType: .string)
-            } label: {
-                Image(systemName: "doc.on.doc")
-            }
-            .buttonStyle(.borderless)
-            .help("Copy \(endpoint)")
-            .accessibilityLabel("Copy proxy address \(endpoint)")
-        }
     }
 }
 
@@ -681,6 +641,10 @@ struct SetupView: View {
                             ForEach(model.services, id: \.self) { Text($0).tag($0) }
                         }.disabled(!model.setMacProxy)
                     }.disabled(model.running || model.busy)
+                    if model.allowLAN {
+                        Text("Approve and manage devices using LAN Devices in the main window.")
+                            .font(.caption).foregroundStyle(.secondary)
+                    }
                     MacCaptureToggle(model: model)
                     Group {
                         Text("Upstream HTTPS").font(.headline)
@@ -762,5 +726,181 @@ struct MetricsView: View {
                 Button("Done") { dismiss() }.keyboardShortcut(.defaultAction)
             }
         }.padding(24).frame(width: 560)
+    }
+}
+
+struct LANDevicesView: View {
+    @ObservedObject var model: CaptureModel
+    @Environment(\.dismiss) private var dismiss
+    @State private var addresses: [String] = []
+    @State private var copiedAddress: String?
+
+    private var pending: [LANDevice] { model.lanDevices.filter { !$0.approved } }
+    private var approved: [LANDevice] { model.lanDevices.filter(\.approved) }
+    private var listening: Bool { model.allowLAN && model.running }
+
+    var body: some View {
+        VStack(alignment: .leading, spacing: 0) {
+            HStack(spacing: 14) {
+                Image(systemName: "laptopcomputer.and.iphone")
+                    .font(.system(size: 25)).foregroundStyle(Color.accentColor)
+                    .frame(width: 52, height: 52)
+                    .background(Color.accentColor.opacity(0.1), in: RoundedRectangle(cornerRadius: 13))
+                VStack(alignment: .leading, spacing: 4) {
+                    Text("LAN Devices").font(.title2.bold())
+                    Text("Connect your phone. Approve it here.")
+                        .font(.callout).foregroundStyle(.secondary)
+                }
+                Spacer()
+                HStack(spacing: 6) {
+                    Circle().fill(listening ? Color.green : Color.secondary).frame(width: 6, height: 6)
+                    Text(listening ? "Listening" : (model.allowLAN ? "Capture stopped" : "LAN disabled"))
+                        .font(.caption.weight(.medium))
+                }.padding(.horizontal, 10).padding(.vertical, 6)
+                    .background(Color.primary.opacity(0.05), in: Capsule())
+            }.padding(24)
+            Divider()
+            ScrollView {
+                VStack(alignment: .leading, spacing: 16) {
+                    if model.allowLAN {
+                        proxySection
+                        approvalSection
+                        DisclosureGroup("How device approval works") {
+                            Text("Access is based on IP, not a verified device identity. Use a trusted test network. Revoke disconnects active traffic. Approve again if the phone’s IP changes.")
+                                .font(.caption).foregroundStyle(.secondary)
+                                .fixedSize(horizontal: false, vertical: true).padding(.top, 6)
+                        }.font(.caption).foregroundStyle(.secondary)
+                    } else {
+                        Label("Enable “Allow test devices on local network” in Capture Settings to connect a device.", systemImage: "wifi.slash")
+                            .foregroundStyle(.secondary).padding(.vertical, 24)
+                    }
+                }.padding(20).frame(maxWidth: .infinity, alignment: .leading)
+            }
+            Divider()
+            HStack {
+                Label("Access resets when capture stops", systemImage: "lock.shield")
+                    .font(.caption).foregroundStyle(.secondary)
+                Spacer()
+                Button("Done") { dismiss() }.keyboardShortcut(.defaultAction)
+                    .controlSize(.large)
+            }.padding(.horizontal, 24).padding(.vertical, 16)
+        }.frame(width: 640, height: 660)
+        .task {
+            while !Task.isCancelled {
+                addresses = DeviceCertificate.lanAddresses()
+                do { try await Task.sleep(for: .seconds(5)) }
+                catch { return }
+            }
+        }
+        .task(id: copiedAddress) {
+            guard copiedAddress != nil else { return }
+            do { try await Task.sleep(for: .seconds(2)) }
+            catch { return }
+            copiedAddress = nil
+        }
+    }
+
+    private var proxySection: some View {
+        VStack(alignment: .leading, spacing: 12) {
+            stepHeading("1", title: "Connect your phone")
+            Text("Use the same Wi-Fi network. Set your phone’s proxy to one of these addresses.")
+                .font(.callout).foregroundStyle(.secondary)
+                .fixedSize(horizontal: false, vertical: true)
+            ForEach(addresses, id: \.self) { address in
+                let endpoint = "\(address):\(model.proxyPort)"
+                HStack(spacing: 10) {
+                    Image(systemName: "network").foregroundStyle(.secondary)
+                    Text(endpoint).font(.system(.body, design: .monospaced).weight(.medium))
+                        .textSelection(.enabled)
+                    Spacer()
+                    Button {
+                        NSPasteboard.general.clearContents()
+                        NSPasteboard.general.setString(endpoint, forType: .string)
+                        copiedAddress = endpoint
+                    } label: {
+                        Label(copiedAddress == endpoint ? "Copied" : "Copy",
+                              systemImage: copiedAddress == endpoint ? "checkmark" : "doc.on.doc")
+                    }.buttonStyle(.borderless)
+                        .accessibilityLabel("Copy proxy address \(endpoint)")
+                }.padding(10)
+                    .background(Color.primary.opacity(0.04), in: RoundedRectangle(cornerRadius: 8))
+            }
+            if addresses.isEmpty {
+                Label("No LAN address found. Check your Mac’s network connection.", systemImage: "wifi.exclamationmark")
+                    .font(.callout).foregroundStyle(.secondary)
+            }
+            Text("Choose the address your phone can reach. No username or password is needed.")
+                .font(.caption).foregroundStyle(.secondary)
+        }.padding(14)
+            .background(Color.primary.opacity(0.025), in: RoundedRectangle(cornerRadius: 12))
+            .overlay(RoundedRectangle(cornerRadius: 12).stroke(Color.primary.opacity(0.06), lineWidth: 1))
+    }
+
+    private var approvalSection: some View {
+        VStack(alignment: .leading, spacing: 12) {
+            stepHeading("2", title: "Approve access")
+            Text("Open http://mitm.it on your phone, then match its Wi-Fi IP below.")
+                .font(.callout).foregroundStyle(.secondary)
+                .fixedSize(horizontal: false, vertical: true)
+            if !model.running {
+                Label("Start capture to receive device requests.", systemImage: "pause.circle")
+                    .foregroundStyle(.secondary).padding(.vertical, 12)
+            } else if pending.isEmpty && approved.isEmpty {
+                VStack(spacing: 8) {
+                    Image(systemName: "iphone.radiowaves.left.and.right").font(.system(size: 25))
+                    Text("Waiting for your phone").font(.headline)
+                    Text("Requests appear here when your phone uses the proxy.").font(.caption)
+                }.foregroundStyle(.secondary).frame(maxWidth: .infinity).padding(.vertical, 20)
+            }
+            if !pending.isEmpty {
+                Text("NEEDS APPROVAL · \(pending.count)")
+                    .font(.caption.weight(.semibold)).foregroundStyle(.orange)
+                ForEach(pending) { deviceRow($0) }
+            }
+            if !approved.isEmpty {
+                Text("APPROVED · \(approved.count)")
+                    .font(.caption.weight(.semibold)).foregroundStyle(.secondary)
+                ForEach(approved) { deviceRow($0) }
+            }
+            if !pending.isEmpty {
+                Label("Only allow an IP that matches your device.", systemImage: "info.circle")
+                    .font(.caption).foregroundStyle(.secondary)
+            }
+        }.padding(14)
+            .background(Color.primary.opacity(0.025), in: RoundedRectangle(cornerRadius: 12))
+            .overlay(RoundedRectangle(cornerRadius: 12).stroke(Color.primary.opacity(0.06), lineWidth: 1))
+    }
+
+    private func stepHeading(_ number: String, title: String) -> some View {
+        HStack(spacing: 9) {
+            Text(number).font(.caption.bold()).foregroundStyle(Color.accentColor)
+                .frame(width: 24, height: 24)
+                .background(Color.accentColor.opacity(0.12), in: Circle())
+            Text(title).font(.headline)
+        }
+    }
+
+    private func deviceRow(_ device: LANDevice) -> some View {
+        HStack(spacing: 12) {
+            Image(systemName: device.approved ? "checkmark.shield.fill" : "iphone")
+                .font(.system(size: 20)).foregroundStyle(device.approved ? Color.green : Color.orange)
+                .frame(width: 28)
+            VStack(alignment: .leading, spacing: 4) {
+                Text(device.ip).font(.system(.body, design: .monospaced).weight(.semibold))
+                    .textSelection(.enabled)
+                Text(device.approved ? "Allowed for this capture" : "Waiting for your approval")
+                    .font(.caption).foregroundStyle(.secondary)
+            }
+            Spacer()
+            if device.approved {
+                Button("Revoke") { Task { await model.setLANDeviceApproval(device, approved: false) } }
+                    .buttonStyle(.bordered)
+            } else {
+                Button("Allow") { Task { await model.setLANDeviceApproval(device, approved: true) } }
+                    .buttonStyle(.borderedProminent).tint(Color.accentColor)
+            }
+        }.disabled(!model.running || model.busy || model.lanApprovalBusy)
+            .padding(12)
+            .background((device.approved ? Color.primary : Color.orange).opacity(0.05), in: RoundedRectangle(cornerRadius: 8))
     }
 }

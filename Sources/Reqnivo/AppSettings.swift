@@ -1,5 +1,11 @@
 import Foundation
 
+struct LANDevice: Codable, Identifiable, Equatable {
+    let ip: String
+    let approved: Bool
+    var id: String { ip }
+}
+
 struct AppSettings: Codable, Equatable {
     var proxyPort = 9090
     var apiPort = 9091
@@ -27,5 +33,6 @@ struct AppSettingsStore {
         try FileManager.default.createDirectory(at: root, withIntermediateDirectories: true,
                                                 attributes: [.posixPermissions: 0o700])
         try JSONEncoder().encode(settings).write(to: file, options: .atomic)
+        try FileManager.default.setAttributes([.posixPermissions: 0o600], ofItemAtPath: file.path)
     }
 }

@@ -44,6 +44,38 @@ final class AppSettingsTests: XCTestCase {
         XCTAssertEqual(try store.load()?.pinnedHosts, [])
     }
 
+    func testLegacyPasswordSettingsAreRemovedWithoutLosingOtherSettings() throws {
+        for mode in ["password", "approvedDevices"] {
+            let store = temporaryStore()
+            var legacy = AppSettings()
+            legacy.allowLAN = true
+            legacy.proxyPort = 8181
+            legacy.pinnedHosts = ["api.test"]
+            var json = try XCTUnwrap(JSONSerialization.jsonObject(with: JSONEncoder().encode(legacy)) as? [String: Any])
+            json["lanAccessMode"] = mode
+            json["lanProxyPassword"] = "old-test-password"
+            try FileManager.default.createDirectory(at: store.root, withIntermediateDirectories: true)
+            try JSONSerialization.data(withJSONObject: json).write(to: store.file)
+            let model = CaptureModel(settingsStore: store)
+            XCTAssertTrue(model.allowLAN)
+            XCTAssertEqual(model.proxyPort, 8181)
+            XCTAssertEqual(model.pinnedHosts, ["api.test"])
+            let saved = try XCTUnwrap(JSONSerialization.jsonObject(with: Data(contentsOf: store.file)) as? [String: Any])
+            XCTAssertNil(saved["lanProxyPassword"])
+            XCTAssertNil(saved["lanAccessMode"])
+        }
+    }
+
+    func testLANDeviceApprovalsDoNotSurviveRelaunch() throws {
+        let store = temporaryStore()
+        let model = CaptureModel(settingsStore: store)
+        model.allowLAN = true
+        model.lanDevices = [LANDevice(ip: "192.0.2.10", approved: true)]
+        let reopened = CaptureModel(settingsStore: store)
+        XCTAssertTrue(reopened.allowLAN)
+        XCTAssertTrue(reopened.lanDevices.isEmpty)
+    }
+
     func testFirstLaunchMigratesExistingLayoutPreferences() throws {
         let store = temporaryStore()
         XCTAssertNil(try store.load())

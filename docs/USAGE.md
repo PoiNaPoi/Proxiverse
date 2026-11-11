@@ -112,7 +112,7 @@ IP `192.168.1.25` ในคู่มือเป็นตัวอย่าง �
 - **Domains**: เลือก host เพื่อดูเฉพาะโดเมนนั้น กางรายการเพื่อเลือก path ที่พบได้ คลิกขวาเพื่อเปิด/ปิด decryption หรือ **Pin / Unpin** โดเมน
 - **Clients**: เลือกดูตาม IP ต้นทาง เช่น แยก traffic จาก Mac และโทรศัพท์ ค่า `Unknown` หมายถึงข้อมูลนั้นไม่มี client attribution
 - ส่วนล่างแสดงสถานะ capture, LAN, Mac proxy และ CA ของ Mac แต่ละสถานะตรวจคนละเรื่อง Capture ทำงานไม่ได้แปลว่า client ตั้ง proxy และ trust CA ครบแล้ว
-- เมื่อเปิด LAN จะมี **Proxy IP : Port** พร้อมปุ่มคัดลอก เลือก IP ที่โทรศัพท์เข้าถึงได้ ถ้าเปลี่ยน Wi-Fi ให้ตรวจ IP ใหม่
+- เมื่อเปิด LAN ให้กด **LAN Devices** เพื่อดู IP/port พร้อมปุ่มคัดลอก เลือก IP ที่โทรศัพท์เข้าถึงได้ ถ้าเปลี่ยน Wi-Fi ให้ตรวจ IP ใหม่
 - **Capture Mac Traffic**: เปิดให้โปรแกรมที่ใช้ system proxy ของ network service ที่เลือกส่งผ่านแอป
 
 ### 3.3 ตาราง traffic และแผงรายละเอียด
@@ -205,11 +205,11 @@ curl --noproxy '' --proxy http://127.0.0.1:9090 \
 
 1. ให้ Mac และโทรศัพท์อยู่เครือข่ายเดียวกันที่เข้าถึงกันได้
 2. ใน Reqnivo กด **Stop → Settings**
-3. เปิด **Allow test devices on local network** แล้วกด **Done → Start Capture**
-4. ดู **Proxy IP : Port** ใน sidebar หรือ **Certificate → Phone / Tablet** จด LAN IP ของ Mac และ Proxy port
+3. เปิด **Allow test devices on local network** ใช้ **Approve Devices on Mac** แล้วกด **Done → Start Capture**
+4. ดู IP/port ใน **LAN Devices → Connect your phone** หรือ **Certificate → Phone / Tablet** จด LAN IP ของ Mac และ Proxy port
 5. บน iPhone/iPad เปิด **Settings → Wi-Fi → ปุ่มข้อมูลข้างเครือข่ายที่ใช้งาน → Configure Proxy**
-6. เลือก **Manual** แล้วกรอก Server เป็น LAN IP ของ Mac เช่น `192.168.1.25` และ Port เป็น `9090` ตามค่าจริง แล้วบันทึก
-7. เปิด Safari บนโทรศัพท์ไปที่ `http://mitm.it` โดยใช้ `http://` หรือสแกน QR ในหน้าต่าง Certificate หลังตั้ง proxy แล้ว
+6. เลือก **Manual** แล้วกรอก Server เป็น LAN IP ของ Mac เช่น `192.168.1.25` และ Port เป็น `9090` ตามค่าจริง แล้วบันทึก โดยไม่ต้องกรอก username/password
+7. เปิด Safari บนโทรศัพท์ไปที่ `http://mitm.it` โดยใช้ `http://` หรือสแกน QR ในหน้าต่าง Certificate หลังตั้ง proxy แล้ว ครั้งแรกจะถูกบล็อก ให้กด **LAN Devices** จากหน้าหลักบน Mac เพื่อเปิดหน้าต่างจัดการอุปกรณ์แยก ตรวจ IP ให้ตรงกับมือถือ กด **Allow** แล้วโหลดหน้าใหม่
 
 **ตรวจผล:** ต้องเห็นหน้าดาวน์โหลด certificate ของ mitmproxy และควรมี traffic จากโทรศัพท์เข้ามาใน Reqnivo ถ้าไม่เห็นหน้าติดตั้งให้ตรวจ routing/proxy ก่อน ไม่ต้องรีบติดตั้ง CA ใหม่
 
@@ -236,8 +236,8 @@ curl --noproxy '' --proxy http://127.0.0.1:9090 \
 
 1. เปิด LAN capture บน Mac และดู IP/port เช่นเดียวกับ [ขั้นตอนเชื่อมต่อโทรศัพท์](#ios-device)
 2. บน Android เปิดรายละเอียดเครือข่าย Wi-Fi ที่ใช้งาน หา **Proxy → Manual** บางรุ่นอยู่ใน Advanced options หรือเมนูแก้ไขเครือข่าย
-3. กรอก Proxy hostname เป็น LAN IP ของ Mac และ Proxy port ตามแอป แล้วบันทึก
-4. เปิด browser บนโทรศัพท์ไปที่ `http://mitm.it` ดาวน์โหลด CA สำหรับ Android
+3. กรอก Proxy hostname เป็น LAN IP ของ Mac และ Proxy port ตามแอป ไม่ต้องตั้งค่า username/password ให้ใช้ **Approve Devices on Mac** ใน Reqnivo
+4. เปิด browser บนโทรศัพท์ไปที่ `http://mitm.it` ครั้งแรกจะถูกบล็อก ให้กด **LAN Devices** จากหน้าหลักบน Mac เพื่อเปิดหน้าต่างจัดการอุปกรณ์แยก ตรวจ IP ให้ตรงกับมือถือ กด **Allow** แล้วโหลดหน้าใหม่เพื่อดาวน์โหลด CA สำหรับ Android
 5. เปิด **Settings → Security → Install a certificate → CA certificate** แล้วเลือกไฟล์ที่ดาวน์โหลด ชื่อและตำแหน่งเมนูต่างกันตามผู้ผลิต/Android version
 6. ทำขั้นตอนยืนยันการติดตั้งบนอุปกรณ์ให้เสร็จ
 7. เปิด decryption ให้โดเมนบน Reqnivo แล้วปิด/เปิดแอปที่ทดสอบใหม่
@@ -772,7 +772,7 @@ KiB/MiB เป็นหน่วยฐาน 1024 เช่น 256 KiB = 262,144
 
 หลัง Stop ยังอ่าน preview ปัจจุบันได้ แต่เริ่ม capture ใหม่จะล้าง preview เก่า และปิดแอปตามปกติจะลบ directory ของ capture ปัจจุบัน Crash, force quit หรือ cleanup failure อาจทิ้งไฟล์ไว้ การเปิด capture owner ใหม่จะล้าง directory เก่าตาม lifecycle อย่าใช้โฟลเดอร์ captures เป็นที่เก็บ session ถาวร
 
-LAN mode รับจากอุปกรณ์ที่เข้าถึง Mac ได้บนเครือข่าย ยังไม่มี allowlist รายอุปกรณ์ Control API อยู่ loopback และต้องมี per-capture bearer token ส่วนการประมวลผล capture อยู่บน Mac แอปไม่ได้มีบริการ upload capture/account/analytics ของผู้พัฒนา รายละเอียดและขอบเขตข้ออ้างนี้อยู่ใน [PRIVACY.md](PRIVACY.md)
+LAN mode ใช้ **Approve Devices on Mac** โดยต้องกดอนุญาต IP บน Mac ก่อนเชื่อมต่อ ไม่ต้องกรอกรหัสบนมือถือ สิทธิ์หมดเมื่อ Stop และกด Revoke เพื่อตัดการเชื่อมต่อได้ IP ไม่ใช่การพิสูจน์ตัวอุปกรณ์ จึงใช้เฉพาะเครือข่ายทดสอบที่ไว้ใจได้ การจับผ่าน loopback ของ Mac ไม่ต้องอนุญาต Control API อยู่ loopback และต้องมี per-capture bearer token ส่วนการประมวลผล capture อยู่บน Mac แอปไม่ได้มีบริการ upload capture/account/analytics ของผู้พัฒนา รายละเอียดและขอบเขตข้ออ้างนี้อยู่ใน [PRIVACY.md](PRIVACY.md)
 
 <a id="walkthrough"></a>
 

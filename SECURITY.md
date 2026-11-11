@@ -53,7 +53,13 @@ Use an isolated test environment and synthetic traffic. Do not intercept other
 people's traffic or modify their proxy settings or certificate trust stores.
 
 Captured data is not automatically redacted or encrypted by Reqnivo. LAN
-capture should only be enabled on a trusted test network. See
+capture blocks non-loopback clients at connection time until the Mac user
+approves their IP. Approvals are kept only in memory for that capture;
+revocation closes existing connections, including encrypted CONNECT tunnels.
+No proxy username/password is used. IP approval is access control, not
+cryptographic device authentication: shared, reassigned, or impersonated
+addresses can undermine it. Use trusted test networks. Loopback clients remain
+exempt. See
 [Privacy and cleanup](docs/PRIVACY.md) and [Authorized use](docs/AUTHORIZED_USE.md)
 for expected behavior and precautions. Ordinary bugs can be reported through
 public issues with a synthetic reproduction and no sensitive data.

@@ -26,7 +26,9 @@ browser; building the app downloads the engine from mitmproxy's distribution sit
 Your operating system, browser, backup software, and external device tools have
 their own behavior and policies.
 
-LAN mode accepts proxy connections from reachable devices on the local network;
+LAN mode requires explicit approval of a client's IP on the Mac for non-loopback
+connections. IP approvals are held
+only in memory for that capture and are cleared when capture stops;
 it does not upload captures to a Reqnivo cloud service. Only enable it on a
 trusted test network. The control API listens on localhost and requires a
 per-capture bearer token.
@@ -42,6 +44,7 @@ The default directory is `~/Library/Application Support/Reqnivo/`.
 | Captured metadata | Bounded in-memory history, up to 10,000 flows; the app keeps current previews available after Stop. |
 | Preview cleanup | Normal app termination deletes the current capture directory. A fresh app capture owner removes previous capture directories. A crash, forced quit, or cleanup failure can leave files behind. |
 | Settings, domain choices, filters, rules, mock files, custom upstream CA | Remain in the application data directory until changed or removed. Rules and mock files can themselves contain confidential data. |
+| LAN device approval requests and approved IPs | Kept only in engine memory for the current capture. Revoke closes active connections. IP-based access does not verify device identity. |
 | CA certificate and private key | Remain in `ca/` for reuse. Installing the public CA adds trust on the selected device; quitting the app does not revoke it. |
 | Engine log and proxy recovery information | Local application data; no fixed automatic expiration is promised. Do not assume logs are free of sensitive information. |
 

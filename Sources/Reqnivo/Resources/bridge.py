@@ -28,6 +28,7 @@ MAX_PREVIEW_DISK_BYTES = 128 * 1024 * 1024
 class Bridge:
     def __init__(self):
         self.token = os.environ["REQNIVO_TOKEN"]
+        self.lan_devices = {}
         self.https_hosts = self.validate_https_hosts(json.loads(os.environ.get("REQNIVO_HTTPS_HOSTS", "[]")))
         self.directory = Path(os.environ["REQNIVO_CAPTURE_DIR"])
         self.directory.mkdir(mode=0o700, parents=True, exist_ok=True)
@@ -215,7 +216,74 @@ class Bridge:
         self.persist(flow)
         self.emit(flow)
 
+    @staticmethod
+    def client_ip(client):
+        address = ipaddress.ip_address(client.peername[0].split("%", 1)[0])
+        if isinstance(address, ipaddress.IPv6Address):
+            address = address.ipv4_mapped or address
+        return str(address)
+
+    def client_connected(self, client):
+        if client.error:
+            return
+        ip = self.client_ip(client)
+        if ipaddress.ip_address(ip).is_loopback or self.lan_devices.get(ip):
+            return
+        if ip not in self.lan_devices:
+            # Bound pending discovery without evicting approved devices.
+            if len(self.lan_devices) >= 64:
+                pending = next((key for key, approved in self.lan_devices.items() if not approved), None)
+                if pending:
+                    del self.lan_devices[pending]
+            if len(self.lan_devices) < 64:
+                self.lan_devices[ip] = False
+        client.error = "Approve this device in Reqnivo before connecting"
+
+    def device_list(self):
+        return [{"ip": ip, "approved": approved} for ip, approved in
+                sorted(self.lan_devices.items(), key=lambda item: (item[1], item[0]))]
+
+    def set_device_approval(self, payload):
+        ip, approved = payload["ip"], payload["approved"]
+        if not isinstance(ip, str) or ip not in self.lan_devices or not isinstance(approved, bool):
+            raise ValueError("Choose a device that has requested access")
+        self.lan_devices[ip] = approved
+        if not approved:
+            # Pinned mitmproxy 12.2.3: close both sides, including opaque CONNECT
+            # tunnels and WebSockets which no longer pass through HTTP hooks.
+            proxy = ctx.master.addons.get("proxyserver")
+            for handler in list(proxy.connections.values()):
+                if self.client_ip(handler.client) == ip:
+                    handler.client.error = "LAN device approval revoked"
+                    for io in list(handler.transports.values()):
+                        if io.writer:
+                            io.writer.close()
+                        if io.handler:
+                            io.handler.cancel("LAN device approval revoked")
+            for flow in list(self.paused.values()):
+                if self.client_ip(flow.client_conn) == ip:
+                    self.paused.pop(flow.id, None)
+                    flow.resume()
+                    if flow.killable:
+                        flow.kill()
+        return self.device_list()
+
+    def authorize_proxy(self, flow):
+        # Discard any credentials cached by a client from an older app version.
+        flow.request.headers.pop("Proxy-Authorization", None)
+        ip = self.client_ip(flow.client_conn)
+        if not ipaddress.ip_address(ip).is_loopback and not self.lan_devices.get(ip, False):
+            flow.metadata["reqnivo_device_blocked"] = True
+            flow.response = http.Response.make(403, b"Approve this device in Reqnivo")
+            return False
+        return True
+
+    def http_connect(self, flow):
+        self.authorize_proxy(flow)
+
     async def requestheaders(self, flow):
+        if not self.authorize_proxy(flow):
+            return
         self.retain(flow)
         flow.metadata["reqnivo_break_request"] = self.matches_breakpoint(flow, "request")
         if flow.metadata["reqnivo_break_request"] and self.will_stream(flow.request):
@@ -232,6 +300,8 @@ class Bridge:
                 self.update(flow)
 
     async def request(self, flow):
+        if flow.metadata.get("reqnivo_device_blocked"):
+            return
         self.update(flow)
         if flow.metadata.get("reqnivo_break_request"):
             await self.pause(flow, "request")
@@ -255,6 +325,8 @@ class Bridge:
                 break
 
     async def responseheaders(self, flow):
+        if flow.metadata.get("reqnivo_device_blocked"):
+            return
         if flow.metadata.pop("reqnivo_buffer_response", False):
             flow.metadata["reqnivo_break_response"] = False
             await self.pause(flow, "response", headers_only=True)
@@ -274,6 +346,8 @@ class Bridge:
             await self.pause(flow, "response", headers_only=True)
 
     async def response(self, flow):
+        if flow.metadata.get("reqnivo_device_blocked"):
+            return
         flow.metadata.pop("reqnivo_buffer_response", None)
         # Synthetic Map Local responses may skip responseheaders.
         if flow.metadata.get("reqnivo_break_response", self.matches_breakpoint(flow, "response")):
@@ -491,6 +565,10 @@ class Bridge:
                 path = urlsplit(target)
                 if method == "GET" and path.path == "/health":
                     result = {"ready": True, "apiVersion": 1, "total": self.total, "retained": len(self.flow_ids), "uptime": time.time() - self.started, "previewBytes": self.preview_bytes}
+                elif method == "GET" and path.path == "/lan-devices":
+                    result = self.device_list()
+                elif method == "POST" and path.path == "/lan-devices":
+                    result = self.set_device_approval(payload)
                 elif method == "GET" and path.path == "/events":
                     cursor = int(parse_qs(path.query).get("after", ["0"])[0])
                     gap = bool(self.events and cursor < self.events[0]["sequence"] - 1)

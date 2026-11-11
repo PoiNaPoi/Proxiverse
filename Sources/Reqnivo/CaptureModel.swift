@@ -103,6 +103,22 @@ final class CaptureModel: ObservableObject {
     }
     @Published private(set) var hasUpstreamCA = false
     var upstreamCAStore: UpstreamCAStore { UpstreamCAStore(root: engine.paths.root) }
+    @Published var lanDevices: [LANDevice] = []
+    @Published private(set) var lanApprovalBusy = false
+    func setLANDeviceApproval(_ device: LANDevice, approved: Bool) async {
+        guard running, !busy, !lanApprovalBusy, let api = engine.api else { return }
+        lanApprovalBusy = true
+        defer { lanApprovalBusy = false }
+        do {
+            let updated = try JSONDecoder().decode([LANDevice].self, from: await api.request(
+                "/lan-devices", method: "POST", body: JSONEncoder().encode(LANDevice(ip: device.ip, approved: approved))))
+            guard running, engine.api === api else { return }
+            lanDevices = updated
+        } catch {
+            if engine.api === api { self.error = error.localizedDescription }
+        }
+    }
+
     var allowLAN: Bool {
         get { settings.allowLAN }
         set { settings.allowLAN = newValue }
@@ -408,6 +424,11 @@ final class CaptureModel: ObservableObject {
             selectedID = nil
             selectedIDs = []
             pinnedIDs = []
+            lanDevices = []
+            if allowLAN {
+                guard settingsReady else { throw AppFailure("Repair the settings file before starting LAN capture") }
+                try settingsStore.save(settings)
+            }
             try await engine.start(proxyPort: proxyPort, apiPort: apiPort, lan: allowLAN,
                                    skipUpstreamVerification: skipUpstreamVerification,
                                    httpsDecryptionHosts: httpsDecryptionHosts.filter { $0.value }.map(\.key).sorted())
@@ -441,6 +462,7 @@ final class CaptureModel: ObservableObject {
         } catch { self.error = error.localizedDescription }
         recoveryNeeded = FileManager.default.fileExists(atPath: SystemProxy.journalURL(engine.paths).path)
         await engine.stop()
+        lanDevices = []
         if let directory = engine.captureDirectory {
             let finished = paused.compactMap { flow -> FlowEvent? in
                 guard let data = try? Data(contentsOf: directory.appendingPathComponent(flow.id + ".json")),
@@ -478,6 +500,11 @@ final class CaptureModel: ObservableObject {
         var failures = 0
         while !Task.isCancelled, let api = engine.api {
             do {
+                if allowLAN {
+                    let devices = try await api.get("/lan-devices", as: [LANDevice].self)
+                    guard !Task.isCancelled, engine.api === api else { return }
+                    if devices != lanDevices { lanDevices = devices }
+                }
                 let waiting = try await api.get("/paused", as: [TrafficFlow].self)
                 guard !Task.isCancelled else { return }
                 // A serial engine poll has now observed which completed phases have disappeared.
