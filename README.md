@@ -10,7 +10,20 @@
 </p>
 
 <p align="center">
-  <strong>Beta</strong> · macOS 14+ · Apple Silicon · MIT
+  <a href="https://github.com/PoiNaPoi/Reqnivo/actions/workflows/ci.yml"><img src="https://github.com/PoiNaPoi/Reqnivo/actions/workflows/ci.yml/badge.svg?branch=main" alt="CI" /></a>
+  <a href="https://github.com/PoiNaPoi/Reqnivo/actions/workflows/github-code-scanning/ai-scan"><img src="https://github.com/PoiNaPoi/Reqnivo/actions/workflows/github-code-scanning/ai-scan/badge.svg?branch=main" alt="AI security scan" /></a>
+  <a href="https://github.com/PoiNaPoi/Reqnivo/actions/workflows/codeql.yml"><img src="https://github.com/PoiNaPoi/Reqnivo/actions/workflows/codeql.yml/badge.svg?branch=main" alt="CodeQL" /></a>
+  <a href="https://github.com/PoiNaPoi/Reqnivo/actions/workflows/dependabot/dependabot-updates"><img src="https://github.com/PoiNaPoi/Reqnivo/actions/workflows/dependabot/dependabot-updates/badge.svg?branch=main" alt="Dependabot Updates" /></a>
+</p>
+
+<p align="center">
+  <a href="https://github.com/PoiNaPoi/Reqnivo/releases"><img src="https://img.shields.io/github/v/release/PoiNaPoi/Reqnivo?include_prereleases&amp;style=flat-square&amp;color=8b5cf6" alt="Release" /></a>
+  <a href="https://github.com/PoiNaPoi/Reqnivo/releases"><img src="https://img.shields.io/github/downloads/PoiNaPoi/Reqnivo/total?style=flat-square&amp;color=06b6d4" alt="Release asset downloads" /></a>
+  <a href="#download"><img src="https://img.shields.io/badge/macOS-14%2B-111827?style=flat-square&amp;logo=apple&amp;logoColor=white" alt="macOS 14+" /></a>
+  <a href="#download"><img src="https://img.shields.io/badge/Apple_Silicon-arm64-06b6d4?style=flat-square" alt="Apple Silicon arm64" /></a>
+  <a href="LICENSE"><img src="https://img.shields.io/github/license/PoiNaPoi/Reqnivo?style=flat-square&amp;color=22c55e" alt="License" /></a>
+  <a href="https://github.com/PoiNaPoi/Reqnivo/stargazers"><img src="https://img.shields.io/github/stars/PoiNaPoi/Reqnivo?style=flat-square&amp;color=f59e0b" alt="GitHub stars" /></a>
+  <a href="https://github.com/PoiNaPoi/Reqnivo/releases"><img src="https://img.shields.io/badge/status-beta-f59e0b?style=flat-square" alt="Beta" /></a>
 </p>
 
 <p align="center">
