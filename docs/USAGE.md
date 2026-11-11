@@ -6,6 +6,8 @@
 
 Reqnivo เป็นแอปบน Mac สำหรับตรวจ HTTP/HTTPS ที่ส่งผ่าน proxy ของแอป ใช้ได้ทั้งกับโปรแกรมบน Mac, โทรศัพท์, iOS Simulator และ Android Emulator โดยมี capture engine รวมมาให้แล้ว ผู้ใช้แอปไม่ต้องติดตั้ง Python
 
+คู่มือปรับปรุงตาม source ใน repository ณ วันที่ **11 พฤศจิกายน 2026** ชื่อปุ่มอ้างอิงจากโค้ดปัจจุบัน รุ่น ZIP ที่ดาวน์โหลดอาจมีหน้าจอต่างออกไป ให้ตรวจเวอร์ชันของแอปประกอบ
+
 รุ่นปัจจุบันเป็น early beta รองรับ Apple Silicon และตั้งเป้าหมาย macOS 14 ขึ้นไป ไม่มี build สำหรับ Intel การตั้ง deployment target ไม่ได้ยืนยันว่าทดสอบครบทุกเวอร์ชัน macOS โปรดอ่านผลทดสอบและข้อจำกัดของไฟล์ที่ดาวน์โหลดใน release notes ด้วย
 
 ## สารบัญ
@@ -112,7 +114,7 @@ IP `192.168.1.25` ในคู่มือเป็นตัวอย่าง �
 - **Domains**: เลือก host เพื่อดูเฉพาะโดเมนนั้น กางรายการเพื่อเลือก path ที่พบได้ คลิกขวาเพื่อเปิด/ปิด decryption หรือ **Pin / Unpin** โดเมน
 - **Clients**: เลือกดูตาม IP ต้นทาง เช่น แยก traffic จาก Mac และโทรศัพท์ ค่า `Unknown` หมายถึงข้อมูลนั้นไม่มี client attribution
 - ส่วนล่างแสดงสถานะ capture, LAN, Mac proxy และ CA ของ Mac แต่ละสถานะตรวจคนละเรื่อง Capture ทำงานไม่ได้แปลว่า client ตั้ง proxy และ trust CA ครบแล้ว
-- เมื่อเปิด LAN ให้กด **LAN Devices** เพื่อดู IP/port พร้อมปุ่มคัดลอก เลือก IP ที่โทรศัพท์เข้าถึงได้ ถ้าเปลี่ยน Wi-Fi ให้ตรวจ IP ใหม่
+- เมื่อเปิด LAN จะมีปุ่ม **LAN Devices (N waiting)** สำหรับดู IP/port และอนุมัติอุปกรณ์ โดย N คือจำนวน IP ที่ยังไม่ได้อนุมัติ ดู [วิธีจัดการ LAN Devices](#lan-devices) ถ้าเปลี่ยน Wi-Fi ให้ตรวจ IP ใหม่
 - **Capture Mac Traffic**: เปิดให้โปรแกรมที่ใช้ system proxy ของ network service ที่เลือกส่งผ่านแอป
 
 ### 3.3 ตาราง traffic และแผงรายละเอียด
@@ -124,6 +126,32 @@ ID เป็นเลขรายการในรอบ capture ไม่เ�
 **Show Inspector / Hide Inspector** ใช้แสดงหรือซ่อนรายละเอียด ต้องเลือก request ก่อน ส่วนจำนวน `N of M retained` หมายถึงแสดง N รายการจาก M รายการที่ยังเก็บอยู่ จำนวน captured ด้านล่างอาจมากกว่า เพราะข้อมูลเก่าถูกนำออกตามขีดจำกัดแล้ว
 
 ใน **Layout** เปิด **Inspector on Right** เพื่อย้ายรายละเอียดไปขวา ปิดเพื่อวางด้านล่าง และใช้ **Stack Request and Response** เพื่อวาง Request/Response บนล่าง สามารถลาก divider ปรับพื้นที่ได้
+
+<a id="lan-devices"></a>
+
+### 3.4 LAN Devices: อนุมัติและตัดการเชื่อมต่ออุปกรณ์
+
+หน้าต่างนี้เปิดจากปุ่ม **LAN Devices (N waiting)** ด้านล่าง sidebar ของหน้าหลัก แยกจาก **Capture Settings** และหน้าต่าง **Certificate** หากไม่เห็นปุ่ม ให้ Stop → Settings → เปิด **Allow test devices on local network** → Done → Start Capture ก่อน
+
+1. เปิด LAN Devices แล้วตรวจสถานะ **Listening** มุมบน หากขึ้น **Capture stopped** ให้กลับไป Start Capture
+2. ใน **Connect your phone** เลือก IP ของ Mac ที่มือถือเข้าถึงได้ เช่น `192.168.1.25:9090` ปุ่ม **Copy** คัดลอกทั้ง IP และ port เมื่อตั้งบนมือถือให้แยก Server = `192.168.1.25` และ Port = `9090` ไม่ต้องใส่ username/password
+3. ตั้ง Wi-Fi proxy บนมือถือ แล้วเปิด `http://mitm.it` เพื่อให้อุปกรณ์ลองเชื่อมต่อ ครั้งแรกที่ยังไม่อนุมัติจะถูกบล็อก
+4. ใน **Approve access → NEEDS APPROVAL** ตรวจ IP ให้ตรงกับ **IP ของมือถือ** ในรายละเอียด Wi-Fi ไม่ใช่ IP ของ Mac ที่ใช้เป็น proxy จากนั้นกด **Allow** เฉพาะ IP ที่ตรวจตรงกัน
+5. ตรวจว่ารายการย้ายไป **APPROVED** และมีข้อความ **Allowed for this capture** แล้วกลับไปโหลดหน้าเว็บบนมือถือใหม่ request ที่ถูกบล็อกไปแล้วจะไม่ถูกส่งซ้ำให้อัตโนมัติ
+6. เมื่อต้องการหยุดสิทธิ์ของ IP นั้น กด **Revoke** การเชื่อมต่อที่ทำงานอยู่จะถูกตัด และการเชื่อมต่อใหม่จะถูกบล็อกจนกด Allow อีกครั้ง
+
+| สิ่งที่เห็น | ความหมาย / สิ่งที่ต้องทำ |
+| --- | --- |
+| **Listening** | capture ทำงานและเปิด LAN อยู่ ยังต้องตั้ง proxy และอนุมัติ IP ของอุปกรณ์ |
+| **Capture stopped** | capture หยุดอยู่ ต้อง Start ก่อนรับการเชื่อมต่อ |
+| **Waiting for your phone** | ยังไม่มี IP ในรายการ ให้ลองเปิดเว็บผ่าน proxy จากมือถือ |
+| **NEEDS APPROVAL** / **Waiting for your approval** | มี IP ที่ยังไม่ได้อนุมัติ ตรวจ IP แล้วกด Allow |
+| **APPROVED** / **Allowed for this capture** | IP ได้รับสิทธิ์ในรอบ capture นี้ ไม่ได้ยืนยันว่าเครื่องยังออนไลน์ หรือ trust CA/เปิด HTTPS decryption แล้ว |
+| **No LAN address found** | ตรวจการเชื่อมต่อเครือข่ายของ Mac แล้วดูที่อยู่ใหม่ |
+
+กด **Done** เพื่อปิดหน้าต่างได้โดยสิทธิ์ยังอยู่ แต่ **Stop** จะล้างสิทธิ์ เมื่อ Start ใหม่ต้องให้อุปกรณ์ลองเชื่อมต่อและอนุมัติใหม่ หากมือถือเปลี่ยน IP ให้ตรวจและอนุมัติ IP ใหม่ด้วย สิทธิ์อิง IP ไม่ใช่ตัวตนอุปกรณ์ที่ยืนยันแล้ว การเชื่อมต่อจาก loopback ของ Mac ไม่ต้องอนุมัติ
+
+การอนุมัติ LAN, การติดตั้งและ trust CA บน client และการเปิด decryption ของโดเมนเป็นคนละขั้นตอน หลังเปิด `http://mitm.it` ได้แล้วให้ทำขั้นตอน CA/HTTPS ของอุปกรณ์ต่อ
 
 <a id="mac-capture"></a>
 
@@ -303,10 +331,11 @@ curl --noproxy '' --proxy http://127.0.0.1:9090 \
 1. เปิด emulator และรอ boot เสร็จ
 2. บน Reqnivo กด **Stop → Settings** เปิด **Allow test devices on local network** แล้ว Start ใหม่
 3. ตั้ง proxy ของ emulator เป็น host `10.0.2.2` และ port ของ Reqnivo เช่น `9090` โดยใช้หน้าตั้ง proxy ของ environment ที่ใช้งาน
-4. กด **Certificate → Android / Emulator (ADB) → Refresh** แล้วเลือก emulator
-5. ถ้าเป็น debug emulator ที่รองรับ root ADB กด **Install CA Automatically** แอปสามารถเรียก `adb root` ให้เอง
-6. หาก root ไม่ได้ เช่น Google Play image ใช้ **Copy CA & Open Settings** และติดตั้ง user CA ด้วยตนเอง
-7. ตรวจ debug trust ของแอป เปิด decryption ให้โดเมน แล้วเปิดแอปทดสอบใหม่
+4. เปิด browser ใน emulator ไปที่ `http://mitm.it` หากถูกบล็อก ให้เปิด **LAN Devices** บน Mac แล้วตรวจรายการรออนุมัติ การเชื่อมต่อที่ engine เห็นเป็น loopback ไม่ต้องอนุมัติ ส่วน IP อื่นต้องกด **Allow** ก่อนแล้วโหลดใหม่ ดู [วิธีจัดการ LAN Devices](#lan-devices)
+5. กด **Certificate → Android / Emulator (ADB) → Refresh** แล้วเลือก emulator
+6. ถ้าเป็น debug emulator ที่รองรับ root ADB กด **Install CA Automatically** แอปสามารถเรียก `adb root` ให้เอง
+7. หาก root ไม่ได้ เช่น Google Play image ใช้ **Copy CA & Open Settings** และติดตั้ง user CA ด้วยตนเอง
+8. ตรวจ debug trust ของแอป เปิด decryption ให้โดเมน แล้วเปิดแอปทดสอบใหม่
 
 `10.0.2.2` เป็นที่อยู่พิเศษที่ Android Emulator มาตรฐานใช้เข้าถึง host Mac ต่างจาก LAN IP ที่ใช้กับโทรศัพท์จริง อ้างอิง [Android Emulator networking](https://developer.android.com/studio/run/emulator-networking)
 
@@ -608,7 +637,7 @@ chunked JSON ที่ไม่บีบอัดสามารถรอ body �
 | --- | --- |
 | **Proxy port** | port ที่ client ใช้เชื่อมต่อ เช่น 9090; Stop ก่อนเปลี่ยน แล้วแก้ client ให้ตรง |
 | **Control port (localhost only)** | port ภายในที่ UI คุยกับ engine เช่น 9091; ไม่ใช้เป็น proxy บนมือถือ และต้องต่างจาก Proxy port |
-| **Allow test devices on local network** | เปิด listener บนทุก IPv4 interface ให้ client ใน LAN เชื่อมต่อ; Stop ก่อนเปลี่ยน |
+| **Allow test devices on local network** | เปิด listener บนทุก IPv4 interface; ต้องอนุมัติ IP ผ่าน LAN Devices ก่อนใช้งาน และสิทธิ์หมดเมื่อ Stop; Stop ก่อนเปลี่ยน |
 | **Mac network service** | service ที่แอปจะเปลี่ยน system proxy เช่น Wi-Fi; Stop ก่อนเปลี่ยน |
 | **Capture Mac Traffic** | เปิด/ปิด Mac system proxy ได้ระหว่าง capture |
 | **Skip server certificate verification (debug only)** | ข้ามการตรวจ certificate/hostname ฝั่งเซิร์ฟเวอร์สำหรับ HTTPS ที่ถอดรหัส; Stop ก่อนเปลี่ยน |
@@ -650,6 +679,8 @@ chunked JSON ที่ไม่บีบอัดสามารถรอ body �
 ### 15.2 เปิด `http://mitm.it` บนมือถือไม่ได้
 
 ตรวจว่าใช้ `http://`, capture ยังทำงาน, เปิด LAN และไม่ได้ใส่ Control port โทรศัพท์ต้องเข้าถึง Mac ได้ เครือข่าย guest/client isolation อาจกันอุปกรณ์ไม่ให้คุยกัน แม้ชื่อ Wi-Fi เหมือนกัน ตรวจ VPN และ firewall ตามนโยบายเครือข่ายด้วย
+
+เปิด **LAN Devices** บน Mac แล้วตรวจ **NEEDS APPROVAL** หากมี IP ของมือถือให้กด **Allow** แล้วโหลดเว็บบนมือถือใหม่ โดยเฉพาะหลัง Stop/Start หรือ IP มือถือเปลี่ยน หากยังขึ้น **Waiting for your phone** ให้ตรวจว่ามือถือส่งผ่าน proxy ของ Mac จริง รายการที่ยังไม่อนุมัติจะไม่เข้าตาราง traffic จึงต้องดูใน LAN Devices ก่อน
 
 ถ้าเห็นหน้าเว็บบอกว่าไม่ได้ผ่าน mitmproxy ให้ย้อนตรวจ proxy ของ client ก่อน QR เป็นลิงก์ไป mitm.it ไม่ได้ตั้ง proxy หรือติดตั้ง CA ให้อัตโนมัติ
 
@@ -851,10 +882,13 @@ build ใช้โลโก้หลัก [`images/Reqnivo-icon.png`](../images
 /usr/bin/python3 scripts/smoke-engine.py --count 100
 /usr/bin/python3 scripts/smoke-rules.py
 /usr/bin/python3 scripts/smoke-https-decryption.py
+/usr/bin/python3 scripts/smoke-lan-devices.py
 /usr/bin/python3 scripts/smoke-engine.py --count 10000 --output .cache/engine-https-burst.json
 /usr/bin/python3 scripts/smoke-engine.py --count 300 --rate 10 \
   --app dist/Reqnivo.app --output .cache/native-paced-baseline.json
 ```
+
+`smoke-lan-devices.py` ต้องมี network interface ที่ไม่ใช่ loopback ใช้ทดสอบการบล็อกก่อนอนุมัติ, Allow/Revoke, HTTP/HTTPS และการล้างสิทธิ์เมื่อเริ่ม engine ใหม่ ไม่ใช่การทดสอบหน้าจอหรือโทรศัพท์จริง
 
 Integration scripts สร้าง local fixture และ test CA ชั่วคราว ไม่แก้ trust store หรือ system proxy สำหรับการตรวจ engine หากจะทดสอบ GUI ให้ Stop แอปที่ใช้งานอยู่ก่อนเพื่อไม่ชน port 9090/9091
 

@@ -33,6 +33,7 @@ mitmproxy engine, so app users do not need to install Python separately.
 | **Map Local** | Replace responses with text, JSON, or local files. Set status, headers, and delay; create a rule from a captured response. |
 | **Breakpoints** | Pause requests or responses, edit supported headers and bodies, then continue or cancel. |
 | **Search and saved filters** | Filter by host, path, method, status, content type, or state. Save filters and pin requests or domains. |
+| **LAN device approval** | Allow or revoke device IPs from the separate LAN Devices dialog. Access lasts for the current capture; no proxy password is required. |
 | **Device setup** | Configure Mac capture and use certificate setup helpers for iOS Simulator, Android/ADB, and phones or tablets on your network. |
 | **Rule sharing** | Import and export portable Map Local rules, including supported Map Local exports with embedded responses. |
 | **Workspace layout** | Arrange inspectors beside or below traffic, with light/dark appearance and saved layout preferences. |
@@ -91,6 +92,29 @@ iPhone and iPad require full certificate trust after profile installation. Andro
 apps may need a debug Network Security Configuration that trusts user CAs. Automatic
 Android CA installation requires root ADB; other devices use manual installation.
 Certificate pinning must be handled in your own test app's debug configuration.
+
+### Manage LAN device access
+
+Open **LAN Devices (N waiting)** at the bottom of the sidebar after enabling LAN
+access. Capture Settings and the Certificate helper are separate from this dialog.
+
+1. Check that the dialog says **Listening**. Under **Connect your phone**, choose
+   a reachable Mac address. **Copy** copies `IP:port`; enter the IP and port in
+   their separate fields on the device.
+2. Set the device proxy, then open `http://mitm.it` to generate a connection attempt.
+   Under **Approve access**, match the IP in **NEEDS APPROVAL** with the device's
+   own Wi-Fi IP. This is the device IP, not the Mac proxy IP.
+3. Click **Allow**, confirm the IP moves to **APPROVED** with **Allowed for this
+   capture**, then retry the page on the device. The blocked request is not replayed.
+4. Click **Revoke** to disconnect that IP's active traffic and block further
+   connections until you allow it again. Closing the dialog with **Done** keeps
+   the approval; **Stop** clears approvals, so approve again after restarting capture.
+
+If the dialog shows **Waiting for your phone**, no device connection attempt has
+been listed yet. Check the proxy address, port, and network route, then retry.
+If the device IP changes, match and approve the new IP. The **APPROVED** list
+records access permission; it does not confirm that a device is currently online,
+that its CA is trusted, or that HTTPS decryption is enabled.
 
 อ่าน [คู่มือใช้งานภาษาไทยแบบละเอียด](docs/USAGE.md) สำหรับขั้นตอนตั้งแต่เปิดแอป
 ติดตั้ง CA และเชื่อมต่อ Mac/iPhone/Android/Simulator ไปจนถึงอ่าน API, กรอง traffic,
