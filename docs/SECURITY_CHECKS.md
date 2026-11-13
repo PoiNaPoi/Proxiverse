@@ -25,11 +25,11 @@ CI เก็บ stdout/stderr เป็น artifacts อายุ 7 วัน �
    `docs/RELEASE_NOTES.md` ซึ่งใช้เป็นข้อความตั้งต้นของ release
 2. Commit การเปลี่ยนแปลง รวมถึง workflow แล้ว push ขึ้น GitHub
 3. สร้าง tag ใหม่บน commit ที่ต้องการแจก ชื่อ tag ต้องเป็น `v` ตามด้วย
-   `CFBundleShortVersionString` เช่น version `0.0.5` ใช้ tag `v0.0.5`:
+   `CFBundleShortVersionString` เช่น version `0.0.6` ใช้ tag `v0.0.6`:
 
    ```sh
-   git tag v0.0.5
-   git push origin v0.0.5
+   git tag v0.0.6
+   git push origin v0.0.6
    ```
 
 4. ดู **Actions → CI** ของ tag นั้น ระบบรัน build/tests และ engine integration ใหม่

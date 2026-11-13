@@ -27,6 +27,8 @@ diff -qr vendor/third-party "$extracted/Contents/Resources/Legal/third-party"
 test ! -e "$extracted/Contents/Resources/Legal/DEPENDENCY_AUDIT.md"
 test ! -e "$extracted/Contents/Resources/Legal/provenance-assets.json"
 cmp vendor/mitmproxy-LICENSE.txt "$extracted/Contents/Resources/mitmproxy-LICENSE.txt"
+bin_path="$(./scripts/swift.sh build -c release --show-bin-path)"
+python3 scripts/verify-app-launch.py "$extracted" "$bin_path/Reqnivo_Reqnivo.bundle"
 (
     cd "$output"
     shasum -a 256 "$archive" > SHA256SUMS.txt

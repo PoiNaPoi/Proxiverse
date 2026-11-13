@@ -17,7 +17,7 @@ bin_path="$(./scripts/swift.sh build -c "$configuration" --show-bin-path)"
 app="dist/Reqnivo.app"
 mkdir -p "$app/Contents/MacOS" "$app/Contents/Resources/Engine"
 cp "$bin_path/Reqnivo" "$app/Contents/MacOS/Reqnivo"
-# SwiftPM resolves its module bundle inside the app Resources directory.
+# AppResources resolves the packaged module bundle inside the app Resources directory.
 rm -rf "$app/Contents/MacOS/Reqnivo_Reqnivo.bundle"
 rm -rf "$app/Contents/Resources/Reqnivo_Reqnivo.bundle"
 cp -R "$bin_path/Reqnivo_Reqnivo.bundle" "$app/Contents/Resources/"
@@ -52,8 +52,8 @@ cat > "$app/Contents/Info.plist" <<'PLIST'
 <key>CFBundleDisplayName</key><string>Reqnivo</string>
 <key>CFBundleIconFile</key><string>Reqnivo.icns</string>
 <key>CFBundlePackageType</key><string>APPL</string>
-<key>CFBundleShortVersionString</key><string>0.0.5</string>
-<key>CFBundleVersion</key><string>5</string>
+<key>CFBundleShortVersionString</key><string>0.0.6</string>
+<key>CFBundleVersion</key><string>6</string>
 <key>LSMinimumSystemVersion</key><string>14.0</string>
 <key>NSHighResolutionCapable</key><true/>
 <key>NSHumanReadableCopyright</key><string>Reqnivo · mitmproxy engine licensed under MIT</string>

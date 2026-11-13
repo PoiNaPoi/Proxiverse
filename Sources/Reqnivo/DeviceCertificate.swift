@@ -62,7 +62,7 @@ enum DeviceCertificate {
     }
 
     static func installAutomatically(on device: CertificateDevice, certificate: URL, adb: String?,
-                                     helper: URL? = Bundle.module.url(forResource: "install-certificate", withExtension: "dex"),
+                                     helper: URL? = AppResources.bundle.url(forResource: "install-certificate", withExtension: "dex"),
                                      command: Command = SystemProxy.command) throws -> String {
         guard device.platform == .android else {
             return try install(on: device, certificate: certificate, adb: adb, command: command)

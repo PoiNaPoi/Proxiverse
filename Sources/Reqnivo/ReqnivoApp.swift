@@ -47,7 +47,7 @@ final class AppDelegate: NSObject, NSApplicationDelegate {
     private var terminating = false
 
     func applicationWillFinishLaunching(_ notification: Notification) {
-        if let url = Bundle.module.url(forResource: "Reqnivo", withExtension: "icns"),
+        if let url = AppResources.bundle.url(forResource: "Reqnivo", withExtension: "icns"),
            let icon = NSImage(contentsOf: url) {
             NSApp.applicationIconImage = icon
         }

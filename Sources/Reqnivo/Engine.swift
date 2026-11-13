@@ -106,7 +106,7 @@ final class EngineRuntime {
         let token = UUID().uuidString + UUID().uuidString
         let process = Process()
         process.executableURL = try RuntimePaths.engine()
-        guard let addon = Bundle.module.url(forResource: "bridge", withExtension: "py") else { throw AppFailure("Missing bridge addon") }
+        guard let addon = AppResources.bundle.url(forResource: "bridge", withExtension: "py") else { throw AppFailure("Missing bridge addon") }
         process.arguments = ["-q", "-s", addon.path, "--listen-host", lan ? "0.0.0.0" : "127.0.0.1",
                              "--listen-port", String(proxyPort), "--set", "confdir=\(paths.root.appendingPathComponent("ca").path)",
                              "--set", "ssl_insecure=\(skipUpstreamVerification)",
